@@ -8,8 +8,8 @@ public class ObjectBasicMove : IMover
     {
         _objectBehaviour = objectBechaviour;
     }
-    public virtual void Move(Vector2 diretion, float speed)
+    public virtual void Move(Vector3 direñtion, float speed)
     {
-        _objectBehaviour.transform.Translate(speed * Time.deltaTime * diretion);
+        _objectBehaviour.transform.Translate(speed * Time.deltaTime * direñtion);
     }
 }

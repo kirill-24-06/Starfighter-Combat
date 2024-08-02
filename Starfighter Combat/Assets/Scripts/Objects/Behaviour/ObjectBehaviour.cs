@@ -7,8 +7,6 @@ public abstract class ObjectBehaviour : MonoBehaviour
     protected Vector2 _bordersOfExist = new Vector2(25.0f, 17.0f);
     protected IMover _objectMover;
 
-    protected abstract void Initialise();
-
     protected void DeactivateOutOfBounds()
     {
         if (transform.position.y < -_bordersOfExist.y)
@@ -21,12 +19,12 @@ public abstract class ObjectBehaviour : MonoBehaviour
             ObjectPoolManager.ReturnObjectToPool(gameObject);
         }
 
-        if (transform.position.y < -_bordersOfExist.x)
+        if (transform.position.x < -_bordersOfExist.x)
         {
             ObjectPoolManager.ReturnObjectToPool(gameObject);
         }
 
-        if (transform.position.y > _bordersOfExist.x)
+        if (transform.position.x > _bordersOfExist.x)
         {
             ObjectPoolManager.ReturnObjectToPool(gameObject);
         }

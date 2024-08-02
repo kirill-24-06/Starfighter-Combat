@@ -36,9 +36,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private Vector2 InputDirection() // <= ToDo IInputSystem
+    private Vector3 InputDirection() // <= ToDo IInputSystem
     {
-        Vector2 direction = Vector2.zero;
+        Vector3 direction = Vector3.zero;
 
         direction.x = Input.GetAxisRaw("Horizontal");
         direction.y = Input.GetAxisRaw("Vertical");

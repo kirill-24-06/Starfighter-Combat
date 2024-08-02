@@ -6,11 +6,6 @@ public class BasicBehaviour : ObjectBehaviour
 {
     private void Awake()
     {
-        Initialise();
-    }
-
-    protected override void Initialise()
-    {
         _objectMover = new ObjectBasicMove(this);
     }
 
