@@ -13,7 +13,7 @@ public class PlayerBehaviour : ObjectBehaviour
     {
         _objectMoveHandler = new PlayerMover(this);
         _playerAttackHandler = new Attacker(this);
-        _playerDamageHandler = new Damageble(ObjectInfo.Health);
+        _playerDamageHandler = new Damageble(this);
         _playerController = new PlayerController();
     }
    
@@ -63,7 +63,10 @@ public class PlayerBehaviour : ObjectBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _playerDamageHandler.TakeDamage(1);
-        ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
+        if(collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("EnemyWeapon"))
+        {
+            _playerDamageHandler.TakeDamage(1);
+            ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
+        }
     }
 }

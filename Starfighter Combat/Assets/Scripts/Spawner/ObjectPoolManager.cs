@@ -9,12 +9,16 @@ public class ObjectPoolManager : MonoBehaviour
     private GameObject _objectPoolEmptyHolder;
 
     private static GameObject _ParticleSystemEmpty;
-    private static GameObject _gameObjectsEmpty;
+    private static GameObject _enemyEmpty;
+    private static GameObject _weaponEmpty;
+    private static GameObject _bonusEmpty;
 
     public enum PoolType
     {
         ParticleSystem,
-        GameObject,
+        Enemy,
+        Weapon,
+        Bonus,
         None
     }
 
@@ -33,11 +37,17 @@ public class ObjectPoolManager : MonoBehaviour
         _ParticleSystemEmpty = new GameObject("Particle Effects");
         _ParticleSystemEmpty.transform.SetParent(_objectPoolEmptyHolder.transform);
 
-        _gameObjectsEmpty = new GameObject("Game Objects");
-        _gameObjectsEmpty.transform.SetParent(_objectPoolEmptyHolder.transform);
+        _enemyEmpty = new GameObject("Enemies");
+        _enemyEmpty.transform.SetParent(_objectPoolEmptyHolder.transform);
+
+        _weaponEmpty = new GameObject("Weapons");
+        _weaponEmpty.transform.SetParent(_objectPoolEmptyHolder.transform);
+
+        _bonusEmpty = new GameObject("Bonuses");
+        _bonusEmpty.transform.SetParent(_objectPoolEmptyHolder.transform);
     }
 
-    public static GameObject SpawnObject(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation , PoolType poolType = PoolType.None)
+    public static GameObject SpawnObject(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, PoolType poolType = PoolType.None)
     {
         PooledObjectInfo pool = ObjectPools.Find(objectInfo => objectInfo.LookupString == objectToSpawn.name);
 
@@ -55,7 +65,7 @@ public class ObjectPoolManager : MonoBehaviour
 
             spawnableObject = Instantiate(objectToSpawn, spawnPosition, spawnRotation);
 
-            if(parrentObject != null)
+            if (parrentObject != null)
             {
                 spawnableObject.transform.SetParent(parrentObject.transform);
             }
@@ -123,8 +133,14 @@ public class ObjectPoolManager : MonoBehaviour
             case PoolType.ParticleSystem:
                 return _ParticleSystemEmpty;
 
-            case PoolType.GameObject:
-                return _gameObjectsEmpty;
+            case PoolType.Enemy:
+                return _enemyEmpty;
+
+            case PoolType.Weapon:
+                return _weaponEmpty;
+
+            case PoolType.Bonus:
+                return _bonusEmpty;
 
             case PoolType.None:
                 return null;

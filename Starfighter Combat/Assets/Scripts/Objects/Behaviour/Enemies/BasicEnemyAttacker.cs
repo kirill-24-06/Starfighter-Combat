@@ -10,8 +10,13 @@ public class BasicEnemyAttacker : BasicEnemy
     private void Awake()
     {
         _objectMoveHandler = new ObjectBasicMove(this);
-        _healthHandler = new Damageble(ObjectInfo.Health);
+        _healthHandler = new Damageble(this);
         _enemyAttackHandler = new Attacker(this);
+    }
+
+    private void OnEnable()
+    {
+        _enemyAttackHandler.Reset();
     }
 
     private void OnDisable()
@@ -29,8 +34,11 @@ public class BasicEnemyAttacker : BasicEnemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collided");
-        _healthHandler.TakeDamage(1);
-        ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
+        if (collision.gameObject.CompareTag("PlayerWeapon"))
+        {
+            Debug.Log("Collided");
+            _healthHandler.TakeDamage(1);
+            ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
+        }
     }
 }

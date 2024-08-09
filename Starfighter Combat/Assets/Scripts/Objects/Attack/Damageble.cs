@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class Damageble : IDamageble
 {
+    ObjectBehaviour _objectBehaviuor;
+
     private int _baseHealth;
     private int _maxHealth;
     private int _currentHealth;
 
-    public Damageble(int health)
+    public Damageble(ObjectBehaviour objectBehaviour)
     {
-        _baseHealth = health;
+        _objectBehaviuor = objectBehaviour;
+
+        _baseHealth = _objectBehaviuor.ObjectInfo.Health;
         ResetHealth();
     }
 
@@ -28,7 +32,16 @@ public class Damageble : IDamageble
 
         if (_currentHealth == 0)
         {
-            Debug.Log("Kill");
+            if (_objectBehaviuor.gameObject.CompareTag("Player"))
+            {
+                Debug.Log("GAMEOVER");
+                Time.timeScale = 0;
+            }
+            else
+            {
+                ObjectPoolManager.ReturnObjectToPool(_objectBehaviuor.gameObject);
+                Debug.Log("Kill");
+            }
         }
     }
 

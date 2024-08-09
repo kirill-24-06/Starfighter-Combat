@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9caf03ee25a245f49bfb2cf484d4dd27, type: 3}
-  m_Name: PlayerData
+  m_Name: Interceptor
   m_EditorClassIdentifier: 
-  _objectTag: 1
-  _health: 3
-  _objectSpeed: 20
-  _weaponProjectile: {fileID: 8661907242895563437, guid: aaf0e24b381737a45bacf105a3869000, type: 3}
-  _projectileSpawnOffset: {x: 0, y: 0.75, z: 0}
-  _reloadTime: 0.5
-  _gameZoneBorders: {x: 19, y: 10}
+  _objectTag: 0
+  _health: 5
+  _objectSpeed: 10
+  _weaponProjectile: {fileID: 814541193105084480, guid: c5eea90eec9a5964fbe018e878e71f60, type: 3}
+  _reloadTime: 1
+  _gameZoneBorders: {x: 25, y: 20}

@@ -23,11 +23,19 @@ public class Attacker : IAttacker
         {
             _isShooted = true;
 
-            ObjectPoolManager.SpawnObject(projectile, _projectileSpawnPoint.transform.position, _projectileSpawnPoint.transform.rotation);
+            ObjectPoolManager.SpawnObject(projectile, _projectileSpawnPoint.transform.position,
+                _projectileSpawnPoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
 
             _reloadTimer.SetTimer(_objectBehaviour.ObjectInfo.ReloadTime);
             _reloadTimer.StartTimer();
         }
     }
+
+    public void Reset()
+    {
+        _reloadTimer.StopTimer();
+        _isShooted = false;
+    }
+
     protected void OnReloadTimerExpired() => _isShooted = false;
 }

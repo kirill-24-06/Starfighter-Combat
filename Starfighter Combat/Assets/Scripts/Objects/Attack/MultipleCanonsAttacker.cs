@@ -17,7 +17,7 @@ public class MultipleCanonsAttacker : Attacker
 
             foreach (Transform position in _projectileSpawnPoints)
             {
-                ObjectPoolManager.SpawnObject(projectile, position.transform.position, position.transform.rotation);
+                ObjectPoolManager.SpawnObject(projectile, position.transform.position, position.transform.rotation, ObjectPoolManager.PoolType.Weapon);
             }
 
             _reloadTimer.SetTimer(_objectBehaviour.ObjectInfo.ReloadTime);

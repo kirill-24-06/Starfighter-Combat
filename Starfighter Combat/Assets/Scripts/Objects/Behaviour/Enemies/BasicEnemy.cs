@@ -8,7 +8,7 @@ public class BasicEnemy : BasicBehaviour
     private void Awake()
     {
         _objectMoveHandler = new ObjectBasicMove(this);
-        _healthHandler = new Damageble(ObjectInfo.Health);
+        _healthHandler = new Damageble(this);
     }
 
     private void OnDisable()
@@ -24,8 +24,11 @@ public class BasicEnemy : BasicBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collided");
-        _healthHandler.TakeDamage(1);
-        ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
+        if(collision.gameObject.CompareTag("PlayerWeapon"))
+        {
+            Debug.Log("Collided");
+            _healthHandler.TakeDamage(1);
+            ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
+        }
     }
 }

@@ -13,7 +13,7 @@ public class AdvancedBehaviour : BasicBehaviour
     private Timer _positionChangeTimer;
     private bool _isPositionChangeTimerStart = false;
 
-    protected Vector3 _direction = Vector3.up;
+    protected Vector3 _direction;
     private Vector2 _gameZoneBorders = new Vector2(19.0f, 10.0f);
     protected bool _isArrived = false;
 
@@ -27,12 +27,15 @@ public class AdvancedBehaviour : BasicBehaviour
     protected void OnEnable()
     {
         _isArrived = false;
-        _objectMoveHandler = new ObjectBasicMove(this);
+
+        ChangeMover(new ObjectBasicMove(this));
+        _direction = Vector3.up;
     }
 
     protected void OnDisable()
     {
         _liveTimer.StopTimer();
+        StopAllCoroutines();
         _positionChangeTimer.StopTimer();
     }
 
@@ -93,15 +96,17 @@ public class AdvancedBehaviour : BasicBehaviour
 
     protected void CheckArrival()
     {
-        if (transform.position.x > -_gameZoneBorders.x && transform.position.y < _gameZoneBorders.y)
+        bool isArrived = (transform.position.x > -_gameZoneBorders.x || transform.position.x < _gameZoneBorders.x) && transform.position.y < _gameZoneBorders.y;
+
+        if (isArrived)
         {
             Arrival?.Invoke();
         }
 
-        if (transform.position.x < _gameZoneBorders.x && transform.position.y < _gameZoneBorders.y)
-        {
-            Arrival?.Invoke();
-        }
+        //if (transform.position.x < _gameZoneBorders.x && transform.position.y < _gameZoneBorders.y)
+        //{
+        //    Arrival?.Invoke();
+        //}
     }
 
     protected void ChangeMover(IMover newMover)
