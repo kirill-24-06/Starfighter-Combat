@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class PlayerMover : IMover
 {
-    private PlayerController _playerController;
+    private PlayerBehaviour _player;
     private Vector3 _direction;
 
-    public PlayerMover(PlayerController playerController)
+    public PlayerMover(PlayerBehaviour player)
     {
-        _playerController = playerController;
+        _player = player;
     }
 
     public void Move(Vector3 direction, float speed)
     {
         _direction = direction.normalized;
-        _playerController.transform.Translate(speed * Time.deltaTime * _direction);
+        _player.transform.Translate(speed * Time.deltaTime * _direction);
     }
 }

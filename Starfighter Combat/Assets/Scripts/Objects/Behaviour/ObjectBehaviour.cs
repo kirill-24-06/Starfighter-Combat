@@ -3,30 +3,8 @@ using UnityEngine;
 //Base behaviour;
 public abstract class ObjectBehaviour : MonoBehaviour
 {
-    [SerializeField] protected float _objectSpeed;
-    protected Vector2 _bordersOfExist = new Vector2(25.0f, 17.0f);
-    protected IMover _objectMover;
+    [SerializeField] protected ObjectsData _objectInfo;
+    protected IMover _objectMoveHandler;
 
-    protected void DeactivateOutOfBounds()
-    {
-        if (transform.position.y < -_bordersOfExist.y)
-        {
-            ObjectPoolManager.ReturnObjectToPool(gameObject);
-        }
-
-        if (transform.position.y > _bordersOfExist.y)
-        {
-            ObjectPoolManager.ReturnObjectToPool(gameObject);
-        }
-
-        if (transform.position.x < -_bordersOfExist.x)
-        {
-            ObjectPoolManager.ReturnObjectToPool(gameObject);
-        }
-
-        if (transform.position.x > _bordersOfExist.x)
-        {
-            ObjectPoolManager.ReturnObjectToPool(gameObject);
-        }
-    }
+    public ObjectsData ObjectInfo => _objectInfo; 
 }

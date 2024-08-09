@@ -1,41 +1,36 @@
 using System;
 using UnityEngine;
 
-//Unlike the basic behavior, it can change the type of movement
-public class AdvancedBehaviour : ObjectBehaviour
+//Unlike the basic behavior, it can change the type of movement on Timer
+public class AdvancedBehaviour : BasicBehaviour
 {
     [Header("After the expiration, the object will leave the game area")]
-    [SerializeField] private float _liveTime = 30.0f;
-    private Timer _liveTimer;
+    [SerializeField] protected float _liveTime = 30.0f;
+    protected Timer _liveTimer;
 
     [Header("After the expiration, the object will change its position in the game area")]
     [SerializeField] private float _positionChangeTime = 7.0f;
     private Timer _positionChangeTimer;
+    private bool _isPositionChangeTimerStart = false;
 
     protected Vector3 _direction = Vector3.up;
-    protected Vector2 _gameZoneBorders = new Vector2(19.0f, 10.0f);
-    private bool _isArrived = false;
+    private Vector2 _gameZoneBorders = new Vector2(19.0f, 10.0f);
+    protected bool _isArrived = false;
 
     protected event Action Arrival;
 
     private void Awake()
     {
-        _liveTimer = new Timer(this);
-        _liveTimer.TimeIsOver += OnLiveTimerExpired;
-
-        _positionChangeTimer = new Timer(this);
-        _positionChangeTimer.TimeIsOver += OnPositionChangeTimerExpired;
-
-        Arrival += OnArrival;
+        Initialise();
     }
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         _isArrived = false;
-        _objectMover = new ObjectBasicMove(this);
+        _objectMoveHandler = new ObjectBasicMove(this);
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         _liveTimer.StopTimer();
         _positionChangeTimer.StopTimer();
@@ -43,7 +38,7 @@ public class AdvancedBehaviour : ObjectBehaviour
 
     private void Update()
     {
-        _objectMover.Move(_direction, _objectSpeed);
+        _objectMoveHandler.Move(_direction, ObjectInfo.Speed);
         DeactivateOutOfBounds();
 
         if (!_isArrived)
@@ -53,11 +48,25 @@ public class AdvancedBehaviour : ObjectBehaviour
 
         if (transform.position == _direction)
         {
-            _positionChangeTimer.SetTimer(_positionChangeTime);
-            _positionChangeTimer.StartTimer();
+            if (!_isPositionChangeTimerStart)
+            {
+                _positionChangeTimer.SetTimer(_positionChangeTime);
+                _positionChangeTimer.StartTimer();
+                _isPositionChangeTimerStart = true;
+            }
         }
     }
 
+    protected void Initialise()
+    {
+        _liveTimer = new Timer(this);
+        _liveTimer.TimeIsOver += OnLiveTimerExpired;
+
+        _positionChangeTimer = new Timer(this);
+        _positionChangeTimer.TimeIsOver += OnPositionChangeTimerExpired;
+
+        Arrival += OnArrival;
+    }
     protected void OnArrival()
     {
         _isArrived = true;
@@ -76,9 +85,10 @@ public class AdvancedBehaviour : ObjectBehaviour
         SetNewDirection();
     }
 
-    public void OnPositionChangeTimerExpired()
+    protected void OnPositionChangeTimerExpired()
     {
         SetNewDirection();
+        _isPositionChangeTimerStart = false;
     }
 
     protected void CheckArrival()
@@ -96,17 +106,18 @@ public class AdvancedBehaviour : ObjectBehaviour
 
     protected void ChangeMover(IMover newMover)
     {
-        _objectMover = newMover;
+        _objectMoveHandler = newMover;
     }
 
-    protected void SetNewDirection()
+    protected virtual void SetNewDirection()
     {
-        switch (_objectMover)
+        switch (_objectMoveHandler)
         {
             case ObjectBasicMove:
 
                 _direction = Vector2.up;
                 break;
+
             case ObjectAdvancedMove:
 
                 _direction = GenerateMovePoint();
@@ -114,7 +125,7 @@ public class AdvancedBehaviour : ObjectBehaviour
         }
     }
 
-    protected Vector3 GenerateMovePoint()
+    protected virtual Vector3 GenerateMovePoint()
     {
         float positionX = UnityEngine.Random.Range(-_gameZoneBorders.x, _gameZoneBorders.x);
         float positionY = UnityEngine.Random.Range(-_gameZoneBorders.y, _gameZoneBorders.y);

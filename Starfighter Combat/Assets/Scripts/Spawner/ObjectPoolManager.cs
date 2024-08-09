@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectPoolManager : MonoBehaviour
 {
-    public static List<PooledObjectInfo> ObjectPools = new List<PooledObjectInfo>();
+    private static List<PooledObjectInfo> ObjectPools = new List<PooledObjectInfo>();
 
     private GameObject _objectPoolEmptyHolder;
 
@@ -22,7 +22,6 @@ public class ObjectPoolManager : MonoBehaviour
 
     private void Awake()
     {
-        //группируем пуллы обьектов в иерархии по 
         SetupEmpties();
     }
 
@@ -38,29 +37,20 @@ public class ObjectPoolManager : MonoBehaviour
         _gameObjectsEmpty.transform.SetParent(_objectPoolEmptyHolder.transform);
     }
 
-    // сама функция спавна вместо Instantiate();
     public static GameObject SpawnObject(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation , PoolType poolType = PoolType.None)
     {
-        //Сначала ищем пулл в котором должен содержаться обьект
-
         PooledObjectInfo pool = ObjectPools.Find(objectInfo => objectInfo.LookupString == objectToSpawn.name);
 
-        //Если пулла обьектов нет(т.е обьект ни разу не спавнился)
         if (pool == null)
         {
             pool = new PooledObjectInfo() { LookupString = objectToSpawn.name };
             ObjectPools.Add(pool);
         }
 
-        //Теперь в пулле неактивных обьектов ищем кандидата на спавн
-
         GameObject spawnableObject = pool.InnactiveObjects.FirstOrDefault();
-
-        // если такого обьекта нет создаём новый
 
         if (spawnableObject == null)
         {
-            //засовываем в родительскую папку в иерархии
             GameObject parrentObject = SetParrentObject(poolType);
 
             spawnableObject = Instantiate(objectToSpawn, spawnPosition, spawnRotation);
@@ -70,7 +60,7 @@ public class ObjectPoolManager : MonoBehaviour
                 spawnableObject.transform.SetParent(parrentObject.transform);
             }
         }
-        //иначе активируем неактивный обьект если он есть в пулле
+
         else
         {
             spawnableObject.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
@@ -81,7 +71,6 @@ public class ObjectPoolManager : MonoBehaviour
         return spawnableObject;
     }
 
-    //аналог для спавна на конкретной точке (как в первом прототипе)
     public static GameObject SpawnObject(GameObject objectToSpawn, Transform parrentTransform)
     {
         PooledObjectInfo pool = ObjectPools.Find(p => p.LookupString == objectToSpawn.name);
@@ -117,8 +106,7 @@ public class ObjectPoolManager : MonoBehaviour
 
         if (pool == null)
         {
-            //Обьект НЕ был создан при помощи ObjectPoolManager и НЕ должен использовать эту функцию
-            Debug.LogWarning("Недопустимая функция для обьекта " + objectToReturn.name);
+            Debug.LogWarning("Invalid function for an object " + objectToReturn.name);
         }
 
         else
@@ -147,7 +135,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
 }
 
-//отдельный пулл для каждого префаба
+
 public class PooledObjectInfo
 {
     public string LookupString;

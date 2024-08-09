@@ -6,12 +6,35 @@ public class BasicBehaviour : ObjectBehaviour
 {
     private void Awake()
     {
-        _objectMover = new ObjectBasicMove(this);
+        _objectMoveHandler = new ObjectBasicMove(this);
     }
 
     private void Update()
     {
-        _objectMover.Move(Vector2.up, _objectSpeed);
+        _objectMoveHandler.Move(Vector2.up, ObjectInfo.Speed);
         DeactivateOutOfBounds();
+    }
+
+    protected void DeactivateOutOfBounds()
+    {
+        if (transform.position.y < -ObjectInfo.GameZoneBorders.y)
+        {
+            ObjectPoolManager.ReturnObjectToPool(gameObject);
+        }
+
+        if (transform.position.y > ObjectInfo.GameZoneBorders.y)
+        {
+            ObjectPoolManager.ReturnObjectToPool(gameObject);
+        }
+
+        if (transform.position.x < -ObjectInfo.GameZoneBorders.x)
+        {
+            ObjectPoolManager.ReturnObjectToPool(gameObject);
+        }
+
+        if (transform.position.x > ObjectInfo.GameZoneBorders.x)
+        {
+            ObjectPoolManager.ReturnObjectToPool(gameObject);
+        }
     }
 }
