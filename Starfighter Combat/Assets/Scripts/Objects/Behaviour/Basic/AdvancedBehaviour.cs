@@ -24,7 +24,7 @@ public class AdvancedBehaviour : BasicBehaviour
         Initialise();
     }
 
-    protected void OnEnable()
+    private void OnEnable()
     {
         _isArrived = false;
 

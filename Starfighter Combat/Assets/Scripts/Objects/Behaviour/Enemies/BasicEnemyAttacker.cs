@@ -6,7 +6,6 @@ public class BasicEnemyAttacker : BasicEnemy
 {
     private IAttacker _enemyAttackHandler;
 
-
     private void Awake()
     {
         _objectMoveHandler = new ObjectBasicMove(this);
@@ -34,9 +33,8 @@ public class BasicEnemyAttacker : BasicEnemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("PlayerWeapon"))
+        if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.PlayerWeapon))
         {
-            Debug.Log("Collided");
             _healthHandler.TakeDamage(1);
             ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
         }

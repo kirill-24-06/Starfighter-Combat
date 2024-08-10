@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Interceptor
   m_EditorClassIdentifier: 
   _objectTag: 0
-  _health: 5
+  _health: 4
   _objectSpeed: 10
   _weaponProjectile: {fileID: 814541193105084480, guid: c5eea90eec9a5964fbe018e878e71f60, type: 3}
   _reloadTime: 1

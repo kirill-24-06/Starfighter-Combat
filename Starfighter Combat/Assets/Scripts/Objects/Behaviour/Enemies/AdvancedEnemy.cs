@@ -21,18 +21,19 @@ public class AdvancedEnemy : AdvancedBehaviour
 
         _enemyHealthHandler = new Damageble(this);
         _enemyAttackHandler = new MultipleCanonsAttacker(this);
+
+        _player = EntryPoint.Player.transform;
     }
 
-    protected new void OnEnable()
+    protected void OnEnable()
     {
-        base.OnEnable();
+        _isArrived = false;
+
+        ChangeMover(new ObjectBasicMove(this));
+        _direction = Vector3.up;
+
         _enemyAttackHandler.Reset();
         _enemyHealthHandler.ResetHealth();
-    }
-
-    private void Start()
-    {
-        _player = EntryPoint.Player.transform;
     }
 
     private void Update()
@@ -49,7 +50,7 @@ public class AdvancedEnemy : AdvancedBehaviour
         {
             LookInTargetDirection(_player.position);
             _enemyAttackHandler.Fire(ObjectInfo.Projectile);
-            _shotsFired += 1*Time.deltaTime;
+            _shotsFired += 1 * Time.deltaTime;
         }
 
         if (_shotsFired >= _shotsBeforePositionChange)
@@ -100,9 +101,8 @@ public class AdvancedEnemy : AdvancedBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("PlayerWeapon"))
+        if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.PlayerWeapon))
         {
-            Debug.Log("Collided");
             _enemyHealthHandler.TakeDamage(1);
             ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
         }

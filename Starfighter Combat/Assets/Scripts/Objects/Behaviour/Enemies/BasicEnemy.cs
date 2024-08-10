@@ -24,9 +24,8 @@ public class BasicEnemy : BasicBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("PlayerWeapon"))
+        if(ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.PlayerWeapon))
         {
-            Debug.Log("Collided");
             _healthHandler.TakeDamage(1);
             ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
         }

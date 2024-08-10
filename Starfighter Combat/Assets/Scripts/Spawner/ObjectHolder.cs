@@ -35,20 +35,40 @@ public class ObjectHolder
         return _instance;
     }
 
-    public void RegisterObject(GameObject objectToRegistr, ObjectTag tag = ObjectTag.None)
+    public void RegisterObject(GameObject objectToRegistr, ObjectTag tag)
     {
+        bool isAlreadyRegistered = false;
+
         HoldedOojectInfo list = _createdObjectsLists.Find(objectInfo => objectInfo.LookupTag == tag);
 
         if (list == null)
         {
             list = new HoldedOojectInfo() { LookupTag = tag };
             _createdObjectsLists.Add(list);
-        }
 
-        list.RegisteredObjects.Add(objectToRegistr);
+            list.RegisteredObjects.Add(objectToRegistr);
+            //Debug.Log($"Created objects of type {tag}: " + list.RegisteredObjects.Count);
+        }
+        else
+        {
+            foreach (var registeredObject in list.RegisteredObjects)
+            {
+                if (objectToRegistr == registeredObject)
+                {
+                    isAlreadyRegistered = true;
+                    break;
+                }
+            }
+
+            if (!isAlreadyRegistered)
+            {
+                list.RegisteredObjects.Add(objectToRegistr);
+                //Debug.Log($"Created objects of type {tag}: " + list.RegisteredObjects.Count);
+            }
+        }
     }
 
-    public bool FindRegisteredObject(GameObject objectToFind, ObjectTag objectTag = ObjectTag.None)
+    public bool FindRegisteredObject(GameObject objectToFind, ObjectTag objectTag)
     {
         HoldedOojectInfo list = _createdObjectsLists.Find(objectInfo => objectInfo.LookupTag == objectTag);
 

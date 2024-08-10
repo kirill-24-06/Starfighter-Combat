@@ -26,8 +26,6 @@ public class Damageble : IDamageble
             {
                 _currentHealth = 0;
             }
-
-            Debug.Log(_currentHealth);
         }
 
         if (_currentHealth == 0)
@@ -40,7 +38,6 @@ public class Damageble : IDamageble
             else
             {
                 ObjectPoolManager.ReturnObjectToPool(_objectBehaviuor.gameObject);
-                Debug.Log("Kill");
             }
         }
     }

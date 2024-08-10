@@ -19,12 +19,15 @@ public class Attacker : IAttacker
 
     public virtual void Fire(GameObject projectile)
     {
+        GameObject newProjectile;
+
         if (!_isShooted)
         {
             _isShooted = true;
 
-            ObjectPoolManager.SpawnObject(projectile, _projectileSpawnPoint.transform.position,
-                _projectileSpawnPoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
+            newProjectile = ObjectPoolManager.SpawnObject(projectile, _projectileSpawnPoint.transform.position,
+               _projectileSpawnPoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
+            RegistrProjectile(newProjectile);
 
             _reloadTimer.SetTimer(_objectBehaviour.ObjectInfo.ReloadTime);
             _reloadTimer.StartTimer();
@@ -35,6 +38,19 @@ public class Attacker : IAttacker
     {
         _reloadTimer.StopTimer();
         _isShooted = false;
+    }
+
+    protected void RegistrProjectile(GameObject projectile)
+    {
+        if (_objectBehaviour.ObjectInfo.Tag == ObjectTag.Player)
+        {
+            ObjectHolder.GetInstance().RegisterObject(projectile, ObjectTag.PlayerWeapon);
+        }
+
+        else if (_objectBehaviour.ObjectInfo.Tag == ObjectTag.Enemy)
+        {
+            ObjectHolder.GetInstance().RegisterObject(projectile, ObjectTag.EnemyWeapon);
+        }
     }
 
     protected void OnReloadTimerExpired() => _isShooted = false;

@@ -52,9 +52,11 @@ public class BasicSpawnManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        int enemy = Random.Range(0, _objectsToSpawn.Count);
+        int enemyIndex = Random.Range(0, _objectsToSpawn.Count);
+        GameObject enemy;
 
-        ObjectPoolManager.SpawnObject(_objectsToSpawn[enemy], GenerateSpawnPosition(), _rotation, ObjectPoolManager.PoolType.Enemy);
+        enemy = ObjectPoolManager.SpawnObject(_objectsToSpawn[enemyIndex], GenerateSpawnPosition(), _rotation, ObjectPoolManager.PoolType.Enemy);
+        _spawnedObjects.RegisterObject(enemy, ObjectTag.Enemy);
     }
 
     private Vector3 GenerateSpawnPosition()

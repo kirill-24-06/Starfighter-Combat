@@ -11,13 +11,16 @@ public class MultipleCanonsAttacker : Attacker
 
     public override void Fire(GameObject projectile)
     {
+        GameObject newProjectile;
+
         if (!_isShooted)
         {
             _isShooted = true;
 
             foreach (Transform position in _projectileSpawnPoints)
             {
-                ObjectPoolManager.SpawnObject(projectile, position.transform.position, position.transform.rotation, ObjectPoolManager.PoolType.Weapon);
+                newProjectile = ObjectPoolManager.SpawnObject(projectile, position.position, position.rotation, ObjectPoolManager.PoolType.Weapon);
+                RegistrProjectile(newProjectile);
             }
 
             _reloadTimer.SetTimer(_objectBehaviour.ObjectInfo.ReloadTime);
@@ -34,7 +37,5 @@ public class MultipleCanonsAttacker : Attacker
                 _projectileSpawnPoints.Add(child);
             }
         }
-
-        Debug.Log(_projectileSpawnPoints.Count);
     }
 }

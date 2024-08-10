@@ -16,7 +16,7 @@ public class PlayerBehaviour : ObjectBehaviour
         _playerDamageHandler = new Damageble(this);
         _playerController = new PlayerController();
     }
-   
+
     private void Update()
     {
         _objectMoveHandler.Move(_playerController.InputDirection(), ObjectInfo.Speed);
@@ -61,9 +61,15 @@ public class PlayerBehaviour : ObjectBehaviour
         }
     }
 
+    //public static bool IsPlayer(Collider2D collider)
+    //{
+    //    return collider.gameObject == _instance.gameObject;
+    //}
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("EnemyWeapon"))
+        if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.EnemyWeapon) ||
+            ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.Enemy))
         {
             _playerDamageHandler.TakeDamage(1);
             ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
