@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Damageble : IDamageble
 {
     ObjectBehaviour _objectBehaviuor;
@@ -22,21 +20,22 @@ public class Damageble : IDamageble
         {
             _currentHealth -= damage;
 
-            if (_currentHealth < 0)
-            {
-                _currentHealth = 0;
-            }
+            if (_objectBehaviuor.ObjectInfo.Tag == ObjectTag.Player) { EventManager.GetInstance().PlayerDamaged?.Invoke(_currentHealth); }
+
+            if (_currentHealth < 0) { _currentHealth = 0; }
+            
         }
 
         if (_currentHealth == 0)
         {
-            if (_objectBehaviuor.gameObject.CompareTag("Player"))
+            if (_objectBehaviuor.ObjectInfo.Tag == ObjectTag.Player)
             {
-                Debug.Log("GAMEOVER");
-                Time.timeScale = 0;
+                EventManager.GetInstance().PlayerDied?.Invoke();
             }
+
             else
             {
+                EventManager.GetInstance().AddScore?.Invoke(_objectBehaviuor.ObjectInfo.Score);
                 ObjectPoolManager.ReturnObjectToPool(_objectBehaviuor.gameObject);
             }
         }

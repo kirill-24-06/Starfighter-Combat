@@ -8,6 +8,8 @@ public class ObjectsData : ScriptableObject
     [SerializeField] protected int _health;
     [SerializeField] protected float _objectSpeed;
 
+    [SerializeField] protected int _score;
+
     [SerializeField] protected GameObject _weaponProjectile;
     [SerializeField] protected float _reloadTime;
 
@@ -24,4 +26,6 @@ public class ObjectsData : ScriptableObject
     public Vector2 GameZoneBorders => _gameZoneBorders;
     
     public float ReloadTime => _reloadTime;
+
+    public int Score => _score;
 }
