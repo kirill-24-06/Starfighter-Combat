@@ -9,6 +9,7 @@ public class BasicEnemy : BasicBehaviour
     {
         _objectMoveHandler = new ObjectBasicMove(this);
         _healthHandler = new Damageble(this);
+        EventManager.GetInstance().IonSphereUse += OnIonSphereUse;
     }
 
     private void OnDisable()
@@ -22,9 +23,17 @@ public class BasicEnemy : BasicBehaviour
         DeactivateOutOfBounds();
     }
 
+    protected void OnIonSphereUse()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            _healthHandler.TakeDamage(10);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.PlayerWeapon))
+        if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.PlayerWeapon))
         {
             _healthHandler.TakeDamage(1);
             ObjectPoolManager.ReturnObjectToPool(collision.gameObject);

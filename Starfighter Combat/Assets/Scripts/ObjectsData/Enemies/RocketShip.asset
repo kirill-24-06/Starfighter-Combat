@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a00d3631113994e919deefdea63757, type: 3}
+  m_Name: RocketShip
+  m_EditorClassIdentifier: 
+  _objectTag: 0
+  _bonusTag: 6
+  _health: 10
+  _objectSpeed: 6
+  _score: 100
+  _weaponProjectile: {fileID: 814541193105084480, guid: c5eea90eec9a5964fbe018e878e71f60, type: 3}
+  _reloadTime: 1
+  _gameZoneBorders: {x: 25, y: 20}

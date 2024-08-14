@@ -32,7 +32,7 @@ public class AdvancedBehaviour : BasicBehaviour
         _direction = Vector3.up;
     }
 
-    protected void OnDisable()
+    private void OnDisable()
     {
         _liveTimer.StopTimer();
         StopAllCoroutines();
@@ -57,6 +57,29 @@ public class AdvancedBehaviour : BasicBehaviour
                 _positionChangeTimer.StartTimer();
                 _isPositionChangeTimerStart = true;
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(ObjectInfo.BonusTag != BonusTag.None)
+        {
+            if (PlayerBehaviour.IsPlayer(collision) && !EntryPoint.Player.IsTaken)
+            {
+                EventManager.GetInstance().BonusCollected?.Invoke(ObjectInfo.BonusTag);
+                ObjectPoolManager.ReturnObjectToPool(gameObject);
+            }
+
+            else if (PlayerBehaviour.IsPlayer(collision) && ObjectInfo.BonusTag == BonusTag.Health)
+            {
+                EventManager.GetInstance().BonusCollected?.Invoke(ObjectInfo.BonusTag);
+                ObjectPoolManager.ReturnObjectToPool(gameObject);
+            }
+        }
+
+        else
+        {
+            Debug.LogWarning("the wrong behavior is being used" + this);
         }
     }
 
@@ -102,11 +125,6 @@ public class AdvancedBehaviour : BasicBehaviour
         {
             Arrival?.Invoke();
         }
-
-        //if (transform.position.x < _gameZoneBorders.x && transform.position.y < _gameZoneBorders.y)
-        //{
-        //    Arrival?.Invoke();
-        //}
     }
 
     protected void ChangeMover(IMover newMover)

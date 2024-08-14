@@ -63,7 +63,7 @@ public class BasicSpawnManager : MonoBehaviour
     {
         float randomX = Random.Range(_spawnArea.min.x, _spawnArea.max.x);
         float randomY = Random.Range(_spawnArea.min.y, _spawnArea.max.y);
-        float randomZ = Random.Range(_spawnArea.min.z, _spawnArea.max.z);
+        float randomZ = 0;
 
         return new Vector3(randomX, randomY, randomZ);
     }

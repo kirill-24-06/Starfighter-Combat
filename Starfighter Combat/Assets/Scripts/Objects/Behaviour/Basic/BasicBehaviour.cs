@@ -7,12 +7,21 @@ public class BasicBehaviour : ObjectBehaviour
     private void Awake()
     {
         _objectMoveHandler = new ObjectBasicMove(this);
+        EventManager.GetInstance().IonSphereUse += OnIonSphereUse;
     }
 
     private void Update()
     {
         _objectMoveHandler.Move(Vector2.up, ObjectInfo.Speed);
         DeactivateOutOfBounds();
+    }
+
+    private void OnIonSphereUse()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            ObjectPoolManager.ReturnObjectToPool(gameObject);
+        }
     }
 
     protected void DeactivateOutOfBounds()

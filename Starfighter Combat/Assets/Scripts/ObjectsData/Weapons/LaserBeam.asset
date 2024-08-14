@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9caf03ee25a245f49bfb2cf484d4dd27, type: 3}
-  m_Name: Player
+  m_Name: LaserBeam
   m_EditorClassIdentifier: 
-  _objectTag: 1
+  _objectTag: 4
   _bonusTag: 6
-  _health: 11111
-  _objectSpeed: 20
+  _health: 0
+  _objectSpeed: 0
   _score: 0
-  _weaponProjectile: {fileID: 8661907242895563437, guid: aaf0e24b381737a45bacf105a3869000, type: 3}
-  _reloadTime: 0.1
-  _gameZoneBorders: {x: 19, y: 10}
+  _weaponProjectile: {fileID: 0}
+  _reloadTime: 0
+  _gameZoneBorders: {x: 25, y: 20}

@@ -46,6 +46,7 @@ public class Damageble : IDamageble
         if (incomingHealth >= 0 && _currentHealth + incomingHealth <= _maxHealth)
         {
             _currentHealth += incomingHealth;
+            EventManager.GetInstance().PlayerHealed?.Invoke(_currentHealth);
         }
     }
 

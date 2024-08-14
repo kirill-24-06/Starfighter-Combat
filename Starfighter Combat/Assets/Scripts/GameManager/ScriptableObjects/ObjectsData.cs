@@ -1,9 +1,21 @@
 using UnityEngine;
 
+public enum BonusTag
+{
+    Health,
+    Multilaser,
+    LaserBeam,
+    ForceField,
+    IonSphere,
+    DefenceDrone,
+    None,
+}
+
 [CreateAssetMenu(fileName = "New ObjectData", menuName = "Object Data", order = 51)]
 public class ObjectsData : ScriptableObject
 {
     [SerializeField] protected ObjectTag _objectTag = ObjectTag.None;
+    [SerializeField] private BonusTag _bonusTag = BonusTag.None;
 
     [SerializeField] protected int _health;
     [SerializeField] protected float _objectSpeed;
@@ -16,6 +28,8 @@ public class ObjectsData : ScriptableObject
     [SerializeField] protected Vector2 _gameZoneBorders;
 
     public ObjectTag Tag => _objectTag;
+
+    public BonusTag BonusTag => _bonusTag;
 
     public int Health => _health;
 

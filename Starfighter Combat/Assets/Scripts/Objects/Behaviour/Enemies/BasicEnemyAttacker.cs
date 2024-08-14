@@ -11,6 +11,8 @@ public class BasicEnemyAttacker : BasicEnemy
         _objectMoveHandler = new ObjectBasicMove(this);
         _healthHandler = new Damageble(this);
         _enemyAttackHandler = new Attacker(this);
+
+        EventManager.GetInstance().IonSphereUse += OnIonSphereUse;
     }
 
     private void OnEnable()

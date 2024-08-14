@@ -3,17 +3,17 @@ using UnityEngine;
 //Performs all the logic of AdvancedBechaviour and BasicEnemyAttacker
 public class AdvancedEnemy : AdvancedBehaviour
 {
-    private IDamageble _enemyHealthHandler;
-    private IAttacker _enemyAttackHandler;
+    protected IDamageble _enemyHealthHandler;
+    protected IAttacker _enemyAttackHandler;
 
-    private readonly float _activeAreaX = 19.0f;
-    private readonly float _activeAreaLower = -3.0f;
-    private readonly float _activeAreaUpper = 10.0f;
+    protected readonly float _activeAreaX = 19.0f;
+    protected readonly float _activeAreaLower = -3.0f;
+    protected readonly float _activeAreaUpper = 10.0f;
 
-    [SerializeField] private int _shotsBeforePositionChange;
-    private float _shotsFired = 0;
+    [SerializeField] protected int _shotsBeforePositionChange;
+    protected float _shotsFired = 0;
 
-    private Transform _player;
+    protected Transform _player;
 
     private void Awake()
     {
@@ -22,10 +22,10 @@ public class AdvancedEnemy : AdvancedBehaviour
         _enemyHealthHandler = new Damageble(this);
         _enemyAttackHandler = new MultipleCanonsAttacker(this);
 
-        _player = EntryPoint.Player.transform;
+        EventManager.GetInstance().IonSphereUse += OnIonSphereUse;
     }
 
-    protected void OnEnable()
+    private void OnEnable()
     {
         _isArrived = false;
 
@@ -34,6 +34,11 @@ public class AdvancedEnemy : AdvancedBehaviour
 
         _enemyAttackHandler.Reset();
         _enemyHealthHandler.ResetHealth();
+    }
+
+    private void Start()
+    {
+        _player = EntryPoint.Player.transform;
     }
 
     private void Update()
@@ -60,14 +65,23 @@ public class AdvancedEnemy : AdvancedBehaviour
         }
     }
 
-    private new void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
+        _liveTimer.StopTimer();
+        StopAllCoroutines();
         _shotsFired = 0;
     }
 
 
-    private void LookInTargetDirection(Vector3 target)
+    protected void OnIonSphereUse()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            _enemyHealthHandler.TakeDamage(10);
+        }
+    }
+
+    protected void LookInTargetDirection(Vector3 target)
     {
         float rotation = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg - 90;
 

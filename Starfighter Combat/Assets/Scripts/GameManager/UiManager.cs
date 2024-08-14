@@ -18,6 +18,7 @@ public class UiManager : MonoBehaviour
     {
         EventManager.GetInstance().AddScore += UpdateScore;
         EventManager.GetInstance().PlayerDamaged += UpdateHealth;
+        EventManager.GetInstance().PlayerHealed += UpdateHealth;
         EventManager.GetInstance().PlayerDied += OnPlayerDied;
         EventManager.GetInstance().Start += OnStart;
     }

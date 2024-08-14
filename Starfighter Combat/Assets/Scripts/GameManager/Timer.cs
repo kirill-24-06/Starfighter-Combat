@@ -44,4 +44,9 @@ public class Timer
 
         TimeIsOver?.Invoke();
     }
+
+    public void ResetTimer()
+    { 
+        TimeIsOver = null;
+    }
 }

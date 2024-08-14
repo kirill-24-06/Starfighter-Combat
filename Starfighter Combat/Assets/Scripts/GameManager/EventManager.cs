@@ -15,11 +15,25 @@ public class EventManager
 
     public Action Start;
 
+
+    //Player
     public Action<int> PlayerDamaged;
+    public Action<int> PlayerHealed;
     public Action PlayerDied;
+    public Action<bool> Invunerable;
+
+    //Bonuses
+    public Action<BonusTag> BonusCollected;
+    public Action Multilaser;
+    public Action MultilaserEnd;
+    public Action Beam;
+    public Action BeamEnd;
+    public Action ForceField;
+    public Action ForceFieldEnd;
+    public Action IonSphereUse;
+    public Action Drone;
 
     public Action<ObjectBehaviour> EnemyDied;
-
     public Action<int> AddScore;
     public Action ChangeScore;
 }
