@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Patroller : AdvancedEnemy
 {
+    private Bounds[] _patrolAreas = null;
+    private Vector3[] _movePoints = null;
+    private int _point = 0;
+
     private void Awake()
     {
         Initialise();
@@ -10,6 +14,7 @@ public class Patroller : AdvancedEnemy
         _enemyAttackHandler = new MultipleCanonsAttacker(this);
 
         EventManager.GetInstance().IonSphereUse += OnIonSphereUse;
+        EventManager.GetInstance().Fire += OnFire;
     }
 
     private void OnEnable()
@@ -26,6 +31,10 @@ public class Patroller : AdvancedEnemy
     private void Start()
     {
         _player = EntryPoint.Player.transform;
+
+        _patrolAreas = EntryPoint.PatrolArea;
+        _movePoints = new Vector3[_patrolAreas.Length];
+        NewMovePoints();
     }
 
     private void Update()
@@ -42,7 +51,6 @@ public class Patroller : AdvancedEnemy
         {
             LookInTargetDirection(_player.position);
             _enemyAttackHandler.Fire(ObjectInfo.Projectile);
-            _shotsFired += 1 * Time.deltaTime;
         }
 
         if (_shotsFired >= _shotsBeforePositionChange)
@@ -57,13 +65,47 @@ public class Patroller : AdvancedEnemy
         _liveTimer.StopTimer();
         StopAllCoroutines();
         _shotsFired = 0;
+        NewMovePoints();
     }
 
-    protected override Vector3 GenerateMovePoint()
+    protected override void SetNewDirection()
     {
-        //float positionX = Random.Range(-_activeAreaX, _activeAreaX);
-        //float positionY = Random.Range(_activeAreaLower, _activeAreaUpper);
+        switch (_objectMoveHandler)
+        {
+            case ObjectBasicMove:
 
-        return base.GenerateMovePoint();
+                _direction = Vector2.up;
+                break;
+
+            case ObjectAdvancedMove:
+
+                UpdatePoints();
+                break;
+        }
+    }
+
+    private void UpdatePoints()
+    {
+        _direction = _movePoints[_point];
+        _point = (_point == 1) ? 0 : 1;
+    }
+
+    private void NewMovePoints()
+    {
+        for (int i = 0; i < _movePoints.Length; i++)
+        {
+            _movePoints[i] = GenerateMovePoint(_patrolAreas[i]);
+        }
+
+        _point = Random.Range(0, _movePoints.Length);
+    }
+
+    protected Vector3 GenerateMovePoint(Bounds area)
+    {
+        float randomX = Random.Range(area.min.x, area.max.x);
+        float randomY = Random.Range(area.min.y, area.max.y);
+        float Z = 0;
+
+        return new Vector3(randomX, randomY, Z);
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectTag: 1
   _bonusTag: 6
-  _health: 11111
+  _health: 10
   _objectSpeed: 20
   _score: 0
   _weaponProjectile: {fileID: 8661907242895563437, guid: aaf0e24b381737a45bacf105a3869000, type: 3}

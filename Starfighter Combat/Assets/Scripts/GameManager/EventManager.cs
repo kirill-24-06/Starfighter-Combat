@@ -33,6 +33,9 @@ public class EventManager
     public Action IonSphereUse;
     public Action Drone;
 
+    //Enemies
+    public Action<ObjectBehaviour> Fire;
+
     public Action<ObjectBehaviour> EnemyDied;
     public Action<int> AddScore;
     public Action ChangeScore;

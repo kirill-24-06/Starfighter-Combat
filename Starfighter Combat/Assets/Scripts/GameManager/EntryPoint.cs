@@ -6,7 +6,11 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private BackgroundMover _backgroundMover;
     [SerializeField] private BasicSpawnManager _spawnManager;
     [SerializeField] private UiManager _uiManager;
+    [SerializeField] private SpriteRenderer[] _patrolArea;
+
     public static PlayerBehaviour Player { get; private set; }
+
+    public static Bounds[] PatrolArea { get; private set; }
 
 
     private void Awake()
@@ -26,5 +30,12 @@ public class EntryPoint : MonoBehaviour
     private void Initialize()
     {
         Player = _player;
+
+        PatrolArea = new Bounds[_patrolArea.Length];
+
+        for (int i = 0; i < _patrolArea.Length; i++)
+        {
+            PatrolArea[i] = _patrolArea[i].bounds;
+        }
     }
 }

@@ -32,13 +32,6 @@ public class AdvancedBehaviour : BasicBehaviour
         _direction = Vector3.up;
     }
 
-    private void OnDisable()
-    {
-        _liveTimer.StopTimer();
-        StopAllCoroutines();
-        _positionChangeTimer.StopTimer();
-    }
-
     private void Update()
     {
         _objectMoveHandler.Move(_direction, ObjectInfo.Speed);
@@ -58,6 +51,13 @@ public class AdvancedBehaviour : BasicBehaviour
                 _isPositionChangeTimerStart = true;
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        _liveTimer.StopTimer();
+        StopAllCoroutines();
+        _positionChangeTimer.StopTimer();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

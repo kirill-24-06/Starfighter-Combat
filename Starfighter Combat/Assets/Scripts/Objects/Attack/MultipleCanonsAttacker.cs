@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MultipleCanonsAttacker : Attacker
 {
-    private List<Transform> _projectileSpawnPoints = new List<Transform>();
+    private readonly List<Transform> _projectileSpawnPoints = new List<Transform>();
     public MultipleCanonsAttacker(ObjectBehaviour objectBehaviour) : base(objectBehaviour)
     {
         FindSpawnPoints();
@@ -16,6 +16,11 @@ public class MultipleCanonsAttacker : Attacker
         if (!_isShooted)
         {
             _isShooted = true;
+
+            if (_objectBehaviour.ObjectInfo.Tag == ObjectTag.Enemy)
+            {
+                EventManager.GetInstance().Fire?.Invoke(_objectBehaviour);
+            }
 
             foreach (Transform position in _projectileSpawnPoints)
             {

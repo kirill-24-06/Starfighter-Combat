@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77a00d3631113994e919deefdea63757, type: 3}
-  m_Name: RocketShip
+  m_Name: HomingMissile
   m_EditorClassIdentifier: 
-  _objectTag: 0
+  _objectTag: 5
   _bonusTag: 6
-  _health: 10
-  _objectSpeed: 6
-  _score: 100
-  _weaponProjectile: {fileID: 3025663165139613927, guid: e3f16a9b09b4b0f4a826d4b21fcdd1b7, type: 3}
-  _reloadTime: 7
+  _health: 0
+  _objectSpeed: 7
+  _score: 0
+  _weaponProjectile: {fileID: 0}
+  _reloadTime: 0
   _gameZoneBorders: {x: 25, y: 20}

@@ -23,6 +23,7 @@ public class AdvancedEnemy : AdvancedBehaviour
         _enemyAttackHandler = new MultipleCanonsAttacker(this);
 
         EventManager.GetInstance().IonSphereUse += OnIonSphereUse;
+        EventManager.GetInstance().Fire += OnFire;
     }
 
     private void OnEnable()
@@ -55,10 +56,9 @@ public class AdvancedEnemy : AdvancedBehaviour
         {
             LookInTargetDirection(_player.position);
             _enemyAttackHandler.Fire(ObjectInfo.Projectile);
-            _shotsFired += 1 * Time.deltaTime;
         }
 
-        if (_shotsFired >= _shotsBeforePositionChange)
+        if (_shotsFired == _shotsBeforePositionChange)
         {
             SetNewDirection();
             _shotsFired = 0;
@@ -70,6 +70,23 @@ public class AdvancedEnemy : AdvancedBehaviour
         _liveTimer.StopTimer();
         StopAllCoroutines();
         _shotsFired = 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.PlayerWeapon))
+        {
+            _enemyHealthHandler.TakeDamage(1);
+            ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
+        }
+    }
+
+    protected void OnFire(ObjectBehaviour enemy)
+    {
+        if (enemy == this)
+        {
+            _shotsFired++;
+        }
     }
 
 
@@ -111,14 +128,5 @@ public class AdvancedEnemy : AdvancedBehaviour
         float positionY = Random.Range(_activeAreaLower, _activeAreaUpper);
 
         return new Vector3(positionX, positionY, 0);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.PlayerWeapon))
-        {
-            _enemyHealthHandler.TakeDamage(1);
-            ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
-        }
     }
 }
