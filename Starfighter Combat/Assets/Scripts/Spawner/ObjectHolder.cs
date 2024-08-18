@@ -88,6 +88,27 @@ public class ObjectHolder
             return false;
         }
     }
+
+    public List<GameObject> GetRegisteredObjectsByTag(ObjectTag tag)
+    {
+        List<GameObject> result = new List<GameObject>();
+
+        HoldedOojectInfo list = _createdObjectsLists.Find(objectInfo => objectInfo.LookupTag == tag);
+
+        if (list != null)
+        {
+            foreach (var item in list.RegisteredObjects)
+            {
+                result.Add(item);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Таких объектов нет!!!");
+        }
+
+        return result;
+    }
 }
 
 public class HoldedOojectInfo

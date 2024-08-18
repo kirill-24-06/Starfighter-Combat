@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class Missile : BasicBehaviour
 {
+    private ObjectHolder _targets;
+
     private Transform _target;
     private Vector3 _direction;
 
@@ -19,6 +22,7 @@ public class Missile : BasicBehaviour
         _launchTimer = new Timer(this);
         _homingTimer = new Timer(this);
 
+        _targets = ObjectHolder.GetInstance();
         _objectMoveHandler = new ObjectBasicMove(this);
 
         _launchTimer.TimeIsOver += OnHomingStart;
@@ -29,7 +33,6 @@ public class Missile : BasicBehaviour
 
     private void OnEnable()
     {
-        _target = EntryPoint.Player.transform;
         _direction = Vector3.up;
 
         _launchTimer.SetTimer(_launchTime);
@@ -51,6 +54,8 @@ public class Missile : BasicBehaviour
             _objectMoveHandler.Move(_direction, ObjectInfo.Speed);
         }
 
+        DeactivateOutOfBounds();
+
         if (_target != null && !_target.gameObject.activeInHierarchy)
         {
             _target = null;
@@ -65,6 +70,7 @@ public class Missile : BasicBehaviour
 
     private void OnHomingStart()
     {
+        LockOnTarget();
         _homing = true;
 
         _homingTimer.SetTimer(_homingTime);
@@ -87,5 +93,45 @@ public class Missile : BasicBehaviour
         float rotation = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg - 90;
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, rotation);
+    }
+
+    private void LockOnTarget()
+    {
+        if (ObjectInfo.Tag == ObjectTag.EnemyWeapon)
+        {
+            _target = EntryPoint.Player.transform;
+        }
+
+        else if (ObjectInfo.Tag == ObjectTag.PlayerWeapon)
+        {
+            SeekNearestEnemy();
+        }
+    }
+
+    private void SeekNearestEnemy()
+    {
+        Transform nearestEnemy = null;
+
+        List<GameObject> targets;
+        float nearestEnemyDistance = Mathf.Infinity;
+
+        targets = _targets.GetRegisteredObjectsByTag(ObjectTag.Enemy);
+
+        foreach (GameObject target in targets)
+        {
+            if (target.activeInHierarchy)
+            {
+                float currdistance = Vector2.Distance(transform.position, target.transform.position);
+
+                if (currdistance < nearestEnemyDistance)
+                {
+                    nearestEnemy = target.transform;
+
+                    nearestEnemyDistance = currdistance;
+                }
+            }
+        }
+
+        _target = nearestEnemy;
     }
 }

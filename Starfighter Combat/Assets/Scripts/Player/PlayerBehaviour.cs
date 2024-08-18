@@ -19,8 +19,11 @@ public class PlayerBehaviour : ObjectBehaviour
 
     private GameObject _projectile;
 
-    public bool IsTaken => _bonusIsTaken;
+    [SerializeField] private GameObject[] _defenceDrones;
+    private int _defenceDronesAmount = 0;
+    private bool _isDroneActive;
 
+    public bool IsTaken => _bonusIsTaken;
 
     public void Initialise()
     {
@@ -62,7 +65,16 @@ public class PlayerBehaviour : ObjectBehaviour
         if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.EnemyWeapon) ||
             ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.Enemy))
         {
-            if (!_isInvunerable) { _playerDamageHandler.TakeDamage(1); }
+            if (!_isInvunerable && !_isDroneActive)
+            {
+                _playerDamageHandler.TakeDamage(1);
+            }
+
+            else if (_isDroneActive)
+            {
+                DestroyDrone();
+            }
+
             ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
         }
     }
@@ -78,12 +90,12 @@ public class PlayerBehaviour : ObjectBehaviour
 
             case BonusTag.Multilaser:
 
-                _bonusHandler.ActivateMultilaser(_bonusTimer,10);
+                _bonusHandler.ActivateMultilaser(_bonusTimer, 10);
                 break;
 
             case BonusTag.LaserBeam:
 
-                _bonusHandler.ActivateLaserBeam(_bonusTimer,10);
+                _bonusHandler.ActivateLaserBeam(_bonusTimer, 10);
                 break;
 
             case BonusTag.ForceField:
@@ -98,8 +110,8 @@ public class PlayerBehaviour : ObjectBehaviour
                 break;
 
             case BonusTag.DefenceDrone:
-                
-                _bonusHandler.ActivateDrone(this);
+
+                ActivateDrone();
                 break;
         }
     }
@@ -141,11 +153,45 @@ public class PlayerBehaviour : ObjectBehaviour
         EventManager.GetInstance().IonSphereUse?.Invoke();
     }
 
+    private void ActivateDrone()
+    {
+        if (_defenceDronesAmount < _defenceDrones.Length)
+        {
+            _defenceDronesAmount++;
+            _isDroneActive = _defenceDronesAmount > 0;
+
+            foreach (GameObject drone in _defenceDrones)
+            {
+                if (!drone.activeInHierarchy)
+                {
+                    drone.SetActive(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void DestroyDrone()
+    {
+        _defenceDronesAmount--;
+        _isDroneActive = _defenceDronesAmount > 0;
+
+        for (int i = _defenceDrones.Length - 1; i >= 0; i--)
+        {
+            if (_defenceDrones[i].activeInHierarchy)
+            {
+                _defenceDrones[i].SetActive(false);
+                break;
+            }
+        }
+    }
+
     private void Invunerability(bool value)
     {
         _isInvunerable = value;
         _playerCollider.enabled = !_isInvunerable;
     }
+
     private void CheckBorders()
     {
         if (transform.position.x < -ObjectInfo.GameZoneBorders.x)

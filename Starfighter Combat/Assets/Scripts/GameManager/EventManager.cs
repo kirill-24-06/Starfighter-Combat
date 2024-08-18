@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class EventManager
 {
@@ -24,6 +25,7 @@ public class EventManager
 
     //Bonuses
     public Action<BonusTag> BonusCollected;
+    public Action BonusTaken;
     public Action Multilaser;
     public Action MultilaserEnd;
     public Action Beam;
@@ -35,6 +37,8 @@ public class EventManager
 
     //Enemies
     public Action<ObjectBehaviour> Fire;
+
+    public Action<GameObject, Transform> LockTarget;
 
     public Action<ObjectBehaviour> EnemyDied;
     public Action<int> AddScore;

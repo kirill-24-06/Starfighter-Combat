@@ -68,12 +68,14 @@ public class AdvancedBehaviour : BasicBehaviour
             {
                 EventManager.GetInstance().BonusCollected?.Invoke(ObjectInfo.BonusTag);
                 ObjectPoolManager.ReturnObjectToPool(gameObject);
+                EventManager.GetInstance().BonusTaken?.Invoke();
             }
 
             else if (PlayerBehaviour.IsPlayer(collision) && ObjectInfo.BonusTag == BonusTag.Health)
             {
                 EventManager.GetInstance().BonusCollected?.Invoke(ObjectInfo.BonusTag);
                 ObjectPoolManager.ReturnObjectToPool(gameObject);
+                EventManager.GetInstance().BonusTaken?.Invoke();
             }
         }
 
