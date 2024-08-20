@@ -39,4 +39,9 @@ public class BasicEnemy : BasicBehaviour
             ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
         }
     }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().IonSphereUse -= OnIonSphereUse;
+    }
 }

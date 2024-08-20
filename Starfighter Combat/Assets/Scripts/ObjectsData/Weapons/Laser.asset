@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Laser
   m_EditorClassIdentifier: 
   _objectTag: 4
+  _bonusTag: 6
   _health: 0
   _objectSpeed: 10
+  _score: 0
   _weaponProjectile: {fileID: 0}
   _reloadTime: 0
-  _gameZoneBorders: {x: 25, y: 20}
+  _gameZoneBorders: {x: 20, y: 11}

@@ -20,6 +20,7 @@ public class BasicSpawnManager : MonoBehaviour
     private IEnumerator _spawner;
     private IEnumerator _bonusSpawner;
 
+    private bool _isGameActive = false;
     private bool _bonusIsSpawn = false;
 
 
@@ -32,10 +33,14 @@ public class BasicSpawnManager : MonoBehaviour
         _bonusSpawner = BonusSpawner();
 
         EventManager.GetInstance().BonusTaken += OnBonusTaken;
+        EventManager.GetInstance().Start += OnStart;
+        EventManager.GetInstance().Stop += OnStop;
     }
 
-    private void Start()
+    private void OnStart()
     {
+        _isGameActive = true;
+
         StartCoroutine(_spawner);
         StartCoroutine(_bonusSpawner);
     }
@@ -45,7 +50,7 @@ public class BasicSpawnManager : MonoBehaviour
         float count = 0;
         yield return new WaitForSeconds(_spawnDelay);
 
-        while (true)
+        while (_isGameActive)
         {
             count += Time.deltaTime;
 
@@ -64,19 +69,41 @@ public class BasicSpawnManager : MonoBehaviour
         float count = 0;
         yield return new WaitForSeconds(_spawnDelay);
 
-        while (true)
+        while (_isGameActive)
         {
             count += Time.deltaTime;
 
-            if (count >= _bonusSpawnTime && !_bonusIsSpawn)
+            if (count >= _bonusSpawnTime)
             {
-                SpawnBonus();
-                _bonusIsSpawn=true;
-                count = 0;
+                if (!_bonusIsSpawn)
+                {
+                    SpawnBonus();
+                    _bonusIsSpawn = true;
+                    count = 0;
+                }
+
+                else
+                {
+                    count = 0;
+                }
             }
 
             yield return null;
         }
+    }
+
+    private void OnStop()
+    {
+        _isGameActive = false;
+    }
+
+    private void OnDestroy()
+    {
+        _isGameActive = false;
+
+        EventManager.GetInstance().BonusTaken -= OnBonusTaken;
+        EventManager.GetInstance().Start -= OnStart;
+        EventManager.GetInstance().Stop -= OnStop;
     }
 
     private void SpawnEnemy()

@@ -59,6 +59,7 @@ public class Missile : BasicBehaviour
         if (_target != null && !_target.gameObject.activeInHierarchy)
         {
             _target = null;
+            _direction = Vector3.up;
         }
     }
 
@@ -99,7 +100,7 @@ public class Missile : BasicBehaviour
     {
         if (ObjectInfo.Tag == ObjectTag.EnemyWeapon)
         {
-            _target = EntryPoint.Player.transform;
+            _target = EntryPoint.Instance.Player.transform;
         }
 
         else if (ObjectInfo.Tag == ObjectTag.PlayerWeapon)
@@ -133,5 +134,10 @@ public class Missile : BasicBehaviour
         }
 
         _target = nearestEnemy;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().IonSphereUse -= OnIonSphereUse;
     }
 }

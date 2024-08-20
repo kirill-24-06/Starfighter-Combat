@@ -23,6 +23,9 @@ public class PlayerBehaviour : ObjectBehaviour
     private int _defenceDronesAmount = 0;
     private bool _isDroneActive;
 
+
+    private bool _isGameActive = true;
+
     public bool IsTaken => _bonusIsTaken;
 
     public void Initialise()
@@ -42,10 +45,16 @@ public class PlayerBehaviour : ObjectBehaviour
         EventManager.GetInstance().Multilaser += OnMultilaserEnable;
         EventManager.GetInstance().MultilaserEnd += OnMultilaserDisable;
         EventManager.GetInstance().Invunerable += Invunerability;
+        EventManager.GetInstance().Stop += OnStop;
+        EventManager.GetInstance().PlayerDied += OnPlayerDied;
     }
 
     private void Update()
     {
+        if (!_isGameActive)
+            return;
+
+
         _objectMoveHandler.Move(_playerController.InputDirection(), ObjectInfo.Speed);
         CheckBorders();
 
@@ -77,6 +86,16 @@ public class PlayerBehaviour : ObjectBehaviour
 
             ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
         }
+    }
+
+    private void OnStop()
+    {
+        _isGameActive = false;
+    }
+
+    private void OnPlayerDied()
+    {
+        gameObject.SetActive(false);
     }
 
     private void OnBonusTake(BonusTag bonusTag)
@@ -220,5 +239,15 @@ public class PlayerBehaviour : ObjectBehaviour
     public static bool IsPlayer(Collider2D collider)
     {
         return collider.gameObject == _instance.gameObject;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().BonusCollected -= OnBonusTake;
+        EventManager.GetInstance().Multilaser -= OnMultilaserEnable;
+        EventManager.GetInstance().MultilaserEnd -= OnMultilaserDisable;
+        EventManager.GetInstance().Invunerable -= Invunerability;
+        EventManager.GetInstance().Stop -= OnStop;
+        EventManager.GetInstance().PlayerDied -= OnPlayerDied;
     }
 }

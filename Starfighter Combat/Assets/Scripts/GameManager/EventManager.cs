@@ -14,8 +14,12 @@ public class EventManager
         return _instance;
     }
 
+    //Game
     public Action Start;
-
+    public Action Stop;
+    public Action Pause;
+    public Action LevelCompleted;
+    public Action MainMenuExit;
 
     //Player
     public Action<bool> Invunerable;
@@ -34,8 +38,8 @@ public class EventManager
 
     //Enemies
     public Action<ObjectBehaviour> Fire;
-
     public Action<GameObject, Transform> LockTarget;
+
 
     //Ui
     public Action<int> PlayerDamaged;
@@ -44,5 +48,5 @@ public class EventManager
     public Action<int> BonusAmountUpdate;
     public Action<ObjectBehaviour> EnemyDied;
     public Action<int> AddScore;
-    public Action ChangeScore;
+    public Action<int> ChangeScore;
 }

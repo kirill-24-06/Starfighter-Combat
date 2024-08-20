@@ -14,6 +14,12 @@ public class ForceFieldBehaviour : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        _events.ForceField -= OnActivated;
+        _events.ForceFieldEnd -= OnDeactivated;
+    }
+
     private void OnActivated()
     {
         gameObject.SetActive(true);

@@ -24,6 +24,7 @@ public class AdvancedEnemy : AdvancedBehaviour
 
         EventManager.GetInstance().IonSphereUse += OnIonSphereUse;
         EventManager.GetInstance().Fire += OnFire;
+        EventManager.GetInstance().PlayerDied += OnPlayerDied;
     }
 
     private void OnEnable()
@@ -39,7 +40,7 @@ public class AdvancedEnemy : AdvancedBehaviour
 
     private void Start()
     {
-        _player = EntryPoint.Player.transform;
+        _player = EntryPoint.Instance.Player.transform;
     }
 
     private void Update()
@@ -72,6 +73,13 @@ public class AdvancedEnemy : AdvancedBehaviour
         _shotsFired = 0;
     }
 
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().IonSphereUse -= OnIonSphereUse;
+        EventManager.GetInstance().Fire -= OnFire;
+        EventManager.GetInstance().PlayerDied -= OnPlayerDied;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.PlayerWeapon))
@@ -96,6 +104,12 @@ public class AdvancedEnemy : AdvancedBehaviour
         {
             _enemyHealthHandler.TakeDamage(10);
         }
+    }
+
+    protected void OnPlayerDied()
+    {
+        _liveTimer.StopTimer();
+        OnLiveTimerExpired();
     }
 
     protected void LookInTargetDirection(Vector3 target)

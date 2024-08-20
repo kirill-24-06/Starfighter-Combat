@@ -7,8 +7,6 @@ public class DefenceDroneBehaviour : ObjectBehaviour
     {
         _objectMoveHandler = null;
         _droneAttackHandler = new Attacker(this);
-
-        //gameObject.SetActive(false);
     }
 
     private void Start()

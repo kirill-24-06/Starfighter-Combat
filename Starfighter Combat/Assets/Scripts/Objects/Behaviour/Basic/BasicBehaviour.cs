@@ -16,6 +16,11 @@ public class BasicBehaviour : ObjectBehaviour
         DeactivateOutOfBounds();
     }
 
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().IonSphereUse -= OnIonSphereUse;
+    }
+
     private void OnIonSphereUse()
     {
         if (gameObject.activeInHierarchy)

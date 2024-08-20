@@ -15,6 +15,7 @@ public class Patroller : AdvancedEnemy
 
         EventManager.GetInstance().IonSphereUse += OnIonSphereUse;
         EventManager.GetInstance().Fire += OnFire;
+        EventManager.GetInstance().PlayerDied += OnPlayerDied;
     }
 
     private void OnEnable()
@@ -30,9 +31,9 @@ public class Patroller : AdvancedEnemy
 
     private void Start()
     {
-        _player = EntryPoint.Player.transform;
+        _player = EntryPoint.Instance.Player.transform;
 
-        _patrolAreas = EntryPoint.PatrolArea;
+        _patrolAreas = EntryPoint.Instance.PatrolArea;
         _movePoints = new Vector3[_patrolAreas.Length];
         NewMovePoints();
     }
@@ -66,6 +67,13 @@ public class Patroller : AdvancedEnemy
         StopAllCoroutines();
         _shotsFired = 0;
         NewMovePoints();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().IonSphereUse -= OnIonSphereUse;
+        EventManager.GetInstance().Fire -= OnFire;
+        EventManager.GetInstance().PlayerDied -= OnPlayerDied;
     }
 
     protected override void SetNewDirection()

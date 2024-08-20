@@ -2,35 +2,61 @@ using UnityEngine;
 
 public class EntryPoint : MonoBehaviour
 {
+    [SerializeField] private GameController _gameController;
+    [SerializeField] private ScoreController _scoreController;
     [SerializeField] private PlayerBehaviour _player;
     [SerializeField] private BackgroundMover _backgroundMover;
     [SerializeField] private BasicSpawnManager _spawnManager;
     [SerializeField] private UiManager _uiManager;
     [SerializeField] private SpriteRenderer[] _patrolArea;
 
-    public static PlayerBehaviour Player { get; private set; }
+    public static EntryPoint Instance { get; private set; }
 
-    public static Bounds[] PatrolArea { get; private set; }
+    public PlayerBehaviour Player => _player;
+
+    public GameController GameController => _gameController;
+
+    public UiManager UiManager => _uiManager;
+
+    public Bounds[] PatrolArea { get; private set; }
+
 
 
     private void Awake()
     {
-        _player.Initialise();
-        _uiManager.Initialise();
-        _spawnManager.Initialise();
-        _backgroundMover.Initialise();
+
+        if (Instance == null)
+        {
+            Instance = this;
+
+        }
+
+        else
+        {
+            Destroy(gameObject);
+        }
+
         Initialize();
     }
 
     private void Start()
     {
-        EventManager.GetInstance().Start?.Invoke();
+        _gameController.StartGame();
     }
 
     private void Initialize()
     {
-        Player = _player;
+        PatrolAreaInit();
+        _player.Initialise();
+        _uiManager.Initialise();
+        _gameController.Initialise();
+        _scoreController.Initialise();
+        _spawnManager.Initialise();
+        _backgroundMover.Initialise();
+    }
 
+    private void PatrolAreaInit()
+    {
         PatrolArea = new Bounds[_patrolArea.Length];
 
         for (int i = 0; i < _patrolArea.Length; i++)
