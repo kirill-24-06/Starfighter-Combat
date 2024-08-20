@@ -12,6 +12,7 @@ public class UiManager : MonoBehaviour
 
     private int _score;
     private int _maxScore;
+    private int _bonusAmount;
     private int _lives;
 
     public void Initialise()
@@ -20,12 +21,14 @@ public class UiManager : MonoBehaviour
         EventManager.GetInstance().PlayerDamaged += UpdateHealth;
         EventManager.GetInstance().PlayerHealed += UpdateHealth;
         EventManager.GetInstance().PlayerDied += OnPlayerDied;
+        EventManager.GetInstance().BonusAmountUpdate += UpdateBonuses;
         EventManager.GetInstance().Start += OnStart;
     }
 
     private void OnStart()
     {
         UpdateScore(0);
+        UpdateBonuses(0);
         UpdateHealth(EntryPoint.Player.ObjectInfo.Health);
     }
 
@@ -39,6 +42,12 @@ public class UiManager : MonoBehaviour
     {
         _lives = newHealth;
         _livesText.text = "Lives: " + _lives;
+    }
+
+    private void UpdateBonuses(int bonusesToAdd)
+    {
+        _bonusAmount += bonusesToAdd;
+        _bonuseesText.text = "Bombs: " + _bonusAmount;
     }
 
     private void OnPlayerDied()

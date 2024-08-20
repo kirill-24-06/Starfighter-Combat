@@ -253,7 +253,7 @@ MonoBehaviour:
   _spawnRenderer: {fileID: 1433344512}
   _spawnDelay: 3
   _spawnTime: 2
-  _bonusSpawnTime: 30
+  _bonusSpawnTime: 40
 --- !u!114 &28805388
 MonoBehaviour:
   m_ObjectHideFlags: 0

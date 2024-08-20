@@ -70,7 +70,7 @@ public class PlayerBehaviour : ObjectBehaviour
                 _playerDamageHandler.TakeDamage(1);
             }
 
-            else if (_isDroneActive)
+            else if (!_isInvunerable && _isDroneActive)
             {
                 DestroyDrone();
             }
@@ -107,6 +107,7 @@ public class PlayerBehaviour : ObjectBehaviour
 
                 _ionSpheresAmount++;
                 _isEquiped = _ionSpheresAmount > 0;
+                EventManager.GetInstance().BonusAmountUpdate?.Invoke(1);
                 break;
 
             case BonusTag.DefenceDrone:
@@ -151,6 +152,7 @@ public class PlayerBehaviour : ObjectBehaviour
         _ionSpheresAmount--;
         _isEquiped = _ionSpheresAmount > 0;
         EventManager.GetInstance().IonSphereUse?.Invoke();
+        EventManager.GetInstance().BonusAmountUpdate(-1);
     }
 
     private void ActivateDrone()

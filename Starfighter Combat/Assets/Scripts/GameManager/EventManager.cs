@@ -18,9 +18,6 @@ public class EventManager
 
 
     //Player
-    public Action<int> PlayerDamaged;
-    public Action<int> PlayerHealed;
-    public Action PlayerDied;
     public Action<bool> Invunerable;
 
     //Bonuses
@@ -40,6 +37,11 @@ public class EventManager
 
     public Action<GameObject, Transform> LockTarget;
 
+    //Ui
+    public Action<int> PlayerDamaged;
+    public Action<int> PlayerHealed;
+    public Action PlayerDied;
+    public Action<int> BonusAmountUpdate;
     public Action<ObjectBehaviour> EnemyDied;
     public Action<int> AddScore;
     public Action ChangeScore;

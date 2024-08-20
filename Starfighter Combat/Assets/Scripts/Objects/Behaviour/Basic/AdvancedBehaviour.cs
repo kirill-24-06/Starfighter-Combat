@@ -46,9 +46,9 @@ public class AdvancedBehaviour : BasicBehaviour
         {
             if (!_isPositionChangeTimerStart)
             {
+                _isPositionChangeTimerStart = true;
                 _positionChangeTimer.SetTimer(_positionChangeTime);
                 _positionChangeTimer.StartTimer();
-                _isPositionChangeTimerStart = true;
             }
         }
     }
@@ -58,6 +58,8 @@ public class AdvancedBehaviour : BasicBehaviour
         _liveTimer.StopTimer();
         StopAllCoroutines();
         _positionChangeTimer.StopTimer();
+        _isPositionChangeTimerStart = false;
+        EventManager.GetInstance().BonusTaken?.Invoke();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -18,5 +18,5 @@ MonoBehaviour:
   _objectSpeed: 20
   _score: 0
   _weaponProjectile: {fileID: 8661907242895563437, guid: aaf0e24b381737a45bacf105a3869000, type: 3}
-  _reloadTime: 0.1
+  _reloadTime: 0.175
   _gameZoneBorders: {x: 19, y: 10}
