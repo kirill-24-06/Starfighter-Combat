@@ -4,7 +4,7 @@ public class EntryPoint : MonoBehaviour
 {
     [SerializeField] private GameController _gameController;
     [SerializeField] private ScoreController _scoreController;
-    [SerializeField] private PlayerBehaviour _player;
+    [SerializeField] private Player _player;
     [SerializeField] private BackgroundMover _backgroundMover;
     [SerializeField] private BasicSpawnManager _spawnManager;
     [SerializeField] private UiManager _uiManager;
@@ -12,7 +12,7 @@ public class EntryPoint : MonoBehaviour
 
     public static EntryPoint Instance { get; private set; }
 
-    public PlayerBehaviour Player => _player;
+    public Player Player => _player;
 
     public GameController GameController => _gameController;
 

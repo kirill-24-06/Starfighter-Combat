@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -8,14 +9,22 @@ public class BackgroundMover : MonoBehaviour
     private float _offset;
     private Vector3 _startPosition;
 
+    private bool _isGameActive = false;
+
     public void Initialise()
     {
         _startPosition = transform.position;
         _offset = GetComponent<SpriteRenderer>().bounds.size.y / 2;
+
+        EventManager.GetInstance().Start += OnStart;
+        EventManager.GetInstance().Stop += OnStop;
     }
-    
+
     private void Update()
     {
+        if (!_isGameActive)
+            return;
+
         Move();
 
         if (transform.position.y < _startPosition.y - _offset)
@@ -27,5 +36,27 @@ public class BackgroundMover : MonoBehaviour
     private void Move()
     {
         transform.Translate(_speed * Time.deltaTime * Vector3.down);
+    }
+
+    private void OnStart()
+    {
+        _isGameActive = true;
+    }
+
+    private void OnStop()
+    {
+        StartCoroutine(Stop());
+    }
+
+    private IEnumerator Stop()
+    {
+        yield return new WaitForSeconds(2.0f);
+        _isGameActive = false;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().Start -= OnStart;
+        EventManager.GetInstance().Stop -= OnStop;
     }
 }

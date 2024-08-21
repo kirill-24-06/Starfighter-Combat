@@ -197,7 +197,6 @@ MonoBehaviour:
   - {fileID: 4804490326390636464, guid: 3d8b81b2f3017eb4ba3857e0a155754a, type: 3}
   - {fileID: 7600786741289274528, guid: 6195593856c3c2240a352bdb248a944c, type: 3}
   - {fileID: 4251740357380213555, guid: a86ee9c7ae5e00d41a86a829c25fc126, type: 3}
-  - {fileID: 7814738750723293713, guid: 56f2a3920e259424295f09ce9897c480, type: 3}
   _spawnRenderer: {fileID: 1433344512}
   _spawnDelay: 3
   _spawnTime: 2
@@ -685,7 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb97282e775f584599e7b85789fc70a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectInfo: {fileID: 11400000, guid: 4712dab4101acc14db2c967ad2765106, type: 2}
+  _objectInfo: {fileID: 0}
 --- !u!50 &287722231
 Rigidbody2D:
   serializedVersion: 4
@@ -1394,12 +1393,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.16571732, g: 0.16965467, b: 0.26415092, a: 1}
+  m_Sprite: {fileID: 21300000, guid: f6a346857afeeea4ea88fa4d0699b82e, type: 3}
+  m_Color: {r: 0.14533643, g: 0.15688145, b: 0.4339623, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 2
+  m_Size: {x: 1, y: 6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1414,7 +1413,7 @@ Transform:
   m_GameObject: {fileID: 756165701}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 28.4, z: 1}
+  m_LocalPosition: {x: 0, y: 227.5, z: 1}
   m_LocalScale: {x: 40, y: 80, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1648,9 +1647,10 @@ GameObject:
   m_Component:
   - component: {fileID: 990713542}
   - component: {fileID: 990713541}
+  - component: {fileID: 990713548}
+  - component: {fileID: 990713547}
   - component: {fileID: 990713546}
   - component: {fileID: 990713544}
-  - component: {fileID: 990713547}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1815,10 +1815,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 990713540}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37664564183140840b5d82b63c391377, type: 3}
+  m_Script: {fileID: 11500000, guid: 701dfb0a625651f41a1198c814adaadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectInfo: {fileID: 11400000, guid: be4638d607ce7314eaf4dba27fae787b, type: 2}
+  _player: {fileID: 990713548}
+--- !u!114 &990713548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990713540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e99cbe08fa50894c989b2c91e5eef72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerData: {fileID: 11400000, guid: be4638d607ce7314eaf4dba27fae787b, type: 2}
   _defenceDrones:
   - {fileID: 994752591}
   - {fileID: 679764352}
@@ -2555,7 +2568,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameController: {fileID: 1881836343}
   _scoreController: {fileID: 1767100953}
-  _player: {fileID: 990713547}
+  _player: {fileID: 990713548}
   _backgroundMover: {fileID: 756165704}
   _spawnManager: {fileID: 28805387}
   _uiManager: {fileID: 2141442914}

@@ -10,23 +10,14 @@ public class UiManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _bonuseesText;
     [SerializeField] private TextMeshProUGUI _gameOverText;
 
-    private int _bonusAmount;
-    private int _lives;
-
     public void Initialise()
     {
         EventManager.GetInstance().ChangeScore += UpdateScore;
-        EventManager.GetInstance().PlayerDamaged += UpdateHealth;
-        EventManager.GetInstance().PlayerHealed += UpdateHealth;
+        EventManager.GetInstance().ChangeHealth += UpdateHealth;
         EventManager.GetInstance().BonusAmountUpdate += UpdateBonuses;
-        EventManager.GetInstance().Start += OnStart;
     }
 
-    private void OnStart()
-    {
-        UpdateBonuses(0);
-        UpdateHealth(EntryPoint.Instance.Player.ObjectInfo.Health);
-    }
+
 
     private void OnDisable()
     {
@@ -34,7 +25,6 @@ public class UiManager : MonoBehaviour
         EventManager.GetInstance().PlayerDamaged -= UpdateHealth;
         EventManager.GetInstance().PlayerHealed -= UpdateHealth;
         EventManager.GetInstance().BonusAmountUpdate -= UpdateBonuses;
-        EventManager.GetInstance().Start -= OnStart;
     }
 
     private void UpdateScore(int newScore)
@@ -44,19 +34,16 @@ public class UiManager : MonoBehaviour
 
     private void UpdateHealth(int newHealth)
     {
-        _lives = newHealth;
-        _livesText.text = "Lives: " + _lives;
+        _livesText.text = "Lives: " + newHealth;
     }
 
-    private void UpdateBonuses(int bonusesToAdd)
+    private void UpdateBonuses(int bonusesAmount)
     {
-        _bonusAmount += bonusesToAdd;
-        _bonuseesText.text = "Bombs: " + _bonusAmount;
+        _bonuseesText.text = "Bombs: " + bonusesAmount;
     }
 
     public void GameOverDialog()
     {
         _gameOverText.gameObject.SetActive(true);
-        //Time.timeScale = 0;
     }
 }

@@ -23,18 +23,21 @@ public class EventManager
 
     //Player
     public Action<bool> Invunerable;
+    public Action<int> PlayerDamaged;
+    public Action<int> PlayerHealed;
+    public Action PlayerDied;
 
     //Bonuses
     public Action<BonusTag> BonusCollected;
     public Action BonusTaken;
-    public Action Multilaser;
+    public Action<bool> Multilaser;
     public Action MultilaserEnd;
     public Action Beam;
     public Action BeamEnd;
     public Action ForceField;
     public Action ForceFieldEnd;
     public Action IonSphereUse;
-    public Action Drone;
+    public Action DroneDestroyed;
 
     //Enemies
     public Action<ObjectBehaviour> Fire;
@@ -42,9 +45,7 @@ public class EventManager
 
 
     //Ui
-    public Action<int> PlayerDamaged;
-    public Action<int> PlayerHealed;
-    public Action PlayerDied;
+    public Action<int> ChangeHealth;
     public Action<int> BonusAmountUpdate;
     public Action<ObjectBehaviour> EnemyDied;
     public Action<int> AddScore;

@@ -17,7 +17,7 @@ public class BonusHandler
 
     public void ActivateMultilaser(Timer timer, float bonusTimeLenght)
     {
-        _events.Multilaser?.Invoke();
+        //_events.Multilaser?.Invoke();
 
         timer.SetTimer(bonusTimeLenght);
         timer.TimeIsOver += _events.MultilaserEnd;
@@ -41,10 +41,5 @@ public class BonusHandler
         timer.SetTimer(bonusTimeLenght);
         timer.TimeIsOver += _events.ForceFieldEnd;
         timer.StartTimer();
-    }
-
-    public void ActivateDrone(PlayerBehaviour player)
-    {  
-        _events.Drone?.Invoke();
     }
 }

@@ -29,6 +29,6 @@ public class ForceFieldBehaviour : MonoBehaviour
     private void OnDeactivated()
     {
         gameObject.SetActive(false);
-        _events?.Invunerable?.Invoke(false);
+        _events.Invunerable?.Invoke(false);
     }
 }

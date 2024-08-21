@@ -66,7 +66,7 @@ public class AdvancedBehaviour : BasicBehaviour
     {
         if(ObjectInfo.BonusTag != BonusTag.None)
         {
-            if (PlayerBehaviour.IsPlayer(collision) && !EntryPoint.Instance.Player.IsTaken)
+            if (Player.IsPlayer(collision) && !EntryPoint.Instance.Player.IsTaken)
             {
                 EventManager.GetInstance().BonusCollected?.Invoke(ObjectInfo.BonusTag);
                 ObjectPoolManager.ReturnObjectToPool(gameObject);
@@ -74,7 +74,7 @@ public class AdvancedBehaviour : BasicBehaviour
                 EventManager.GetInstance().AddScore?.Invoke(ObjectInfo.Score);
             }
 
-            else if (PlayerBehaviour.IsPlayer(collision) && ObjectInfo.BonusTag == BonusTag.Health)
+            else if (Player.IsPlayer(collision) && ObjectInfo.BonusTag == BonusTag.Health)
             {
                 EventManager.GetInstance().BonusCollected?.Invoke(ObjectInfo.BonusTag);
                 ObjectPoolManager.ReturnObjectToPool(gameObject);
