@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
 
     private bool _isGameActive;
+    private bool _isPaused;
 
     public void Initialise()
     {
@@ -18,8 +19,11 @@ public class PlayerController : MonoBehaviour
         _inputHandler = new KeyboardInput();
         _attackHandler = new PlayerAttacker(_player);
 
+        _isPaused = false;
+
         _events.Start += OnStart;
         _events.Stop += OnStop;
+        _events.Pause += OnPause;
         _events.Multilaser += EnableMultilaser;
     }
 
@@ -33,9 +37,19 @@ public class PlayerController : MonoBehaviour
         _isGameActive = false;
     }
 
+    private void OnPause(bool value)
+    {
+        _isPaused = value;
+    }
+
     private void Update()
     {
-        if (!_isGameActive)
+        if (_inputHandler.PauseInput())
+        {
+            EntryPoint.Instance.GameController.PauseGame(!_isPaused);
+        }
+
+        if (!_isGameActive || _isPaused)
             return;
 
         Move(_inputHandler.MoveInput(),_player.PlayerData.Speed);

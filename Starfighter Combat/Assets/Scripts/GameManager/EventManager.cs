@@ -17,7 +17,7 @@ public class EventManager
     //Game
     public Action Start;
     public Action Stop;
-    public Action Pause;
+    public Action<bool> Pause;
     public Action LevelCompleted;
     public Action MainMenuExit;
 

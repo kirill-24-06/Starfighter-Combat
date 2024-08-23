@@ -7,7 +7,9 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private BackgroundMover _backgroundMover;
     [SerializeField] private BasicSpawnManager _spawnManager;
-    [SerializeField] private UiManager _uiManager;
+    [SerializeField] private HUDManager _hudManager;
+    [SerializeField] private HealthBar _healthBar;
+    [SerializeField] private BombsBar _bombsBar;
     [SerializeField] private SpriteRenderer[] _patrolArea;
 
     public static EntryPoint Instance { get; private set; }
@@ -16,7 +18,7 @@ public class EntryPoint : MonoBehaviour
 
     public GameController GameController => _gameController;
 
-    public UiManager UiManager => _uiManager;
+    public HUDManager HUD => _hudManager;
 
     public Bounds[] PatrolArea { get; private set; }
 
@@ -48,7 +50,9 @@ public class EntryPoint : MonoBehaviour
     {
         PatrolAreaInit();
         _player.Initialise();
-        _uiManager.Initialise();
+        _hudManager.Initialise();
+        _healthBar.Initialise();
+        _bombsBar.Initialise();
         _gameController.Initialise();
         _scoreController.Initialise();
         _spawnManager.Initialise();

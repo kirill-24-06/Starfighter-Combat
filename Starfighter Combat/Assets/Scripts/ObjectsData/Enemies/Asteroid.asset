@@ -19,4 +19,4 @@ MonoBehaviour:
   _score: 30
   _weaponProjectile: {fileID: 0}
   _reloadTime: 0
-  _gameZoneBorders: {x: 25, y: 20}
+  _gameZoneBorders: {x: 40, y: 40}

@@ -7,4 +7,6 @@ public interface IInput
     public bool ShootInput();
 
     public bool BonusInput();
+
+    public bool PauseInput();
 }

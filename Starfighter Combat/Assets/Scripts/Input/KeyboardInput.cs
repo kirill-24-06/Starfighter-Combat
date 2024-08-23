@@ -22,6 +22,16 @@ public class KeyboardInput : IInput
         return direction;
     }
 
+    public bool PauseInput()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public bool ShootInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))

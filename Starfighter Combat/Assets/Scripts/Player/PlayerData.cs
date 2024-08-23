@@ -8,6 +8,7 @@ public class PlayerData : ScriptableObject
     [SerializeField] private int _health;
     [SerializeField] private int _maxHealth;
     [SerializeField] private float _speed;
+    [SerializeField] private int _ionSpheresStartAmount;
     [SerializeField] private GameObject _weapon;
     [SerializeField] private float _reloadTime;
     [SerializeField] private float _bonusLenght;
@@ -29,4 +30,6 @@ public class PlayerData : ScriptableObject
     public Vector2 GameZoneBorders => _gameBorders;
 
     public float BonusTimeLenght => _bonusLenght;
+
+    public int IonSpheresStartAmount => _ionSpheresStartAmount;
 }

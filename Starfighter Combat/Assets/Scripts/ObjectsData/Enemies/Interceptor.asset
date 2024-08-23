@@ -19,4 +19,4 @@ MonoBehaviour:
   _score: 70
   _weaponProjectile: {fileID: 814541193105084480, guid: c5eea90eec9a5964fbe018e878e71f60, type: 3}
   _reloadTime: 1
-  _gameZoneBorders: {x: 25, y: 20}
+  _gameZoneBorders: {x: 40, y: 40}

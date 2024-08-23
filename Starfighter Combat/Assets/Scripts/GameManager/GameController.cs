@@ -1,14 +1,15 @@
+using System;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     private EventManager _events;
-    private UiManager _uiManager;
+    private HUDManager _uiManager;
 
     public void Initialise()
     {
         _events = EventManager.GetInstance();
-        _uiManager = EntryPoint.Instance.UiManager;
+        _uiManager = EntryPoint.Instance.HUD;
 
         _events.PlayerDied += OnPlayerDied;
         _events.LevelCompleted += OnLevelCompleted;
@@ -25,10 +26,11 @@ public class GameController : MonoBehaviour
         _events.Stop?.Invoke();
     }
 
-    public void PauseGame()
+    public void PauseGame(bool value)
     {
-        _events.Pause?.Invoke();
-        //Show Pause Screen
+        _events.Pause?.Invoke(value);
+
+        Time.timeScale = Convert.ToSingle(!value);
     }
 
     private void OnPlayerDied()

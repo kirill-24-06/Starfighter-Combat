@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     public bool IsEquiped => _isEquiped;
     public bool IsDroneActive => _isDroneActive;
 
+    public Timer BonusTimer => _bonusTimer;
+
 
     public void Initialise()
     {
@@ -56,8 +58,10 @@ public class Player : MonoBehaviour
     private void OnStart()
     {
         _playerHealth = PlayerData.Health;
+        _ionSpheresAmount = PlayerData.IonSpheresStartAmount;
+        _isEquiped = _ionSpheresAmount > 0;
 
-        _events.PlayerHealed?.Invoke(_playerHealth);
+        _events.ChangeHealth?.Invoke(_playerHealth);
         _events.BonusAmountUpdate?.Invoke(_ionSpheresAmount);
     }
 

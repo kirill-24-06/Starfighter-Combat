@@ -11,6 +11,7 @@ public class Timer
     private MonoBehaviour _context;
 
     public event Action TimeIsOver;
+    public event Action<float> HasBeenUpdated;
 
     public Timer(MonoBehaviour context) => _context = context;
 
@@ -39,6 +40,9 @@ public class Timer
         while (_remainingTime >= 0)
         {
             _remainingTime -= Time.deltaTime;
+
+            HasBeenUpdated?.Invoke(_remainingTime / _time);
+
             yield return null;
         }
 
@@ -46,7 +50,7 @@ public class Timer
     }
 
     public void ResetTimer()
-    { 
+    {
         TimeIsOver = null;
     }
 }
