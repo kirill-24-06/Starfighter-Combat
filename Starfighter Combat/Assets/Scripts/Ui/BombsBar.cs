@@ -38,4 +38,9 @@ public class BombsBar : MonoBehaviour
             }
         }
     }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().BonusAmountUpdate -= ShowBombs;
+    }
 }

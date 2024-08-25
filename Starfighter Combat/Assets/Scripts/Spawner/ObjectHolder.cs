@@ -20,15 +20,13 @@ public class ObjectHolder
 
     private static ObjectHolder _instance;
 
-    private ObjectHolder() { }
+    private ObjectHolder()
+    {   
+        EventManager.GetInstance().Stop += OnGameOver;
+    }
 
     public static ObjectHolder GetInstance()
     {
-        //if (_instance == null)
-        //{
-        //    _instance = new ObjectHolder();
-        //}
-
         //»À»
         _instance ??= new ObjectHolder();
 
@@ -47,7 +45,6 @@ public class ObjectHolder
             _createdObjectsLists.Add(list);
 
             list.RegisteredObjects.Add(objectToRegistr);
-            //Debug.Log($"Created objects of type {tag}: " + list.RegisteredObjects.Count);
         }
         else
         {
@@ -63,7 +60,6 @@ public class ObjectHolder
             if (!isAlreadyRegistered)
             {
                 list.RegisteredObjects.Add(objectToRegistr);
-                //Debug.Log($"Created objects of type {tag}: " + list.RegisteredObjects.Count);
             }
         }
     }
@@ -108,6 +104,23 @@ public class ObjectHolder
         }
 
         return result;
+    }
+
+    public static void OnGameOver()
+    {
+        _instance?.Clear();
+        EventManager.GetInstance().PlayerDied -= OnGameOver;
+    }
+
+    private void Clear()
+    {
+        foreach (var item in _createdObjectsLists)
+        {
+            item.RegisteredObjects.Clear();
+        }
+
+        _createdObjectsLists.Clear();
+        _instance = null;
     }
 }
 

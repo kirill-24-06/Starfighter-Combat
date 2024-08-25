@@ -1,3 +1,4 @@
+using Ui.DialogWindows;
 using UnityEngine;
 
 public class EntryPoint : MonoBehaviour
@@ -7,10 +8,13 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private BackgroundMover _backgroundMover;
     [SerializeField] private BasicSpawnManager _spawnManager;
+    [SerializeField] private UiRoot _root;
     [SerializeField] private HUDManager _hudManager;
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private BombsBar _bombsBar;
     [SerializeField] private SpriteRenderer[] _patrolArea;
+
+    private DialogManager _dialogManager;
 
     public static EntryPoint Instance { get; private set; }
 
@@ -18,19 +22,23 @@ public class EntryPoint : MonoBehaviour
 
     public GameController GameController => _gameController;
 
+    public ScoreController ScoreController => _scoreController;
+
     public HUDManager HUD => _hudManager;
 
+    public DialogManager DialogManager => _dialogManager;
+
     public Bounds[] PatrolArea { get; private set; }
+
+    public Transform UiRoot => _root.transform;
 
 
 
     private void Awake()
     {
-
         if (Instance == null)
         {
             Instance = this;
-
         }
 
         else
@@ -48,6 +56,8 @@ public class EntryPoint : MonoBehaviour
 
     private void Initialize()
     {
+        _dialogManager = new DialogManager();
+
         PatrolAreaInit();
         _player.Initialise();
         _hudManager.Initialise();

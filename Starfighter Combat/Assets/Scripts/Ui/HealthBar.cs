@@ -29,7 +29,7 @@ public class HealthBar : MonoBehaviour
             _healthText.text = "X " + newHealth;
         }
 
-        else if(_heartsLayout.activeInHierarchy)
+        else if (_heartsLayout.activeInHierarchy)
         {
             for (int i = 0; i < _hearts.Count; i++)
             {
@@ -37,5 +37,10 @@ public class HealthBar : MonoBehaviour
                 _hearts[i].gameObject.SetActive(isHeartActive);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().ChangeHealth -= ShowHealth;
     }
 }

@@ -1,15 +1,16 @@
 using System;
+using Ui.DialogWindows;
+using Ui.DialogWindows.Dialogs;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     private EventManager _events;
-    private HUDManager _uiManager;
 
     public void Initialise()
     {
         _events = EventManager.GetInstance();
-        _uiManager = EntryPoint.Instance.HUD;
 
         _events.PlayerDied += OnPlayerDied;
         _events.LevelCompleted += OnLevelCompleted;
@@ -30,13 +31,22 @@ public class GameController : MonoBehaviour
     {
         _events.Pause?.Invoke(value);
 
-        Time.timeScale = Convert.ToSingle(!value);
+        if (value)
+        {
+            Time.timeScale = 0;
+            DialogManager.ShowDialog<PauseMenuDialog>();
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
     }
 
     private void OnPlayerDied()
     {
         StopGame();
-        _uiManager.GameOverDialog();
+        GameOverWindow gameOverDialog = DialogManager.ShowDialog<GameOverWindow>();//_uiManager.GameOverDialog();
+        gameOverDialog.Initialise(EntryPoint.Instance.ScoreController.Score);
     }
 
     private void OnLevelCompleted()
@@ -47,7 +57,11 @@ public class GameController : MonoBehaviour
 
     private void OnMenuExit()
     {
-        //OpenMenuScene
+        if (Time.timeScale == 0)
+            Time.timeScale = 1;
+
+        StopGame();
+        SceneManager.LoadScene(1);
     }
 
     private void OnDestroy()

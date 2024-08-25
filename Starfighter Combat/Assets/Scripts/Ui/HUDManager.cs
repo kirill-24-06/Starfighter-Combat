@@ -6,29 +6,23 @@ public class HUDManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _maxScoreText;
-    [SerializeField] private TextMeshProUGUI _gameOverText;
     [SerializeField] private Button _pauseButton;
     [SerializeField] private TimeBar _bonusTimer;
-    [SerializeField] private GameObject _pauseMenu;
 
     public void Initialise()
     {
         EventManager.GetInstance().ChangeScore += UpdateScore;
         EventManager.GetInstance().BonusCollected += ActivateBonusTimer;
-        EventManager.GetInstance().Pause += OnPause;
-
+       
         _pauseButton.onClick.AddListener(Pause);
 
         _bonusTimer.Initialise(EntryPoint.Instance.Player.BonusTimer);
     }
 
-
-
     private void OnDestroy()
     {
         EventManager.GetInstance().ChangeScore -= UpdateScore;
         EventManager.GetInstance().BonusCollected -= ActivateBonusTimer;
-        EventManager.GetInstance().Pause -= OnPause;
 
         _pauseButton.onClick.RemoveAllListeners();
     }
@@ -44,18 +38,8 @@ public class HUDManager : MonoBehaviour
             _bonusTimer.gameObject.SetActive(true);
     }
 
-    private void OnPause(bool value)
-    {
-        _pauseMenu.SetActive(value);
-    }
-
-    public void GameOverDialog()
-    {
-        _gameOverText.gameObject.SetActive(true);
-    }
-
     private void Pause()
     {
-        EntryPoint.Instance.GameController.PauseGame(!_pauseMenu.activeInHierarchy);
+        EntryPoint.Instance.GameController.PauseGame(true);
     }
 }

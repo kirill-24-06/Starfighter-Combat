@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Player _player;
+    private Player _player;
 
     private EventManager _events;
     private IInput _inputHandler;
@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
     public void Initialise()
     {
+        _player = EntryPoint.Instance.Player;
+
         _events = EventManager.GetInstance();
 
         _inputHandler = new KeyboardInput();
@@ -44,9 +46,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (_inputHandler.PauseInput())
+        if (_inputHandler.PauseInput() && !_isPaused)
         {
-            EntryPoint.Instance.GameController.PauseGame(!_isPaused);
+            EntryPoint.Instance.GameController.PauseGame(true);
         }
 
         if (!_isGameActive || _isPaused)
@@ -141,5 +143,7 @@ public class PlayerController : MonoBehaviour
     {
         _events.Start -= OnStart;
         _events.Stop -= OnStop;
+        _events.Pause -= OnPause;
+        _events.Multilaser -= EnableMultilaser;
     }
 }

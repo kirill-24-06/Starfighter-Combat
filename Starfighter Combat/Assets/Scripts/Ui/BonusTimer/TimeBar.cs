@@ -40,4 +40,9 @@ public class TimeBar : Bar
     {
         gameObject.SetActive(false);
     }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().Stop -= OnGameStop;
+    }
 }

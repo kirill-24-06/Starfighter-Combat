@@ -120,7 +120,7 @@ public class Missile : BasicBehaviour
 
         foreach (GameObject target in targets)
         {
-            if (target.activeInHierarchy)
+            if (target.activeInHierarchy)// Баг при рестарте уровня: 
             {
                 float currdistance = Vector2.Distance(transform.position, target.transform.position);
 
@@ -138,6 +138,9 @@ public class Missile : BasicBehaviour
 
     private void OnDestroy()
     {
+        _launchTimer.TimeIsOver -= OnHomingStart;
+        _homingTimer.TimeIsOver -= OnHomingEnd;
+
         EventManager.GetInstance().IonSphereUse -= OnIonSphereUse;
     }
 }

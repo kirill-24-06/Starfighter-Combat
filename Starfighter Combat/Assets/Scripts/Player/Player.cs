@@ -232,6 +232,7 @@ public class Player : MonoBehaviour
     private void OnDestroy()
     {
         _events.Start -= OnStart;
+
         _events.PlayerDamaged -= OnDamage;
         _events.PlayerHealed -= OnHeal;
         _events.PlayerDied -= OnPlayerDied;

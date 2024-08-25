@@ -149,6 +149,11 @@ public class ObjectPoolManager : MonoBehaviour
                 return null;
         }
     }
+
+    private void OnDestroy()
+    {
+        ObjectPools.Clear();
+    }
 }
 
 
