@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 763930359558260130}
   - component: {fileID: 8629233941853793851}
-  - component: {fileID: 3568033114921555697}
+  - component: {fileID: -7000354593977558585}
   - component: {fileID: 5157120857641380199}
-  - component: {fileID: 4572669014288311932}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ForceField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,33 +86,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &3568033114921555697
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &-7000354593977558585
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4804490326390636464}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4824e15a6b8f95448ae40296dcd7d31a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: 8ab373a10e141da498d6e6ca207589f4, type: 2}
 --- !u!58 &5157120857641380199
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -149,18 +134,3 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &4572669014288311932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4804490326390636464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02c4d19110849ac40a55968f66feb523, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _objectInfo: {fileID: 11400000, guid: e70212938fa338d4d97ff659b17667e7, type: 2}
-  _liveTime: 30
-  _positionChangeTime: 7

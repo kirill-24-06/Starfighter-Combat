@@ -3,17 +3,6 @@ using UnityEngine;
 
 public class EventManager
 {
-    private EventManager() { }
-
-    private static EventManager _instance;
-
-    public static EventManager GetInstance()
-    {
-        _instance ??= new EventManager();
-
-        return _instance;
-    }
-
     //Game
     public Action Start;
     public Action Stop;
@@ -32,22 +21,19 @@ public class EventManager
     public Action BonusTaken;
     public Action<bool> Multilaser;
     public Action MultilaserEnd;
-    public Action Beam;
-    public Action BeamEnd;
     public Action ForceField;
     public Action ForceFieldEnd;
     public Action IonSphereUse;
     public Action DroneDestroyed;
 
     //Enemies
-    public Action<ObjectBehaviour> Fire;
+    public Action<GameObject, int> EnemyDamaged;
     public Action<GameObject, Transform> LockTarget;
 
 
     //Ui
     public Action<int> ChangeHealth;
     public Action<int> BonusAmountUpdate;
-    public Action<ObjectBehaviour> EnemyDied;
     public Action<int> AddScore;
     public Action<int> ChangeScore;
 }

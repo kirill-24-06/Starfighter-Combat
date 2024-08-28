@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "New PlayerData", menuName = "Player Data", order = 52)]
+[CreateAssetMenu(fileName = "New PlayerData", menuName = "Config Data/Player Data", order = 52)]
 public class PlayerData : ScriptableObject
 {
     [SerializeField] private ObjectTag _tag;

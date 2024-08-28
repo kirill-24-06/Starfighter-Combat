@@ -1,4 +1,3 @@
-using Ui.DialogWindows;
 using UnityEngine;
 
 public class EntryPoint : MonoBehaviour
@@ -14,9 +13,12 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private BombsBar _bombsBar;
     [SerializeField] private SpriteRenderer[] _patrolArea;
 
-    private DialogManager _dialogManager;
+    private EventManager _events;
+    private ObjectHolder _spawnedObjects;
 
     public static EntryPoint Instance { get; private set; }
+
+    public EventManager Events => _events;
 
     public Player Player => _player;
 
@@ -24,9 +26,7 @@ public class EntryPoint : MonoBehaviour
 
     public ScoreController ScoreController => _scoreController;
 
-    public HUDManager HUD => _hudManager;
-
-    public DialogManager DialogManager => _dialogManager;
+    public ObjectHolder SpawnedObjects => _spawnedObjects;
 
     public Bounds[] PatrolArea { get; private set; }
 
@@ -56,7 +56,8 @@ public class EntryPoint : MonoBehaviour
 
     private void Initialize()
     {
-        _dialogManager = new DialogManager();
+        _events = new EventManager();
+        _spawnedObjects = new ObjectHolder();
 
         PatrolAreaInit();
         _player.Initialise();

@@ -18,21 +18,6 @@ public class ObjectHolder
 {
     private List<HoldedOojectInfo> _createdObjectsLists = new List<HoldedOojectInfo>();
 
-    private static ObjectHolder _instance;
-
-    private ObjectHolder()
-    {   
-        EventManager.GetInstance().Stop += OnGameOver;
-    }
-
-    public static ObjectHolder GetInstance()
-    {
-        //»À»
-        _instance ??= new ObjectHolder();
-
-        return _instance;
-    }
-
     public void RegisterObject(GameObject objectToRegistr, ObjectTag tag)
     {
         bool isAlreadyRegistered = false;
@@ -104,23 +89,6 @@ public class ObjectHolder
         }
 
         return result;
-    }
-
-    public static void OnGameOver()
-    {
-        _instance?.Clear();
-        EventManager.GetInstance().PlayerDied -= OnGameOver;
-    }
-
-    private void Clear()
-    {
-        foreach (var item in _createdObjectsLists)
-        {
-            item.RegisteredObjects.Clear();
-        }
-
-        _createdObjectsLists.Clear();
-        _instance = null;
     }
 }
 

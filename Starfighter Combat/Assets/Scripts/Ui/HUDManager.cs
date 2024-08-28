@@ -11,8 +11,8 @@ public class HUDManager : MonoBehaviour
 
     public void Initialise()
     {
-        EventManager.GetInstance().ChangeScore += UpdateScore;
-        EventManager.GetInstance().BonusCollected += ActivateBonusTimer;
+        EntryPoint.Instance.Events.ChangeScore += UpdateScore;
+        EntryPoint.Instance.Events.BonusCollected += ActivateBonusTimer;
        
         _pauseButton.onClick.AddListener(Pause);
 
@@ -21,8 +21,8 @@ public class HUDManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventManager.GetInstance().ChangeScore -= UpdateScore;
-        EventManager.GetInstance().BonusCollected -= ActivateBonusTimer;
+        EntryPoint.Instance.Events.ChangeScore -= UpdateScore;
+        EntryPoint.Instance.Events.BonusCollected -= ActivateBonusTimer;
 
         _pauseButton.onClick.RemoveAllListeners();
     }

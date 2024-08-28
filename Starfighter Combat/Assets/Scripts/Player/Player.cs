@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private PolygonCollider2D _playerCollider;
     private Timer _bonusTimer;
 
+    [SerializeField]private ForceFieldBehaviour _forceField;
+
     private int _playerHealth;
 
     private int _ionSpheresAmount = 0;
@@ -28,6 +30,8 @@ public class Player : MonoBehaviour
     public bool IsEquiped => _isEquiped;
     public bool IsDroneActive => _isDroneActive;
 
+    public ForceFieldBehaviour ForceField => _forceField;
+
     public Timer BonusTimer => _bonusTimer;
 
 
@@ -38,7 +42,7 @@ public class Player : MonoBehaviour
         _playerCollider = GetComponent<PolygonCollider2D>();
         _bonusTimer = new Timer(this);
 
-        _events = EventManager.GetInstance();
+        _events = EntryPoint.Instance.Events;
 
         _events.Start += OnStart;
 
@@ -162,7 +166,7 @@ public class Player : MonoBehaviour
     {
         _ionSpheresAmount += amount;
         _isEquiped = _ionSpheresAmount > 0;
-        EventManager.GetInstance().BonusAmountUpdate?.Invoke(_ionSpheresAmount);
+        EntryPoint.Instance.Events.BonusAmountUpdate?.Invoke(_ionSpheresAmount);
     }
 
     private void OnIonSphereUse()
@@ -224,9 +228,9 @@ public class Player : MonoBehaviour
             _bonusTimer.ResetTimer();
     }
 
-    public static bool IsPlayer(Collider2D collider)
+    public static bool IsPlayer(GameObject gameObject)
     {
-        return collider.gameObject == _instance.gameObject;
+        return gameObject.gameObject == _instance.gameObject;
     }
 
     private void OnDestroy()

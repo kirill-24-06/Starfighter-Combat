@@ -9,7 +9,7 @@ public class ScoreController : MonoBehaviour
 
     public void Initialise()
     {
-        _events = EventManager.GetInstance();
+        _events = EntryPoint.Instance.Events;
 
         _events.Start += OnGameStarted;
         _events.AddScore += OnScoreAdded;

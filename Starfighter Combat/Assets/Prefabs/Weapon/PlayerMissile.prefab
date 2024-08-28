@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2515763024687636821}
   - component: {fileID: 1510478272931050769}
-  - component: {fileID: 8019904594153566985}
   - component: {fileID: 1550618429888585763}
   - component: {fileID: 1984759118114876453}
-  m_Layer: 0
+  - component: {fileID: 4985403862753283233}
+  m_Layer: 8
   m_Name: PlayerMissile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,21 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8019904594153566985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7058419182287617534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 904eded34bb280241b71bf8502ac13d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _objectInfo: {fileID: 11400000, guid: 199fcab1d82c588419092d21c24442d9, type: 2}
-  _launchTime: 0.5
-  _homingTime: 2
 --- !u!50 &1550618429888585763
 Rigidbody2D:
   serializedVersion: 4
@@ -174,3 +159,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4985403862753283233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7058419182287617534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fbf8c8c119529148afd8b4417088389, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: b7c92453a92ce1947927c29ac4f4c21d, type: 2}

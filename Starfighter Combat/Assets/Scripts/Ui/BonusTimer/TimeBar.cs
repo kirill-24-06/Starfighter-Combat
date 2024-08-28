@@ -8,7 +8,7 @@ public class TimeBar : Bar
         _timer = timer;
         gameObject.SetActive(false);
 
-        EventManager.GetInstance().Stop += OnGameStop;
+        EntryPoint.Instance.Events.Stop += OnGameStop;
     }
 
     private void OnEnable()
@@ -43,6 +43,6 @@ public class TimeBar : Bar
 
     private void OnDestroy()
     {
-        EventManager.GetInstance().Stop -= OnGameStop;
+        EntryPoint.Instance.Events.Stop -= OnGameStop;
     }
 }

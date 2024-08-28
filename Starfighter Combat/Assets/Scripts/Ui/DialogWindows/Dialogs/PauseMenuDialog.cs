@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Ui.DialogWindows;
-using UnityEngine.SceneManagement;
 
 public class PauseMenuDialog : Dialog
 {
@@ -29,7 +28,6 @@ public class PauseMenuDialog : Dialog
 
     private void GoToMainMenu()
     {
-
-        EventManager.GetInstance().MainMenuExit?.Invoke();
+        EntryPoint.Instance.Events.MainMenuExit?.Invoke();  
     }
 }

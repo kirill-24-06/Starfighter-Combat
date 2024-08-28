@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77a00d3631113994e919deefdea63757, type: 3}
+  m_Script: {fileID: 11500000, guid: 2e8de6c662dd25b409762917afcd0d18, type: 3}
   m_Name: RocketShip
   m_EditorClassIdentifier: 
-  _objectTag: 0
-  _bonusTag: 6
+  _tag: 0
   _health: 10
-  _objectSpeed: 6
+  _speed: 6
   _score: 100
-  _weaponProjectile: {fileID: 3025663165139613927, guid: e3f16a9b09b4b0f4a826d4b21fcdd1b7, type: 3}
-  _reloadTime: 7
-  _gameZoneBorders: {x: 40, y: 40}
+  _disableBorders: {x: 40, y: 40}
+  _engageZone: {x: 19, y: 12}
+  _enemyMissile: {fileID: -7406995603668914750, guid: f04274ccdbaac9f4d8cf690525524a95, type: 3}
+  _reloadCountDown: 7
+  _liveTime: 60
+  _shootsBeforeRetreat: 3

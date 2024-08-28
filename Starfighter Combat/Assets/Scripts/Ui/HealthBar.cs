@@ -14,7 +14,7 @@ public class HealthBar : MonoBehaviour
 
     public void Initialise()
     {
-        EventManager.GetInstance().ChangeHealth += ShowHealth;
+       EntryPoint.Instance.Events.ChangeHealth += ShowHealth;
     }
 
     private void ShowHealth(int newHealth)
@@ -41,6 +41,6 @@ public class HealthBar : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventManager.GetInstance().ChangeHealth -= ShowHealth;
+        EntryPoint.Instance.Events.ChangeHealth -= ShowHealth;
     }
 }

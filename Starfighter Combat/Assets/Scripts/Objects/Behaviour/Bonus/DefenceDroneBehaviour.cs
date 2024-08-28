@@ -1,11 +1,13 @@
+using UnityEngine;
 
-public class DefenceDroneBehaviour : ObjectBehaviour
+public class DefenceDroneBehaviour : MonoBehaviour
 {
+    [SerializeField] PlayerMissile _missile;
     private IAttacker _droneAttackHandler;
 
     private void Awake()
     {
-        _objectMoveHandler = null;
+        
         _droneAttackHandler = new Attacker(this);
     }
 
@@ -16,7 +18,7 @@ public class DefenceDroneBehaviour : ObjectBehaviour
 
     private void Update()
     {
-        _droneAttackHandler.Fire(ObjectInfo.Projectile);
+        _droneAttackHandler.Fire(_missile.gameObject);
     }
 
     private void OnDisable()

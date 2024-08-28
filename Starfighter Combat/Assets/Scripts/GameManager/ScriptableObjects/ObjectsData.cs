@@ -11,7 +11,7 @@ public enum BonusTag
     None,
 }
 
-[CreateAssetMenu(fileName = "New ObjectData", menuName = "Object Data", order = 51)]
+[CreateAssetMenu(fileName = "New ObjectData", menuName = "Config Data/Object Data", order = 51)]
 public class ObjectsData : ScriptableObject
 {
     [SerializeField] protected ObjectTag _objectTag = ObjectTag.None;

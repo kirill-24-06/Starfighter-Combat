@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class Attacker : IAttacker
 {
-    protected readonly ObjectBehaviour _objectBehaviour;
+    protected readonly MonoBehaviour _objectBehaviour;
     private Transform _projectileSpawnPoint;
     protected readonly Timer _reloadTimer;
 
     protected bool _isShooted = false;
 
-    public Attacker(ObjectBehaviour objectBehaviour)
+    public Attacker(MonoBehaviour objectBehaviour)
     {
         _objectBehaviour = objectBehaviour;
         _projectileSpawnPoint = _objectBehaviour.transform.Find("ProjectilePosition");
@@ -29,7 +29,7 @@ public class Attacker : IAttacker
                _projectileSpawnPoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
             RegistrProjectile(newProjectile);
 
-            _reloadTimer.SetTimer(_objectBehaviour.ObjectInfo.ReloadTime);
+            _reloadTimer.SetTimer(3);
             _reloadTimer.StartTimer();
         }
     }
@@ -42,15 +42,7 @@ public class Attacker : IAttacker
 
     protected void RegistrProjectile(GameObject projectile)
     {
-        if (_objectBehaviour.ObjectInfo.Tag == ObjectTag.Player)
-        {
-            ObjectHolder.GetInstance().RegisterObject(projectile, ObjectTag.PlayerWeapon);
-        }
-
-        else if (_objectBehaviour.ObjectInfo.Tag == ObjectTag.Enemy)
-        {
-            ObjectHolder.GetInstance().RegisterObject(projectile, ObjectTag.EnemyWeapon);
-        }
+        EntryPoint.Instance.SpawnedObjects.RegisterObject(projectile, ObjectTag.PlayerWeapon);
     }
 
     protected void OnReloadTimerExpired() => _isShooted = false;

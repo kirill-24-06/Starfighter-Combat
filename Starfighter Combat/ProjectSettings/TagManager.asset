@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - PlayerWeapon
   - EnemyWeapon
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -14,12 +15,12 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - PlayerWeapon
+  - EnemyWeapon
+  - Bonus
+  - Ignore
   - 
   - 
   - 

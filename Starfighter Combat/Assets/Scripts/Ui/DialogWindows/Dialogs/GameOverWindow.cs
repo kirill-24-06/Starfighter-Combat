@@ -30,16 +30,12 @@ namespace Ui.DialogWindows.Dialogs
 
         private void TryAgain()
         {
-            SceneManager.LoadScene(0);
-            //_events.Invoke(new RestartLevelSignal());
-            //Hide();
+            SceneManager.LoadScene(0);  
         }
 
         private void GoToMenu()
         {
-
             SceneManager.LoadScene(1);
-            //SceneManager.LoadScene(StringConstants.MENU_SCENE_NAME);
         }
     }
 }

@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77a00d3631113994e919deefdea63757, type: 3}
+  m_Script: {fileID: 11500000, guid: c662ee5a817e545488a54b5ff038f4a9, type: 3}
   m_Name: Interceptor
   m_EditorClassIdentifier: 
-  _objectTag: 0
-  _bonusTag: 6
+  _tag: 0
   _health: 4
-  _objectSpeed: 10
+  _speed: 10
   _score: 70
-  _weaponProjectile: {fileID: 814541193105084480, guid: c5eea90eec9a5964fbe018e878e71f60, type: 3}
-  _reloadTime: 1
-  _gameZoneBorders: {x: 40, y: 40}
+  _disableBorders: {x: 40, y: 40}
+  _engageZone: {x: 19, y: 12}
+  _enemyProjectile: {fileID: 2597346899940027235, guid: 536963f2d150db94da7913647ee77fc2, type: 3}
+  _reloadCountDown: 1
+  _liveTime: 25
+  _shootsBeforeRetreat: 3

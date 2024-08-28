@@ -9,14 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77a00d3631113994e919deefdea63757, type: 3}
+  m_Script: {fileID: 11500000, guid: 0532591d6d772c04181ef7a8a3aa4584, type: 3}
   m_Name: PlayerMissile
   m_EditorClassIdentifier: 
   _objectTag: 4
-  _bonusTag: 6
-  _health: 0
   _objectSpeed: 10
-  _score: 0
-  _weaponProjectile: {fileID: 0}
-  _reloadTime: 0
   _gameZoneBorders: {x: 20, y: 15}
+  _damage: 1
+  _launchTime: 0.5
+  _homingTime: 2

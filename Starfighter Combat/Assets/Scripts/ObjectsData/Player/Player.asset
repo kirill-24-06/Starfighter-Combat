@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   _tag: 1
-  _health: 3
-  _maxHealth: 10
+  _health: 20
+  _maxHealth: 20
   _speed: 20
   _ionSpheresStartAmount: 3
-  _weapon: {fileID: 8661907242895563437, guid: aaf0e24b381737a45bacf105a3869000, type: 3}
+  _weapon: {fileID: 8661907242895563437, guid: ef352fa18d4281b44a7602165486ee4c, type: 3}
   _reloadTime: 0.17
   _bonusLenght: 10
   _gameBorders: {x: 19, y: 14}

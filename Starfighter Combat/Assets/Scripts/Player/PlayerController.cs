@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     {
         _player = EntryPoint.Instance.Player;
 
-        _events = EventManager.GetInstance();
+        _events = EntryPoint.Instance.Events;
 
         _inputHandler = new KeyboardInput();
         _attackHandler = new PlayerAttacker(_player);
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
         if (!_isGameActive || _isPaused)
             return;
 
-        Move(_inputHandler.MoveInput(),_player.PlayerData.Speed);
+        Move(_inputHandler.MoveInput(), _player.PlayerData.Speed);
         CheckBorders();
 
         if (_inputHandler.ShootInput())
@@ -68,24 +68,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.EnemyWeapon) ||
-            ObjectHolder.GetInstance().FindRegisteredObject(collision.gameObject, ObjectTag.Enemy))
-        {
-            if (!_player.IsInvunerable && !_player.IsDroneActive)
-            {
-                _events.PlayerDamaged?.Invoke(1);
-            }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (/*EntryPoint.Instance.SpawnedObjects.FindRegisteredObject(collision.gameObject, ObjectTag.EnemyWeapon) ||*/
+    //        EntryPoint.Instance.SpawnedObjects.FindRegisteredObject(collision.gameObject, ObjectTag.Enemy))
+    //    {
+    //        if (!_player.IsInvunerable && !_player.IsDroneActive)
+    //        {
+    //            _events.PlayerDamaged?.Invoke(1);
+    //        }
 
-            else if (!_player.IsInvunerable && _player.IsDroneActive)
-            {
-                _events.DroneDestroyed?.Invoke();
-            }
+    //        else if (!_player.IsInvunerable && _player.IsDroneActive)
+    //        {
+    //            _events.DroneDestroyed?.Invoke();
+    //        }
 
-            ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
-        }
-    }
+    //        ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
+    //    }
+    //}
 
     private void OnDisable()
     {
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
 
     private void EnableMultilaser(bool isEnabled)
     {
-        if(isEnabled)
+        if (isEnabled)
         {
             _attackHandler = new PlayerAttackerMultiple(_player);
         }

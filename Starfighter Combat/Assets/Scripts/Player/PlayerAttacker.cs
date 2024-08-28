@@ -43,7 +43,7 @@ public class PlayerAttacker : IAttacker
     protected void RegistrProjectile(GameObject projectile)
     {
 
-        ObjectHolder.GetInstance().RegisterObject(projectile, ObjectTag.PlayerWeapon);
+        EntryPoint.Instance.SpawnedObjects.RegisterObject(projectile, ObjectTag.PlayerWeapon);
 
     }
 

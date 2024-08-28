@@ -26,15 +26,15 @@ public class BasicSpawnManager : MonoBehaviour
 
     public void Initialise()
     {
-        _spawnedObjects = ObjectHolder.GetInstance();
+        _spawnedObjects = EntryPoint.Instance.SpawnedObjects;
         _spawnArea = _spawnRenderer.bounds;
 
         _spawner = Spawner();
         _bonusSpawner = BonusSpawner();
 
-        EventManager.GetInstance().BonusTaken += OnBonusTaken;
-        EventManager.GetInstance().Start += OnStart;
-        EventManager.GetInstance().Stop += OnStop;
+        EntryPoint.Instance.Events.BonusTaken += OnBonusTaken;
+        EntryPoint.Instance.Events.Start += OnStart;
+        EntryPoint.Instance.Events.Stop += OnStop;
     }
 
     private void OnStart()
@@ -101,9 +101,9 @@ public class BasicSpawnManager : MonoBehaviour
     {
         _isGameActive = false;
 
-        EventManager.GetInstance().BonusTaken -= OnBonusTaken;
-        EventManager.GetInstance().Start -= OnStart;
-        EventManager.GetInstance().Stop -= OnStop;
+        EntryPoint.Instance.Events.BonusTaken -= OnBonusTaken;
+        EntryPoint.Instance.Events.Start -= OnStart;
+        EntryPoint.Instance.Events.Stop -= OnStop;
     }
 
     private void SpawnEnemy()

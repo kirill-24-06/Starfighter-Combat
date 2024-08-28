@@ -14,7 +14,7 @@ public class BombsBar : MonoBehaviour
 
     public void Initialise()
     {
-        EventManager.GetInstance().BonusAmountUpdate += ShowBombs;
+        EntryPoint.Instance.Events.BonusAmountUpdate += ShowBombs;
     }
 
     private void ShowBombs(int newBombsAmount)
@@ -41,6 +41,6 @@ public class BombsBar : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventManager.GetInstance().BonusAmountUpdate -= ShowBombs;
+        EntryPoint.Instance.Events.BonusAmountUpdate -= ShowBombs;
     }
 }

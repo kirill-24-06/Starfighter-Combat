@@ -16,8 +16,8 @@ public class BackgroundMover : MonoBehaviour
         _startPosition = transform.position;
         _offset = GetComponent<SpriteRenderer>().bounds.size.y / 2;
 
-        EventManager.GetInstance().Start += OnStart;
-        EventManager.GetInstance().Stop += OnStop;
+        EntryPoint.Instance.Events.Start += OnStart;
+        EntryPoint.Instance.Events.Stop += OnStop;
     }
 
     private void Update()
@@ -56,7 +56,7 @@ public class BackgroundMover : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventManager.GetInstance().Start -= OnStart;
-        EventManager.GetInstance().Stop -= OnStop;
+        EntryPoint.Instance.Events.Start -= OnStart;
+        EntryPoint.Instance.Events.Stop -= OnStop;
     }
 }

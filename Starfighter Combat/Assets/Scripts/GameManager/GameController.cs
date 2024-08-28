@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
 
     public void Initialise()
     {
-        _events = EventManager.GetInstance();
+        _events = EntryPoint.Instance.Events;
 
         _events.PlayerDied += OnPlayerDied;
         _events.LevelCompleted += OnLevelCompleted;

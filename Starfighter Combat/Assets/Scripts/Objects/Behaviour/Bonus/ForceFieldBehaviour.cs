@@ -6,7 +6,7 @@ public class ForceFieldBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        _events = EventManager.GetInstance();
+        _events = EntryPoint.Instance.Events;
 
         _events.ForceField += OnActivated;
         _events.ForceFieldEnd += OnDeactivated;
