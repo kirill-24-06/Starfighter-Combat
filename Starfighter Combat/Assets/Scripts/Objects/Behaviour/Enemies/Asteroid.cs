@@ -19,6 +19,8 @@ public class Asteroid : Enemy
     protected override void Initialise()
     {
         _mover = new Mover(transform);
+
+        Data = _data;
     }
 
     protected override void Move()
@@ -33,5 +35,6 @@ public class Asteroid : Enemy
         ObjectPoolManager.ReturnObjectToPool(gameObject);
 
         _events.AddScore?.Invoke(_data.Score);
+        _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
     }
 }

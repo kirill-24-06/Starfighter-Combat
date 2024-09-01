@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd668f9404f9ff04881f4fc66982ea62, type: 3}
   m_Name: Repair
   m_EditorClassIdentifier: 
-  _objectTag: 2
-  _bonusTag: 0
-  _disableBorders: {x: 40, y: 40}
-  _gameArea: {x: 19, y: 14}
-  _objectSpeed: 5
+  _prefab: {fileID: 7600786741289274528, guid: 4ff4d5cca135dc244b498c54d22e43b0, type: 3}
+  _tag: 2
+  _speed: 5
   _score: 100
+  _disableBorders: {x: 40, y: 40}
+  _spawnZones: 000000000100000002000000
+  _bonusTag: 0
+  _gameArea: {x: 19, y: 14}
   _liveTime: 30
   _positionChangeTime: 7

@@ -6,7 +6,8 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private ScoreController _scoreController;
     [SerializeField] private Player _player;
     [SerializeField] private BackgroundMover _backgroundMover;
-    [SerializeField] private BasicSpawnManager _spawnManager;
+    [SerializeField] private SpawnController _spawnController;
+    [SerializeField] private LevelController _levelController;
     [SerializeField] private UiRoot _root;
     [SerializeField] private HUDManager _hudManager;
     [SerializeField] private HealthBar _healthBar;
@@ -15,6 +16,7 @@ public class EntryPoint : MonoBehaviour
 
     private EventManager _events;
     private ObjectHolder _spawnedObjects;
+    private Spawner _spawner;
 
     public static EntryPoint Instance { get; private set; }
 
@@ -28,6 +30,12 @@ public class EntryPoint : MonoBehaviour
 
     public ObjectHolder SpawnedObjects => _spawnedObjects;
 
+    public SpawnController SpawnController => _spawnController;
+
+    public LevelController LevelController => _levelController;
+
+    public Spawner Spawner => _spawner;
+
     public Bounds[] PatrolArea { get; private set; }
 
     public Transform UiRoot => _root.transform;
@@ -37,14 +45,10 @@ public class EntryPoint : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
 
         else
-        {
             Destroy(gameObject);
-        }
 
         Initialize();
     }
@@ -58,6 +62,7 @@ public class EntryPoint : MonoBehaviour
     {
         _events = new EventManager();
         _spawnedObjects = new ObjectHolder();
+        _spawner = new Spawner();
 
         PatrolAreaInit();
         _player.Initialise();
@@ -66,7 +71,9 @@ public class EntryPoint : MonoBehaviour
         _bombsBar.Initialise();
         _gameController.Initialise();
         _scoreController.Initialise();
-        _spawnManager.Initialise();
+        _spawner.Initialise();
+        _spawnController.Initialise();
+        _levelController.Initialise();
         _backgroundMover.Initialise();
     }
 

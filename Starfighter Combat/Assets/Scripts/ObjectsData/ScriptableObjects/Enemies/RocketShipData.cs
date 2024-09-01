@@ -1,17 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New RocketShipData", menuName = "Config Data/RocketShip Data", order = 53)]
-public class RocketShipData : ScriptableObject
+[CreateAssetMenu(fileName = "New RocketShipData", menuName = "Config Data/Spawnable Data/Enemy/RocketShip", order = 53)]
+public class RocketShipData : SpawnableData, IData
 {
-    [SerializeField] private ObjectTag _tag;
+    [Header("RocketShip")]
+    [SerializeField] private EnemyStrenght _enemyStrenght;
 
     [SerializeField] private int _health;
-
-    [SerializeField] private float _speed;
-
-    [SerializeField] private int _score;
-
-    [SerializeField] private Vector2 _disableBorders;
 
     [SerializeField] private Vector2 _engageZone;
 
@@ -22,16 +17,11 @@ public class RocketShipData : ScriptableObject
     [SerializeField] private float _liveTime;
 
     [SerializeField] private int _shootsBeforeRetreat;
+    
 
-    public ObjectTag Tag => _tag;
+    public EnemyStrenght EnemyStrenght => _enemyStrenght;
 
     public int Health => _health;
-
-    public float Speed => _speed;
-
-    public int Score => _score;
-
-    public Vector2 DisableBorders => _disableBorders;
 
     public Vector2 EngageZone => _engageZone;
 
@@ -41,5 +31,5 @@ public class RocketShipData : ScriptableObject
 
     public float LiveTime => _liveTime;
 
-    public int ShootsBeforeRetreat => _shootsBeforeRetreat;
+    public int ShootsBeforeRetreat => _shootsBeforeRetreat; 
 }

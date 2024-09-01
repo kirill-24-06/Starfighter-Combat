@@ -43,6 +43,7 @@ public class RocketShip : Enemy
         _mover.Arrival += OnArrival;
         _attacker.AttackRunComplete += OnAttackRunComplete;
 
+        Data = _data;
     }
     protected override void Move()
     {
@@ -76,5 +77,6 @@ public class RocketShip : Enemy
         ObjectPoolManager.ReturnObjectToPool(gameObject);
 
         _events.AddScore?.Invoke(_data.Score);
+        _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
     }
 }

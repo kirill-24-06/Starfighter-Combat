@@ -68,25 +68,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (/*EntryPoint.Instance.SpawnedObjects.FindRegisteredObject(collision.gameObject, ObjectTag.EnemyWeapon) ||*/
-    //        EntryPoint.Instance.SpawnedObjects.FindRegisteredObject(collision.gameObject, ObjectTag.Enemy))
-    //    {
-    //        if (!_player.IsInvunerable && !_player.IsDroneActive)
-    //        {
-    //            _events.PlayerDamaged?.Invoke(1);
-    //        }
-
-    //        else if (!_player.IsInvunerable && _player.IsDroneActive)
-    //        {
-    //            _events.DroneDestroyed?.Invoke();
-    //        }
-
-    //        ObjectPoolManager.ReturnObjectToPool(collision.gameObject);
-    //    }
-    //}
-
     private void OnDisable()
     {
         _attackHandler = new PlayerAttacker(_player);

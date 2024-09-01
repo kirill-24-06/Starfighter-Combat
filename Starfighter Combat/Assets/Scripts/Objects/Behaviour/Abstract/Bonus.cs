@@ -78,16 +78,25 @@ public class Bonus : BasicObject
         ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (_data.BonusTag != BonusTag.None)
         {
             if (Player.IsPlayer(collision.gameObject))
-            {
                 Interact();
-            }
         }
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (_data.BonusTag != BonusTag.None)
+    //    {
+    //        if (Player.IsPlayer(collision.gameObject))
+    //        {
+    //            Interact();
+    //        }
+    //    }
+    //}
 
     private void Interact()
     {

@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c662ee5a817e545488a54b5ff038f4a9, type: 3}
   m_Name: Interceptor
   m_EditorClassIdentifier: 
+  _prefab: {fileID: 7814316821086288463, guid: 6b1289e3f261cbd4fa6ead85ad168ad9, type: 3}
   _tag: 0
-  _health: 4
   _speed: 10
   _score: 70
   _disableBorders: {x: 40, y: 40}
-  _engageZone: {x: 19, y: 12}
+  _spawnZones: 000000000100000002000000
+  _enemyStrenght: 2
+  _health: 4
+  _engageZone: {x: 19, y: 14}
   _enemyProjectile: {fileID: 2597346899940027235, guid: 536963f2d150db94da7913647ee77fc2, type: 3}
   _reloadCountDown: 1
   _liveTime: 25

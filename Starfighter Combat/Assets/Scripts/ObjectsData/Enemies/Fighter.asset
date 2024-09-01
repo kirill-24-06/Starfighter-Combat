@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4bf87cba7bf8c4da42aa192e02e9b0, type: 3}
   m_Name: Fighter
   m_EditorClassIdentifier: 
+  _prefab: {fileID: 1387835973732041341, guid: 3c9df98c7da151b45be9d9b9abd1fa3f, type: 3}
   _tag: 0
-  _health: 2
   _speed: 5
   _score: 50
   _disableBorders: {x: 40, y: 40}
+  _spawnZones: 00000000
+  _enemyStrenght: 1
+  _health: 2
   _enemyProjectile: {fileID: 2597346899940027235, guid: 536963f2d150db94da7913647ee77fc2, type: 3}
   _reloadCountDown: 2.5

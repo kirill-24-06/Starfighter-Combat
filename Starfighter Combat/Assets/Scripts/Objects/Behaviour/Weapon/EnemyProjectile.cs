@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyProjectile : Projectile
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (Player.IsPlayer(collision.gameObject) || collision.gameObject == EntryPoint.Instance.Player.ForceField.gameObject)
             Interact();

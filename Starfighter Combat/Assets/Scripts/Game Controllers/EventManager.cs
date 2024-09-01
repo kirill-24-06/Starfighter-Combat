@@ -27,6 +27,7 @@ public class EventManager
     public Action DroneDestroyed;
 
     //Enemies
+    public Action<EnemyStrenght> EnemyDestroyed;
     public Action<GameObject, int> EnemyDamaged;
     public Action<GameObject, Transform> LockTarget;
 

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   _tag: 1
-  _health: 20
-  _maxHealth: 20
+  _health: 10
+  _maxHealth: 10
   _speed: 20
   _ionSpheresStartAmount: 3
   _weapon: {fileID: 8661907242895563437, guid: ef352fa18d4281b44a7602165486ee4c, type: 3}

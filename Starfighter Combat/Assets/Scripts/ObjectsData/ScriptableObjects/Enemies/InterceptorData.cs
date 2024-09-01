@@ -1,18 +1,13 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "New InterceptorData", menuName = "Config Data/Interceptor Data", order = 53)]
-public class InterceptorData : ScriptableObject
+[CreateAssetMenu(fileName = "New InterceptorData", menuName = "Config Data/Spawnable Data/Enemy/Interceptor", order = 53)]
+public class InterceptorData : SpawnableData, IData
 {
-    [SerializeField] private ObjectTag _tag;
+    [Header("Interceptor")]
+    [SerializeField] private EnemyStrenght _enemyStrenght;
 
     [SerializeField] private int _health;
-
-    [SerializeField] private float _speed;
-
-    [SerializeField] private int _score;
-
-    [SerializeField] private Vector2 _disableBorders;
 
     [SerializeField] private Vector2 _engageZone;
 
@@ -24,15 +19,10 @@ public class InterceptorData : ScriptableObject
 
     [SerializeField] private int _shootsBeforeRetreat;
 
-    public ObjectTag Tag => _tag;
+  
+    public EnemyStrenght EnemyStrenght => _enemyStrenght;
 
     public int Health => _health;
-
-    public float Speed => _speed;
-
-    public int Score => _score;
-
-    public Vector2 DisableBorders => _disableBorders;
 
     public Vector2 EngageZone => _engageZone;
 
@@ -43,4 +33,5 @@ public class InterceptorData : ScriptableObject
     public float LiveTime => _liveTime;
 
     public int ShootsBeforeRetreat => _shootsBeforeRetreat;
+   
 }

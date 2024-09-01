@@ -10,7 +10,7 @@ public class Timer
     private IEnumerator _countdown;
     private MonoBehaviour _context;
 
-    public event Action TimeIsOver;
+    public event Action TimeIsOver = delegate () { };
     public event Action<float> HasBeenUpdated;
 
     public Timer(MonoBehaviour context) => _context = context;

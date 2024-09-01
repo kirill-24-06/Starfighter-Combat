@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5275a88d8862e974db7c65fcd9e084a5, type: 3}
   m_Name: Asteroid
   m_EditorClassIdentifier: 
+  _prefab: {fileID: 721463390777093460, guid: 92d73b6e18dd11e4d99dec48f726cffb, type: 3}
   _tag: 0
-  _health: 3
   _speed: 3
   _score: 30
   _disableBorders: {x: 40, y: 40}
+  _spawnZones: 00000000
+  _enemyStrenght: 1
+  _health: 3

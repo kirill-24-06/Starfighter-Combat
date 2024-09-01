@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e8de6c662dd25b409762917afcd0d18, type: 3}
   m_Name: RocketShip
   m_EditorClassIdentifier: 
+  _prefab: {fileID: 3451239107400144383, guid: 9da209289423327409fec95972d42dbd, type: 3}
   _tag: 0
-  _health: 10
   _speed: 6
   _score: 100
   _disableBorders: {x: 40, y: 40}
-  _engageZone: {x: 19, y: 12}
+  _spawnZones: 0100000002000000
+  _enemyStrenght: 2
+  _health: 10
+  _engageZone: {x: 19, y: 14}
   _enemyMissile: {fileID: -7406995603668914750, guid: f04274ccdbaac9f4d8cf690525524a95, type: 3}
   _reloadCountDown: 7
-  _liveTime: 60
+  _liveTime: 40
   _shootsBeforeRetreat: 3

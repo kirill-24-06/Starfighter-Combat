@@ -44,6 +44,7 @@ public class Interceptor : Enemy
         _mover.Arrival += OnArrival;
         _attacker.AttackRunComplete += OnAttackRunComplete;
 
+        Data = _data;
     }
     protected override void Move()
     {
@@ -77,5 +78,6 @@ public class Interceptor : Enemy
         ObjectPoolManager.ReturnObjectToPool(gameObject);
 
         _events.AddScore?.Invoke(_data.Score);
+        _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
     }
 }

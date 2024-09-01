@@ -32,6 +32,8 @@ public class Fighter : Enemy
     {
         _mover = new Mover(transform);
         _attacker = new EnemyAttacker(this, _data.ReloadCountDown);
+
+        Data = _data;
     }
 
     protected override void Move()
@@ -45,5 +47,6 @@ public class Fighter : Enemy
         ObjectPoolManager.ReturnObjectToPool(gameObject);
 
         _events.AddScore?.Invoke(_data.Score);
+        _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
     }
 }

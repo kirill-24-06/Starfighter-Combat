@@ -1,10 +1,19 @@
 using UnityEngine;
 
+public enum EnemyStrenght
+{
+    None,
+    Basic,
+    Hard
+}
+
 public abstract class Enemy : MonoBehaviour
 {
     protected EventManager _events;
 
     protected int _health;
+
+    public IData Data { get; protected set; }
 
     protected abstract void Disable();
     protected abstract void Initialise();
@@ -25,17 +34,13 @@ public abstract class Enemy : MonoBehaviour
         Move();
     }
 
-    protected void OnTriggerEnter2D(Collider2D collision)
+    protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == EntryPoint.Instance.Player.ForceField.gameObject)
-        {
             Disable();
-        }
 
         else if (Player.IsPlayer(collision.gameObject))
-        {
             Collide();
-        }
     }
 
     private void Collide()
@@ -66,44 +71,35 @@ public abstract class Enemy : MonoBehaviour
     private void OnIonSphereUse()
     {
         if (gameObject.activeInHierarchy)
-        {
             TakeDamage(10);
-        }
     }
 
     protected void DeactivateOutOfBounds(Vector2 bounds)
     {
         if (transform.position.y < -bounds.y)
-        {
-            Disable();
-        }
+            Deactivate();
 
         if (transform.position.y > bounds.y)
-        {
-            Disable();
-        }
+            Deactivate();
 
         if (transform.position.x < -bounds.x)
-        {
-            Disable();
-        }
+            Deactivate();
 
         if (transform.position.x > bounds.x)
-        {
-            Disable();
-        }
+            Deactivate();
     }
 
     protected void OnDamaged(GameObject enemy, int damage)
     {
         if (enemy == gameObject)
-        {
             TakeDamage(damage);
-        }
     }
 
-    protected void OnDestroy()
+    private void Deactivate()
     {
-        _events.IonSphereUse -= OnIonSphereUse;
+        ObjectPoolManager.ReturnObjectToPool(gameObject);
+        _events.EnemyDestroyed?.Invoke(Data.EnemyStrenght);
     }
+
+    protected void OnDestroy() => _events.IonSphereUse -= OnIonSphereUse;
 }
