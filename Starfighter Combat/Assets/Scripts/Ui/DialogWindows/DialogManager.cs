@@ -14,7 +14,8 @@ namespace Ui.DialogWindows
         private static readonly Dictionary<Type, string> PrefabsDictionary = new Dictionary<Type, string>()
         {
             {typeof(GameOverWindow),"GameOverDialog"},
-            {typeof(PauseMenuDialog),"PauseMenuDialog"}
+            {typeof(PauseMenuDialog),"PauseMenuDialog"},
+            {typeof(YouWinDialog),"YouWinDialog"}
 
         };
 

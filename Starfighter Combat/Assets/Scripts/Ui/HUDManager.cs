@@ -5,14 +5,13 @@ using UnityEngine.UI;
 public class HUDManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreText;
-    [SerializeField] private TextMeshProUGUI _maxScoreText;
     [SerializeField] private Button _pauseButton;
     [SerializeField] private TimeBar _bonusTimer;
 
     public void Initialise()
     {
         EntryPoint.Instance.Events.ChangeScore += UpdateScore;
-        EntryPoint.Instance.Events.BonusCollected += ActivateBonusTimer;
+       //EntryPoint.Instance.Events.BonusCollected += ActivateBonusTimer;
        
         _pauseButton.onClick.AddListener(Pause);
 
@@ -22,7 +21,7 @@ public class HUDManager : MonoBehaviour
     private void OnDestroy()
     {
         EntryPoint.Instance.Events.ChangeScore -= UpdateScore;
-        EntryPoint.Instance.Events.BonusCollected -= ActivateBonusTimer;
+        //EntryPoint.Instance.Events.BonusCollected -= ActivateBonusTimer;
 
         _pauseButton.onClick.RemoveAllListeners();
     }
@@ -32,9 +31,9 @@ public class HUDManager : MonoBehaviour
         _scoreText.text = "Score: " + newScore;
     }
 
-    private void ActivateBonusTimer(BonusTag tag)
+    public void ActivateBonusTimer()
     {
-        if (tag == BonusTag.Multilaser || tag == BonusTag.ForceField)
+        //if (tag == BonusTag.Multilaser || tag == BonusTag.ForceField)
             _bonusTimer.gameObject.SetActive(true);
     }
 

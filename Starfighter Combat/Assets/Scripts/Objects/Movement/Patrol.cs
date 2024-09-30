@@ -25,6 +25,7 @@ public class Patrol : AdvancedMove
             case AdvancedMover:
 
                 UpdatePoints();
+                LookInTargetDirection(_direction);
                 break;
         }
     }

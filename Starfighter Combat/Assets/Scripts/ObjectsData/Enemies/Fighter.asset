@@ -22,3 +22,4 @@ MonoBehaviour:
   _health: 2
   _enemyProjectile: {fileID: 2597346899940027235, guid: 536963f2d150db94da7913647ee77fc2, type: 3}
   _reloadCountDown: 2.5
+  _explosionPrefab: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}

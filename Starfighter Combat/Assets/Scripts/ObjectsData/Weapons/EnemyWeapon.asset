@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: EnemyWeapon
   m_EditorClassIdentifier: 
   _objectTag: 5
-  _objectSpeed: 10
+  _objectSpeed: 15
   _gameZoneBorders: {x: 25, y: 20}
   _damage: 1

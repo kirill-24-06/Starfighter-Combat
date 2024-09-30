@@ -2,7 +2,7 @@ using System;
 
 public class LevelStage
 {
-    private readonly StageData _data;
+    private readonly StageData _data;// <= заменить на SpawnerData
 
     private readonly Timer _stageTimer;
     public bool IsStageCompleted { get; private set; }
@@ -25,7 +25,5 @@ public class LevelStage
         _stageTimer.StartTimer();
     }
 
-    public StageData GetData() => _data;
-
-    
+    public StageData GetData() => _data; 
 }

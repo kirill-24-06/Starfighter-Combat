@@ -19,7 +19,10 @@ public class InterceptorData : SpawnableData, IData
 
     [SerializeField] private int _shootsBeforeRetreat;
 
-  
+    [SerializeField] private GameObject _explosionPrefab;
+
+    public GameObject Explosion => _explosionPrefab;
+
     public EnemyStrenght EnemyStrenght => _enemyStrenght;
 
     public int Health => _health;

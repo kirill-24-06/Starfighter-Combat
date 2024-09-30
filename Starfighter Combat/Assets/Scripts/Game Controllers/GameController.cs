@@ -1,4 +1,3 @@
-using System;
 using Ui.DialogWindows;
 using Ui.DialogWindows.Dialogs;
 using UnityEngine;
@@ -45,14 +44,15 @@ public class GameController : MonoBehaviour
     private void OnPlayerDied()
     {
         StopGame();
-        GameOverWindow gameOverDialog = DialogManager.ShowDialog<GameOverWindow>();//_uiManager.GameOverDialog();
+        GameOverWindow gameOverDialog = DialogManager.ShowDialog<GameOverWindow>();
         gameOverDialog.Initialise(EntryPoint.Instance.ScoreController.Score);
     }
 
     private void OnLevelCompleted()
     {
         StopGame();
-        //Show Victory Screen
+        YouWinDialog youWinDialog = DialogManager.ShowDialog<YouWinDialog>();
+        youWinDialog.Initialise(EntryPoint.Instance.ScoreController.Score);
     }
 
     private void OnMenuExit()

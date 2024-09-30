@@ -88,7 +88,7 @@ public class AdvancedMove
     protected virtual Vector3 GenerateMovePoint()
     {
         float positionX = UnityEngine.Random.Range(-_area.x, _area.x);
-        float positionY = UnityEngine.Random.Range(- _area.y/2, _area.y);
+        float positionY = UnityEngine.Random.Range(- _area.y/5, _area.y);
 
         return new Vector3(positionX, positionY, 0);
     }

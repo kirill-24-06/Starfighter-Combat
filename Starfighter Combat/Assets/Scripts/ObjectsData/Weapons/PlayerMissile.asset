@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerMissile
   m_EditorClassIdentifier: 
   _objectTag: 4
-  _objectSpeed: 10
+  _objectSpeed: 12
   _gameZoneBorders: {x: 20, y: 15}
   _damage: 1
   _launchTime: 0.5

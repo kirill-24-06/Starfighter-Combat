@@ -13,7 +13,7 @@ public class PlayerData : ScriptableObject
     [SerializeField] private float _reloadTime;
     [SerializeField] private float _bonusLenght;
     [SerializeField] private Vector2 _gameBorders;
-
+    [SerializeField] private GameObject _explosionPrefab;
 
     public ObjectTag Tag => _tag;
 
@@ -32,4 +32,6 @@ public class PlayerData : ScriptableObject
     public float BonusTimeLenght => _bonusLenght;
 
     public int IonSpheresStartAmount => _ionSpheresStartAmount;
+
+    public GameObject Explosion => _explosionPrefab;
 }

@@ -5,6 +5,10 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     [SerializeField] private List<StageData> _stages;
+    [SerializeField] private BossWave _bossWave;
+
 
     public List<StageData> Stages => _stages;
+
+    public BossWave BossWave => _bossWave;
 }

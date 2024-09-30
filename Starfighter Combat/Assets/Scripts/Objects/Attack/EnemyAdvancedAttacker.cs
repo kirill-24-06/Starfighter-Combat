@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAdvancedAttacker : IAttacker
 {
-    protected readonly Enemy _client;
     private List<Transform> _firePoints;
 
     protected readonly Timer _reloadTimer;
@@ -18,16 +16,15 @@ public class EnemyAdvancedAttacker : IAttacker
 
     public Action AttackRunComplete;
 
-    public EnemyAdvancedAttacker(Enemy client, float reloadCountDown, int shotsPerAttackRun)
+    public EnemyAdvancedAttacker(MonoBehaviour client, float reloadCountDown, int shotsPerAttackRun)
     {
-        _client = client;
         _reload = reloadCountDown;
         _shotsPerAttackRun = shotsPerAttackRun;
 
         _firePoints = new List<Transform>();
-        FindFirePoints();
+        FindFirePoints(client.transform);
 
-        _reloadTimer = new Timer(_client);
+        _reloadTimer = new Timer(client);
         _reloadTimer.TimeIsOver += OnReloadTimerExpired;
 
     }
@@ -73,9 +70,9 @@ public class EnemyAdvancedAttacker : IAttacker
 
     protected void OnReloadTimerExpired() => _isShooted = false;
 
-    private void FindFirePoints()
+    private void FindFirePoints(Transform client)
     {
-        foreach (Transform child in _client.transform)
+        foreach (Transform child in client)
         {
             if (child.name == "FirePoint")
             {

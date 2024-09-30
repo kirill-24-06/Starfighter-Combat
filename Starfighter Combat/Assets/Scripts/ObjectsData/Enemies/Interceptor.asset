@@ -25,3 +25,4 @@ MonoBehaviour:
   _reloadCountDown: 1
   _liveTime: 25
   _shootsBeforeRetreat: 3
+  _explosionPrefab: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}

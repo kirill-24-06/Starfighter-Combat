@@ -17,7 +17,11 @@ public class RocketShipData : SpawnableData, IData
     [SerializeField] private float _liveTime;
 
     [SerializeField] private int _shootsBeforeRetreat;
+
+    [SerializeField] private GameObject _explosionPrefab;
     
+
+    public GameObject Explosion => _explosionPrefab;
 
     public EnemyStrenght EnemyStrenght => _enemyStrenght;
 

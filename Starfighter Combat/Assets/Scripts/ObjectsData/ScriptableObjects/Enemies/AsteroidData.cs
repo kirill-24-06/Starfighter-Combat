@@ -8,10 +8,11 @@ public class AsteroidData : SpawnableData,IData
     [SerializeField] private EnemyStrenght _enemyStrenght;
 
     [SerializeField] private int _health;
+    [SerializeField] private GameObject _explosionPrefb;
 
+    public GameObject Explosion => _explosionPrefb;
 
     public EnemyStrenght EnemyStrenght => _enemyStrenght;
 
     public int Health => _health;
-
 }

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EnemyAttacker : IAttacker
 {
-    protected readonly Enemy _client;
     private Transform _firePoint;
 
     protected readonly Timer _reloadTimer;
@@ -10,14 +9,13 @@ public class EnemyAttacker : IAttacker
 
     protected bool _isShooted = false;
 
-    public EnemyAttacker(Enemy client, float reloadCountDown)
+    public EnemyAttacker(MonoBehaviour client, float reloadCountDown)
     {
-        _client = client;
-        _firePoint = _client.transform.Find("FirePoint");
+        _firePoint = client.transform.Find("FirePoint");
 
         _reload = reloadCountDown;
 
-        _reloadTimer = new Timer(_client);
+        _reloadTimer = new Timer(client);
         _reloadTimer.TimeIsOver += OnReloadTimerExpired;
     }
 

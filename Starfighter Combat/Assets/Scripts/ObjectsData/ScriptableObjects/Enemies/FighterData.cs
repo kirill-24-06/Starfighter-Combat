@@ -9,10 +9,12 @@ public class FighterData : SpawnableData, IData
     [SerializeField] private int _health;
 
     [SerializeField] private EnemyProjectile _enemyProjectile;
-
     [SerializeField] private float _reloadCountDown;
+
+    [SerializeField] private GameObject _explosionPrefab;
    
 
+    public GameObject Explosion => _explosionPrefab;
     public EnemyStrenght EnemyStrenght => _enemyStrenght;
 
     public int Health => _health;
@@ -20,5 +22,5 @@ public class FighterData : SpawnableData, IData
     public EnemyProjectile EnemyProjectile => _enemyProjectile;
 
     public float ReloadCountDown => _reloadCountDown;
-    
+
 }

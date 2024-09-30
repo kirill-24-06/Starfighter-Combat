@@ -5,7 +5,7 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private GameController _gameController;
     [SerializeField] private ScoreController _scoreController;
     [SerializeField] private Player _player;
-    [SerializeField] private BackgroundMover _backgroundMover;
+    [SerializeField] private BackgroundController _backgroundController;
     [SerializeField] private SpawnController _spawnController;
     [SerializeField] private LevelController _levelController;
     [SerializeField] private UiRoot _root;
@@ -39,6 +39,8 @@ public class EntryPoint : MonoBehaviour
     public Bounds[] PatrolArea { get; private set; }
 
     public Transform UiRoot => _root.transform;
+
+    public HUDManager HudManager => _hudManager;
 
 
 
@@ -74,7 +76,7 @@ public class EntryPoint : MonoBehaviour
         _spawner.Initialise();
         _spawnController.Initialise();
         _levelController.Initialise();
-        _backgroundMover.Initialise();
+        _backgroundController.Initialise();
     }
 
     private void PatrolAreaInit()

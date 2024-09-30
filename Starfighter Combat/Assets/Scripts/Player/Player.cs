@@ -5,7 +5,8 @@ public class Player : MonoBehaviour
     private static Player _instance;
 
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private GameObject[] _defenceDrones;
+    [SerializeField] private DefenceDroneBehaviour[] _defenceDrones;
+    [SerializeField] private GameObject _ionSphere;
 
     private EventManager _events;
     private PlayerController _controller;
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
     private Timer _bonusTimer;
 
     [SerializeField]private ForceFieldBehaviour _forceField;
+    [SerializeField] private GameObject _nukePoint;
 
     private int _playerHealth;
 
@@ -43,6 +45,8 @@ public class Player : MonoBehaviour
         _bonusTimer = new Timer(this);
 
         _events = EntryPoint.Instance.Events;
+
+        _forceField.Initialise();
 
         _events.Start += OnStart;
 
@@ -87,6 +91,14 @@ public class Player : MonoBehaviour
         {
             _events.PlayerDied?.Invoke();
         }
+
+        else
+        {
+            EntryPoint.Instance.SpawnController.RespawnPlayer();
+            gameObject.SetActive(false);
+        }
+
+        Instantiate(_playerData.Explosion, transform.position, _playerData.Explosion.transform.rotation);
     }
 
     private void OnHeal(int heal)
@@ -121,11 +133,6 @@ public class Player : MonoBehaviour
                 EnableMultilaser();
                 break;
 
-            case BonusTag.LaserBeam:
-
-                //ToDo
-                break;
-
             case BonusTag.ForceField:
 
                 ActivateForceField();
@@ -152,6 +159,8 @@ public class Player : MonoBehaviour
         _bonusTimer.SetTimer(_playerData.BonusTimeLenght);
         _bonusTimer.TimeIsOver += _events.MultilaserEnd;
         _bonusTimer.StartTimer();
+
+        EntryPoint.Instance.HudManager.ActivateBonusTimer();
     }
 
     private void OnMultilaserEnd()
@@ -171,19 +180,23 @@ public class Player : MonoBehaviour
 
     private void OnIonSphereUse()
     {
+        Instantiate(_ionSphere, _nukePoint.transform.position, _ionSphere.transform.rotation);
+
         _ionSpheresAmount--;
         _isEquiped = _ionSpheresAmount > 0;
 
         _events.BonusAmountUpdate?.Invoke(_ionSpheresAmount);
     }
 
-    private void ActivateForceField()
+    public void ActivateForceField()
     {
         _events.ForceField?.Invoke();
 
         _bonusTimer.SetTimer(_playerData.BonusTimeLenght);
         _bonusTimer.TimeIsOver += _events.ForceFieldEnd;
         _bonusTimer.StartTimer();
+
+        EntryPoint.Instance.HudManager.ActivateBonusTimer();
     }
 
     private void ActivateDrone()
@@ -193,11 +206,11 @@ public class Player : MonoBehaviour
             _defenceDronesAmount++;
             _isDroneActive = _defenceDronesAmount > 0;
 
-            foreach (GameObject drone in _defenceDrones)
+            foreach (DefenceDroneBehaviour drone in _defenceDrones)
             {
-                if (!drone.activeInHierarchy)
+                if (!drone.gameObject.activeInHierarchy)
                 {
-                    drone.SetActive(true);
+                    drone.gameObject.SetActive(true);
                     break;
                 }
             }
@@ -211,9 +224,10 @@ public class Player : MonoBehaviour
 
         for (int i = _defenceDrones.Length - 1; i >= 0; i--)
         {
-            if (_defenceDrones[i].activeInHierarchy)
+            if (_defenceDrones[i].gameObject.activeInHierarchy)
             {
-                _defenceDrones[i].SetActive(false);
+                Instantiate(_defenceDrones[i].Explosion, _defenceDrones[i].gameObject.transform.position, _defenceDrones[i].Explosion.transform.rotation);
+                _defenceDrones[i].gameObject.SetActive(false);
                 break;
             }
         }

@@ -5,10 +5,15 @@ public class Spawner
 {
     private List<SpawnArea> _spawnAreas;
     private ObjectHolder _spawnedObjects;
+    private Player _player;
+    private Vector3 _playerStartPosition;
 
 
     public void Initialise()
     {
+        _player = EntryPoint.Instance.Player;
+        _playerStartPosition = _player.transform.position;
+
         _spawnAreas = new List<SpawnArea>();
 
         SpawnArea[] existedAreas = GameObject.FindObjectsOfType<SpawnArea>();
@@ -48,6 +53,13 @@ public class Spawner
         _spawnedObjects.RegisterObject(spawnedObject, ObjectTag.Bonus);
     }
 
+    public void SpawnPlayer()
+    {
+        _player.transform.position = _playerStartPosition;
+        _player.gameObject.SetActive(true);
+
+        _player.ActivateForceField();
+    }
 
     private SpawnArea SelectSpawnArea(AreaTag[] spawnZones)
     {

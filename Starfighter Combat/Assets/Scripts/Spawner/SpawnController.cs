@@ -3,16 +3,10 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    [SerializeField] private SpawnerData _data;
+    private SpawnerData _data;
 
     private Spawner _spawner;
 
-    //ToDo
-    //private Timer _enemySpawnTimer;
-    //private Timer _hardSpawnTimer;
-    //private Timer _bonusSpawnTimer;
-
-    //Temp
     private IEnumerator _enemySpawner;
     private IEnumerator _hardEnemySpawner;
     private IEnumerator _bonusSpawner;
@@ -22,55 +16,27 @@ public class SpawnController : MonoBehaviour
 
     private bool _bonusIsActive = false;
 
-
     private bool _isGameActive;
-
 
     public void Initialise()
     {
-        //_data =
-
         _spawner = EntryPoint.Instance.Spawner;
-
-        //_enemySpawnTimer = new Timer(this);
-        //_hardSpawnTimer = new Timer(this);
-        //_bonusSpawnTimer = new Timer(this);
 
         _enemySpawner = EnemySpawner();
         _hardEnemySpawner = HardEnemySpawner();
         _bonusSpawner = BonusSpawner();
 
-        //SetTimers();
-
         EntryPoint.Instance.Events.Start += OnStart;
         EntryPoint.Instance.Events.EnemyDestroyed += OnEnemyDestroyed;
         EntryPoint.Instance.Events.BonusTaken += OnBonusTaken;
         EntryPoint.Instance.Events.Stop += OnStop;
-
     }
 
-    
-    private void OnStart()
-    {
-        //yield return new WaitForSeconds(_data.SpawnDelay);     
-        _isGameActive = true;
-
-        if (_data.Enemies.Count > 0)
-            StartCoroutine(_enemySpawner);
-            //_enemySpawnTimer.StartTimer();
-
-        if (_data.HardEnemies.Count > 0) //<==Debug
-            StartCoroutine(_hardEnemySpawner);
-            //_hardSpawnTimer.StartTimer();
-
-        if (_data.Bonuses.Count > 0)
-            StartCoroutine(_bonusSpawner);
-            //_bonusSpawnTimer.StartTimer();
-    }
+    private void OnStart() => _isGameActive = true;
 
     private void OnStop() => _isGameActive = false;
 
-    public void OnNewStage(SpawnerData newData)
+    public void NewStage(SpawnerData newData)
     {
         StopAllCoroutines();
 
@@ -78,15 +44,12 @@ public class SpawnController : MonoBehaviour
 
         if (_data.Enemies.Count > 0)
             StartCoroutine(_enemySpawner);
-        //_enemySpawnTimer.StartTimer();
-
-        if (_data.HardEnemies.Count > 0) 
+     
+        if (_data.HardEnemies.Count > 0)
             StartCoroutine(_hardEnemySpawner);
-        //_hardSpawnTimer.StartTimer();
-
+        
         if (_data.Bonuses.Count > 0)
             StartCoroutine(_bonusSpawner);
-        //_bonusSpawnTimer.StartTimer();
     }
 
     private void SpawnEnemy()
@@ -117,6 +80,24 @@ public class SpawnController : MonoBehaviour
         _bonusIsActive = true;
     }
 
+    public void RespawnPlayer() => StartCoroutine(Respawn());
+    
+
+    //bug
+    private IEnumerator Respawn()
+    {
+        float count = 0;
+
+        while (count < 2.0f)
+        {
+            count += Time.deltaTime;
+
+            yield return null;
+        }
+
+        _spawner.SpawnPlayer();
+    }
+
     private void OnEnemyDestroyed(EnemyStrenght enemyStrenght)
     {
         if (enemyStrenght == EnemyStrenght.Hard)
@@ -134,10 +115,25 @@ public class SpawnController : MonoBehaviour
     private void OnBonusTaken() => _bonusIsActive = false;
 
 
-    private void OnBossArrival()
+    public void BossArrival(BossWave bossWave)
     {
-        //ToDo
         StopAllCoroutines();
+
+        _data = bossWave.SpawnerData;
+
+        foreach (var boss in bossWave.Bosses)
+        {
+            _spawner.SpawnEnemy(boss);
+        }
+
+        if (_data.Enemies.Count > 0)
+            StartCoroutine(_enemySpawner);
+
+        if (_data.HardEnemies.Count > 0)
+            StartCoroutine(_hardEnemySpawner);
+
+        if (_data.Bonuses.Count > 0)
+            StartCoroutine(_bonusSpawner);
     }
 
 
@@ -206,40 +202,4 @@ public class SpawnController : MonoBehaviour
             yield return null;
         }
     }
-
-    //private void SetTimers()
-    //{
-    //    _enemySpawnTimer.SetTimer(_data.SpawnTime);
-    //    _hardSpawnTimer.SetTimer(_data.SpawnTime * 2);
-    //    _bonusSpawnTimer.SetTimer(_data.BonusSpawnTime);
-
-    //    _enemySpawnTimer.TimeIsOver += () =>
-    //    {
-    //        if (_isGameActive)
-    //        {
-    //            SpawnEnemy();
-    //           _enemySpawnTimer.StartTimer();
-    //        }
-    //    };
-
-    //    _hardSpawnTimer.TimeIsOver += () =>
-    //    {
-    //        if (_isGameActive)
-    //        {
-    //            SpawnHardEnemy();
-    //            _hardSpawnTimer.StartTimer();
-    //        }
-    //    };
-
-    //    _bonusSpawnTimer.TimeIsOver += () =>
-    //    {
-    //        if (_isGameActive)
-    //        {
-    //            SpawnBonus();
-    //            _bonusSpawnTimer.StartTimer();
-    //        }
-    //    };
-    //}
-
-
 }
