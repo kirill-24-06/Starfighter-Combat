@@ -5,6 +5,7 @@ public class Asteroid : Enemy
     [SerializeField] private AsteroidData _data;
 
     private IMover _mover;
+    private AudioSource _soundPlayer;
 
     protected override void Awake()
     {
@@ -23,6 +24,7 @@ public class Asteroid : Enemy
     protected override void Initialise()
     {
         _mover = new Mover(transform);
+        _soundPlayer = EntryPoint.Instance.GlobalSoundFX;
 
         Data = _data;
     }
@@ -42,5 +44,7 @@ public class Asteroid : Enemy
 
         _events.AddScore?.Invoke(_data.Score);
         _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
+
+        _soundPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
     }
 }

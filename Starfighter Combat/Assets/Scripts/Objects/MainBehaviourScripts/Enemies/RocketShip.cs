@@ -10,6 +10,8 @@ public class RocketShip : Enemy
 
     private Timer _liveTimer;
 
+    private AudioSource _audioPlayer;
+
     protected override void Awake()
     {
         base.Awake();
@@ -44,13 +46,15 @@ public class RocketShip : Enemy
     {
         _mover = new Patrol(transform, _data.EngageZone);
         _target = EntryPoint.Instance.Player.transform;
-        _attacker = new EnemyAdvancedAttacker(this, _data.ReloadCountDown, _data.ShootsBeforeRetreat);
+        _attacker = new EnemyAdvancedAttacker(this, _data, _data.ShootsBeforeRetreat);
 
         _liveTimer = new Timer(this);
         _liveTimer.TimeIsOver += _mover.Disengage;
 
         _mover.Arrival += OnArrival;
         _attacker.AttackRunComplete += OnAttackRunComplete;
+
+        _audioPlayer = EntryPoint.Instance.GlobalSoundFX;
 
         Data = _data;
     }
@@ -90,5 +94,7 @@ public class RocketShip : Enemy
 
         _events.AddScore?.Invoke(_data.Score);
         _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
+
+        _audioPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
     }
 }

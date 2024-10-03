@@ -7,7 +7,9 @@ public class EnemyAdvancedAttacker : IAttacker
     private List<Transform> _firePoints;
 
     protected readonly Timer _reloadTimer;
-    protected float _reload;
+    protected IShooterData _shooterData;
+
+    private AudioSource _audioPlayer;
 
     protected bool _isShooted = false;
 
@@ -16,9 +18,11 @@ public class EnemyAdvancedAttacker : IAttacker
 
     public Action AttackRunComplete;
 
-    public EnemyAdvancedAttacker(MonoBehaviour client, float reloadCountDown, int shotsPerAttackRun)
+    public EnemyAdvancedAttacker(MonoBehaviour client, IShooterData shooterData, int shotsPerAttackRun)
     {
-        _reload = reloadCountDown;
+        _audioPlayer = client.GetComponentInChildren<AudioSource>();
+
+        _shooterData = shooterData;
         _shotsPerAttackRun = shotsPerAttackRun;
 
         _firePoints = new List<Transform>();
@@ -43,8 +47,10 @@ public class EnemyAdvancedAttacker : IAttacker
                 RegistrProjectile(newProjectile);
             }
 
-            _reloadTimer.SetTimer(_reload);
+            _reloadTimer.SetTimer(_shooterData.ReloadCountDown);
             _reloadTimer.StartTimer();
+
+            _audioPlayer.PlayOneShot(_shooterData.FireSound, _shooterData.FireSoundVolume);
 
             _shotsFired++;
         }

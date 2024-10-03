@@ -17,7 +17,7 @@ public class InterceptorStage : BossStage
         _boss = boss;
         _target = EntryPoint.Instance.Player.transform;
         _mover = new AdvancedMove(boss.transform, boss.Data.GameArea);
-        _weapon = new EnemyAdvancedAttacker(boss, _data.ReloadTime, _data.ShotsBeforePositionChange);
+        _weapon = new EnemyAdvancedAttacker(boss, _data, _data.ShotsBeforePositionChange);
         _weapon.AttackRunComplete += OnAttackRunComplete;
         return this;
     }

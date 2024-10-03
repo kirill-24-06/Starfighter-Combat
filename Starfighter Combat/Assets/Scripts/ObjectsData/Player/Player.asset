@@ -22,3 +22,7 @@ MonoBehaviour:
   _bonusLenght: 10
   _gameBorders: {x: 19, y: 14}
   _explosionPrefab: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
+  _fireSound: {fileID: 8300000, guid: 9a441e078f569aa45b635ae2a0d8ab5b, type: 3}
+  _fireSoundVolume: 0.1
+  _explosionSound: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
+  _explosionSoundVolume: 0.15

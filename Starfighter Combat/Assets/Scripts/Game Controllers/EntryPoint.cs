@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EntryPoint : MonoBehaviour
 {
+    [SerializeField] private AudioSource _globalSoundFX;
+    [SerializeField] private MusicPlayer _musicPlayer;
     [SerializeField] private GameController _gameController;
     [SerializeField] private ScoreController _scoreController;
     [SerializeField] private Player _player;
@@ -42,6 +44,8 @@ public class EntryPoint : MonoBehaviour
 
     public HUDManager HudManager => _hudManager;
 
+    public AudioSource GlobalSoundFX => _globalSoundFX;
+
 
 
     private void Awake()
@@ -76,6 +80,7 @@ public class EntryPoint : MonoBehaviour
         _spawner.Initialise();
         _spawnController.Initialise();
         _levelController.Initialise();
+        _musicPlayer.Initialise();
         _backgroundController.Initialise();
     }
 

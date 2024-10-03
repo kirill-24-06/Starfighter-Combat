@@ -27,7 +27,8 @@ public class MainMenuDialog : Dialog
     
     private void OpenSettings()
     {
-        Debug.Log("Work in progres");
+        DialogManager.ShowDialog<SettingsDialog>();
+        Hide();
     }
 
     private void ShowAboutInfo()

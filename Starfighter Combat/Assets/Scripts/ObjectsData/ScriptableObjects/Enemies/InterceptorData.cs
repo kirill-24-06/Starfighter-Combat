@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "New InterceptorData", menuName = "Config Data/Spawnable Data/Enemy/Interceptor", order = 53)]
-public class InterceptorData : SpawnableData, IData
+public class InterceptorData : SpawnableData, IData, IShooterData
 {
     [Header("Interceptor")]
     [SerializeField] private EnemyStrenght _enemyStrenght;
@@ -19,9 +19,16 @@ public class InterceptorData : SpawnableData, IData
 
     [SerializeField] private int _shootsBeforeRetreat;
 
+    [SerializeField] private AudioClip _fireSound;
+    [SerializeField, Range(0.1f, 1)] private float _fireSoundVolume;
+
     [SerializeField] private GameObject _explosionPrefab;
+    [SerializeField]private AudioClip _explosionSound;
+    [SerializeField,Range(0.1f,1)] private float _explosionSoundVolume;
 
     public GameObject Explosion => _explosionPrefab;
+    public AudioClip ExplosionSound => _explosionSound;
+    public float ExplosionSoundVolume => _explosionSoundVolume;
 
     public EnemyStrenght EnemyStrenght => _enemyStrenght;
 
@@ -36,5 +43,8 @@ public class InterceptorData : SpawnableData, IData
     public float LiveTime => _liveTime;
 
     public int ShootsBeforeRetreat => _shootsBeforeRetreat;
-   
+
+    public AudioClip FireSound => _fireSound;
+
+    public float FireSoundVolume => _fireSoundVolume;
 }

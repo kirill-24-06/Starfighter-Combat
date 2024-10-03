@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectile: {fileID: 814541193105084480, guid: 536963f2d150db94da7913647ee77fc2, type: 3}
   _reloadTime: 0.1
+  _fireSound: {fileID: 8300000, guid: 9a441e078f569aa45b635ae2a0d8ab5b, type: 3}
+  _fireSoundVolume: 0.1
   _shotsBeforePositionChange: 15
   _stageSwitchHealthPercent: 50

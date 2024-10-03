@@ -4,9 +4,10 @@ public class Fighter : Enemy
 {
     [SerializeField] private FighterData _data;
 
-    private EnemyAttacker _attacker;
-
+    private IAttacker _attacker;
     private IMover _mover;
+
+    private AudioSource _audioPlayer;
 
     protected override void Awake()
     {
@@ -38,8 +39,9 @@ public class Fighter : Enemy
     protected override void Initialise()
     {
         _mover = new Mover(transform);
-        _attacker = new EnemyAttacker(this, _data.ReloadCountDown);
-        
+        _attacker = new EnemyAttacker(this, _data);
+
+        _audioPlayer = EntryPoint.Instance.GlobalSoundFX;
 
         Data = _data;
     }
@@ -58,5 +60,16 @@ public class Fighter : Enemy
 
         _events.AddScore?.Invoke(_data.Score);
         _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
+
+        _audioPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
     }
+}
+
+public interface IShooterData
+{
+    public float ReloadCountDown { get; }
+
+    public AudioClip FireSound { get; }
+
+    public float FireSoundVolume { get; }
 }

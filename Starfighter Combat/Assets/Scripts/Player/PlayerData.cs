@@ -14,6 +14,10 @@ public class PlayerData : ScriptableObject
     [SerializeField] private float _bonusLenght;
     [SerializeField] private Vector2 _gameBorders;
     [SerializeField] private GameObject _explosionPrefab;
+    [SerializeField] private AudioClip _fireSound;
+    [SerializeField, Range(0.1f, 1)] private float _fireSoundVolume;
+    [SerializeField] private AudioClip _explosionSound;
+    [SerializeField, Range(0.1f, 1)] private float _explosionSoundVolume;
 
     public ObjectTag Tag => _tag;
 
@@ -34,4 +38,12 @@ public class PlayerData : ScriptableObject
     public int IonSpheresStartAmount => _ionSpheresStartAmount;
 
     public GameObject Explosion => _explosionPrefab;
+
+    public AudioClip FireSound => _fireSound;
+
+    public float FireSoundVolume => _fireSoundVolume;
+
+    public AudioClip ExplosionSound => _explosionSound;
+
+    public float ExplosionSoundVolume => _explosionSoundVolume;
 }

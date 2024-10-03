@@ -15,20 +15,22 @@ namespace Ui.DialogWindows
         {
             {typeof(GameOverWindow),"GameOverDialog"},
             {typeof(PauseMenuDialog),"PauseMenuDialog"},
-            {typeof(YouWinDialog),"YouWinDialog"}
+            {typeof(YouWinDialog),"YouWinDialog"},
+            {typeof(MainMenuDialog),"MainMenuDialog"},
+            {typeof(SettingsDialog),"SettingsDialog" }
 
         };
 
         public static T ShowDialog<T>() where T : Dialog
         {
-            var go = GetPrefabByType<T>();
-            if (go == null)
+            var dialog = GetPrefabByType<T>();
+            if (dialog == null)
             {
                 Debug.LogError("Show window - object not found");
                 return null;
             }
 
-            return GameObject.Instantiate(go, GuiHolder);
+            return GameObject.Instantiate(dialog, GuiHolder);
         }
 
         private static T GetPrefabByType<T>() where T : Dialog
@@ -52,7 +54,18 @@ namespace Ui.DialogWindows
         //Canvas к которому крепятся диалоговые окна
         public static Transform GuiHolder
         {
-            get { return EntryPoint.Instance.UiRoot; }
+            get
+            {
+                if (EntryPoint.Instance != null)
+                {
+                    return EntryPoint.Instance.UiRoot;
+                }
+
+                else
+                {
+                    return GameObject.FindObjectOfType<UiRoot>().transform;
+                }
+            }
         }
     }
 }

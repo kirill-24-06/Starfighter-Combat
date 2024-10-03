@@ -25,4 +25,8 @@ MonoBehaviour:
   _reloadCountDown: 1
   _liveTime: 25
   _shootsBeforeRetreat: 3
+  _fireSound: {fileID: 8300000, guid: f402b1c66b2bac64b9afbe1db15ea830, type: 3}
+  _fireSoundVolume: 0.1
   _explosionPrefab: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
+  _explosionSound: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
+  _explosionSoundVolume: 0.146

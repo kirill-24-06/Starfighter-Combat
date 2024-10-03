@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private EventManager _events;
     private PlayerController _controller;
     private PolygonCollider2D _playerCollider;
+    private AudioSource _audioSource;
     private Timer _bonusTimer;
 
     [SerializeField]private ForceFieldBehaviour _forceField;
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
         _instance = this;
         _controller = GetComponent<PlayerController>();
         _playerCollider = GetComponent<PolygonCollider2D>();
+        _audioSource = EntryPoint.Instance.GlobalSoundFX;
         _bonusTimer = new Timer(this);
 
         _events = EntryPoint.Instance.Events;
@@ -99,6 +101,7 @@ public class Player : MonoBehaviour
         }
 
         Instantiate(_playerData.Explosion, transform.position, _playerData.Explosion.transform.rotation);
+        _audioSource.PlayOneShot(_playerData.ExplosionSound, _playerData.ExplosionSoundVolume);
     }
 
     private void OnHeal(int heal)

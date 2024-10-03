@@ -5,15 +5,18 @@ public class EnemyAttacker : IAttacker
     private Transform _firePoint;
 
     protected readonly Timer _reloadTimer;
-    protected float _reload;
+    protected IShooterData _shooterData;
+
+    private AudioSource _audioPlayer;
 
     protected bool _isShooted = false;
 
-    public EnemyAttacker(MonoBehaviour client, float reloadCountDown)
+    public EnemyAttacker(MonoBehaviour client, IShooterData shooterData)
     {
         _firePoint = client.transform.Find("FirePoint");
+        _audioPlayer = client.GetComponentInChildren<AudioSource>();
 
-        _reload = reloadCountDown;
+        _shooterData = shooterData;
 
         _reloadTimer = new Timer(client);
         _reloadTimer.TimeIsOver += OnReloadTimerExpired;
@@ -31,8 +34,10 @@ public class EnemyAttacker : IAttacker
                _firePoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
             RegistrProjectile(newProjectile);
 
-            _reloadTimer.SetTimer(_reload);
+            _reloadTimer.SetTimer(_shooterData.ReloadCountDown);
             _reloadTimer.StartTimer();
+
+            _audioPlayer.PlayOneShot(_shooterData.FireSound,_shooterData.FireSoundVolume);
         }
     }
 

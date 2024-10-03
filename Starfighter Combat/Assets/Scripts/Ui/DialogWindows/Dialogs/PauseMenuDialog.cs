@@ -23,7 +23,8 @@ public class PauseMenuDialog : Dialog
 
     private void GoToSettings()
     {
-        Debug.Log("Work in progress!!!");
+        DialogManager.ShowDialog<SettingsDialog>();
+        Hide();
     }
 
     private void GoToMainMenu()

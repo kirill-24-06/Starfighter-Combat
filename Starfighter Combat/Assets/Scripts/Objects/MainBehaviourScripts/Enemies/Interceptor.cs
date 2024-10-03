@@ -11,6 +11,8 @@ public class Interceptor : Enemy
 
     private Timer _liveTimer;
 
+    private AudioSource _soundPlayer;
+
 
     protected override void Awake()
     {
@@ -45,13 +47,15 @@ public class Interceptor : Enemy
     {
         _mover = new AdvancedMove(transform, _data.EngageZone);
         _target = EntryPoint.Instance.Player.transform;
-        _attacker = new EnemyAdvancedAttacker(this, _data.ReloadCountDown, _data.ShootsBeforeRetreat);
+        _attacker = new EnemyAdvancedAttacker(this, _data, _data.ShootsBeforeRetreat);
 
         _liveTimer = new Timer(this);
         _liveTimer.TimeIsOver += _mover.Disengage;
 
         _mover.Arrival += OnArrival;
         _attacker.AttackRunComplete += OnAttackRunComplete;
+
+        _soundPlayer =EntryPoint.Instance.GlobalSoundFX;
 
         Data = _data;
     }
@@ -90,5 +94,7 @@ public class Interceptor : Enemy
 
         _events.AddScore?.Invoke(_data.Score);
         _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
+
+        _soundPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
     }
 }
