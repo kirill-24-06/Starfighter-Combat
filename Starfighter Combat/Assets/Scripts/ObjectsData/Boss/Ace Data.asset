@@ -23,3 +23,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7ad5428a481e8ee49ad842ba65c5ed26, type: 2}
   - {fileID: 11400000, guid: 8a5ad7379365f0c488e969dc083dd5f4, type: 2}
   _gameArea: {x: 19, y: 12}
+  _explosion: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
+  _explosionSound: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
+  _explosionSoundVolume: 0.158

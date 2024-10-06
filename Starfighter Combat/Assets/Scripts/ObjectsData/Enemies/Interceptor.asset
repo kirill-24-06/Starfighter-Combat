@@ -29,4 +29,4 @@ MonoBehaviour:
   _fireSoundVolume: 0.1
   _explosionPrefab: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
   _explosionSound: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
-  _explosionSoundVolume: 0.146
+  _explosionSoundVolume: 0.15

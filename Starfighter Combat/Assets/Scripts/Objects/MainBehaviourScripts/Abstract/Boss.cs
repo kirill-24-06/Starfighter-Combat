@@ -3,12 +3,14 @@ using UnityEngine;
 
 public abstract class Boss : MonoBehaviour
 {
-    [SerializeField] BossData _data;
+    [SerializeField] protected BossData _data;
     protected EventManager _events;
     protected int _currentHealth;
 
     private List<BossStage> _stages;
     private int _currentStage;
+
+    protected AudioSource _audioPlayer;
 
     public BossData Data => _data;
     public int CurrentHealth => _currentHealth;
@@ -38,6 +40,8 @@ public abstract class Boss : MonoBehaviour
         {
             _stages.Add(_data.Stages[i].GetBossStage().Initialise(this));
         }
+
+        _audioPlayer = EntryPoint.Instance.GlobalSoundFX;
     }
 
     private void Update()
@@ -108,6 +112,4 @@ public abstract class Boss : MonoBehaviour
         if (enemy == gameObject)
             TakeDamage(damage);
     }
-
-    public BossData GetData() => _data;
 }
