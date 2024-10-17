@@ -36,12 +36,14 @@ public class Spawner
 
 
 
-    public void SpawnEnemy(SpawnableData enemyToSpawn)
+    public GameObject SpawnEnemy(SpawnableData enemyToSpawn)
     {
         SpawnArea area = SelectSpawnArea(enemyToSpawn.SpawnZones);
 
         GameObject spawnedObject =  ObjectPoolManager.SpawnObject(enemyToSpawn.Prefab, area.GenerateSpawnPosition(), area.Rotation, ObjectPoolManager.PoolType.Enemy);
         _spawnedObjects.RegisterObject(spawnedObject, ObjectTag.Enemy);
+
+        return spawnedObject;
     }
 
 
@@ -58,7 +60,7 @@ public class Spawner
         _player.transform.position = _playerStartPosition;
         _player.gameObject.SetActive(true);
 
-        _player.ActivateForceField();
+        _player.StartTempInvunrability().Forget();
     }
 
     private SpawnArea SelectSpawnArea(AreaTag[] spawnZones)

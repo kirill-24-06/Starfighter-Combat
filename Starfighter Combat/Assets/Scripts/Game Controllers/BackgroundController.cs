@@ -33,6 +33,10 @@ public class BackgroundController : MonoBehaviour
             layer.Move(_speed);
     }
 
+    private void Start()
+    {
+        _isGameActive = true;
+    }
     private void OnStart() => _isGameActive = true;
 
     private void OnStop() => StartCoroutine(Stop());

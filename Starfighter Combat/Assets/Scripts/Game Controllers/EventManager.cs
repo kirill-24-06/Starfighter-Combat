@@ -31,7 +31,14 @@ public class EventManager
     public Action<EnemyStrenght> EnemyDestroyed;
     public Action<GameObject, int> EnemyDamaged;
     public Action<GameObject, Transform> LockTarget;
+
+    //Boss
+    public Action BossArrival;
     public Action BossDefeated;
+    public Action<float> BossDamaged;
+
+    //Abilities
+    public Action<bool> BossShiedActive;
 
 
     //Ui

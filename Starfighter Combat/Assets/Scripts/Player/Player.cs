@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -5,235 +6,87 @@ public class Player : MonoBehaviour
     private static Player _instance;
 
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private DefenceDroneBehaviour[] _defenceDrones;
-    [SerializeField] private GameObject _ionSphere;
+    [SerializeField] private ForceFieldBehaviour _forceField;
 
     private EventManager _events;
     private PlayerController _controller;
     private PolygonCollider2D _playerCollider;
-    private AudioSource _audioSource;
-    private Timer _bonusTimer;
+    private SpriteRenderer _spriteRenderer;
+    private PlayerBonusHandler _bonusHandler;
 
-    [SerializeField]private ForceFieldBehaviour _forceField;
-    [SerializeField] private GameObject _nukePoint;
+    private IResetable _healthResetHandler;
+    private Color _tempInvunrabilityColor = new Color(1, 1, 1, 0.2f);
 
-    private int _playerHealth;
-
-    private int _ionSpheresAmount = 0;
-    private int _defenceDronesAmount = 0;
-
-    private bool _bonusIsTaken = false;
     private bool _isInvunerable = false;
-    private bool _isDroneActive;
-    private bool _isEquiped;
 
     public PlayerData PlayerData => _playerData;
-    public bool IsTaken => _bonusIsTaken;
+    public bool IsActive => _bonusHandler.BonusIsActive;
     public bool IsInvunerable => _isInvunerable;
-    public bool IsEquiped => _isEquiped;
-    public bool IsDroneActive => _isDroneActive;
-
+    public bool IsEquiped => _bonusHandler.IsEquiped;
+    public bool IsDroneActive => _bonusHandler.IsDroneActive;
     public ForceFieldBehaviour ForceField => _forceField;
-
-    public Timer BonusTimer => _bonusTimer;
-
+    public Timer BonusTimer => _bonusHandler.BonusTimer;
 
     public void Initialise()
     {
         _instance = this;
         _controller = GetComponent<PlayerController>();
         _playerCollider = GetComponent<PolygonCollider2D>();
-        _audioSource = EntryPoint.Instance.GlobalSoundFX;
-        _bonusTimer = new Timer(this);
+        _spriteRenderer = transform.Find("Texture").GetComponent<SpriteRenderer>();
+
+        PlayerHealthHandler playerHealth = new(this);
+        _healthResetHandler = playerHealth;
+
+        _bonusHandler = new PlayerBonusHandler(this);
 
         _events = EntryPoint.Instance.Events;
 
         _forceField.Initialise();
 
         _events.Start += OnStart;
-
-        _events.PlayerDamaged += OnDamage;
-        _events.PlayerHealed += OnHeal;
+        _events.Stop += OnStop;
         _events.PlayerDied += OnPlayerDied;
-
-        _events.BonusCollected += OnBonusTake;
-        _events.MultilaserEnd += OnMultilaserEnd;
-        _events.IonSphereUse += OnIonSphereUse;
         _events.Invunerable += OnForceFieldActive;
-        _events.DroneDestroyed += OnDroneDestruction;
 
         _controller.Initialise();
     }
 
+    private void Start()
+    {
+        _events.ChangeHealth?.Invoke(PlayerData.Health);
+        _bonusHandler.OnStart();
+    }
     private void OnStart()
     {
-        _playerHealth = PlayerData.Health;
-        _ionSpheresAmount = PlayerData.IonSpheresStartAmount;
-        _isEquiped = _ionSpheresAmount > 0;
-
-        _events.ChangeHealth?.Invoke(_playerHealth);
-        _events.BonusAmountUpdate?.Invoke(_ionSpheresAmount);
+        _events.ChangeHealth?.Invoke(PlayerData.Health);
+        _bonusHandler.OnStart();
     }
 
-    private void OnDamage(int damage)
+    private void OnStop() => _isInvunerable = true;
+
+    private void OnPlayerDied() => gameObject.SetActive(false);
+
+    public async UniTaskVoid StartTempInvunrability()
     {
-        if (_isInvunerable)
-            return;
+        _isInvunerable = true;
+        _spriteRenderer.color = _tempInvunrabilityColor;
 
-        _playerHealth -= damage;
+        //BonusTimer.TimeIsOver += () =>
+        //{
+        //    _isInvunerable = false;
+        //    _spriteRenderer.color = Color.white;
+        //    BonusTimer.ResetTimer();
+        //};
 
-        if (_playerHealth < 0)
-        {
-            _playerHealth = 0;
-        }
+        //BonusTimer.SetTimer(3);
+        //BonusTimer.StartTimer();
 
-        _events.ChangeHealth?.Invoke(_playerHealth);
+        await UniTask.Delay(_playerData.TempInvunrabilityTimeMilliseconds, cancellationToken: destroyCancellationToken);
 
-        if (_playerHealth == 0)
-        {
-            _events.PlayerDied?.Invoke();
-        }
+        _spriteRenderer.color = Color.white;
 
-        else
-        {
-            EntryPoint.Instance.SpawnController.RespawnPlayer();
-            gameObject.SetActive(false);
-        }
-
-        Instantiate(_playerData.Explosion, transform.position, _playerData.Explosion.transform.rotation);
-        _audioSource.PlayOneShot(_playerData.ExplosionSound, _playerData.ExplosionSoundVolume);
-    }
-
-    private void OnHeal(int heal)
-    {
-        _playerHealth += heal;
-
-        if (_playerHealth > PlayerData.MaxHealth)
-        {
-            _playerHealth = PlayerData.MaxHealth;
-            _events.AddScore?.Invoke(50);
-        }
-
-        _events.ChangeHealth?.Invoke(_playerHealth);
-    }
-
-    private void OnPlayerDied()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void OnBonusTake(BonusTag bonusTag)
-    {
-        switch (bonusTag)
-        {
-            case BonusTag.Health:
-
-                OnHeal(1);
-                break;
-
-            case BonusTag.Multilaser:
-
-                EnableMultilaser();
-                break;
-
-            case BonusTag.ForceField:
-
-                ActivateForceField();
-                break;
-
-            case BonusTag.IonSphere:
-
-                AddIonSphere(1);
-                break;
-
-            case BonusTag.DefenceDrone:
-
-                ActivateDrone();
-                break;
-        }
-    }
-
-    private void EnableMultilaser()
-    {
-        _bonusIsTaken = true;
-
-        _events.Multilaser?.Invoke(true);
-
-        _bonusTimer.SetTimer(_playerData.BonusTimeLenght);
-        _bonusTimer.TimeIsOver += _events.MultilaserEnd;
-        _bonusTimer.StartTimer();
-
-        EntryPoint.Instance.HudManager.ActivateBonusTimer();
-    }
-
-    private void OnMultilaserEnd()
-    {
-        _bonusIsTaken = false;
-        _events.Multilaser?.Invoke(false);
-
-        _bonusTimer.ResetTimer();
-    }
-
-    private void AddIonSphere(int amount)
-    {
-        _ionSpheresAmount += amount;
-        _isEquiped = _ionSpheresAmount > 0;
-        EntryPoint.Instance.Events.BonusAmountUpdate?.Invoke(_ionSpheresAmount);
-    }
-
-    private void OnIonSphereUse()
-    {
-        Instantiate(_ionSphere, _nukePoint.transform.position, _ionSphere.transform.rotation);
-
-        _ionSpheresAmount--;
-        _isEquiped = _ionSpheresAmount > 0;
-
-        _events.BonusAmountUpdate?.Invoke(_ionSpheresAmount);
-    }
-
-    public void ActivateForceField()
-    {
-        _events.ForceField?.Invoke();
-
-        _bonusTimer.SetTimer(_playerData.BonusTimeLenght);
-        _bonusTimer.TimeIsOver += _events.ForceFieldEnd;
-        _bonusTimer.StartTimer();
-
-        EntryPoint.Instance.HudManager.ActivateBonusTimer();
-    }
-
-    private void ActivateDrone()
-    {
-        if (_defenceDronesAmount < _defenceDrones.Length)
-        {
-            _defenceDronesAmount++;
-            _isDroneActive = _defenceDronesAmount > 0;
-
-            foreach (DefenceDroneBehaviour drone in _defenceDrones)
-            {
-                if (!drone.gameObject.activeInHierarchy)
-                {
-                    drone.gameObject.SetActive(true);
-                    break;
-                }
-            }
-        }
-    }
-
-    private void OnDroneDestruction()
-    {
-        _defenceDronesAmount--;
-        _isDroneActive = _defenceDronesAmount > 0;
-
-        for (int i = _defenceDrones.Length - 1; i >= 0; i--)
-        {
-            if (_defenceDrones[i].gameObject.activeInHierarchy)
-            {
-                Instantiate(_defenceDrones[i].Explosion, _defenceDrones[i].gameObject.transform.position, _defenceDrones[i].Explosion.transform.rotation);
-                _defenceDrones[i].gameObject.SetActive(false);
-                break;
-            }
-        }
+        if (!_forceField.ShieldActive)
+            _isInvunerable = false;
     }
 
     private void OnForceFieldActive(bool value)
@@ -242,7 +95,7 @@ public class Player : MonoBehaviour
         _playerCollider.enabled = !_isInvunerable;
 
         if (!value)
-            _bonusTimer.ResetTimer();
+            BonusTimer.ResetTimer();
     }
 
     public static bool IsPlayer(GameObject gameObject)
@@ -253,15 +106,11 @@ public class Player : MonoBehaviour
     private void OnDestroy()
     {
         _events.Start -= OnStart;
-
-        _events.PlayerDamaged -= OnDamage;
-        _events.PlayerHealed -= OnHeal;
+        _events.Stop -= OnStop;
         _events.PlayerDied -= OnPlayerDied;
-
-        _events.BonusCollected -= OnBonusTake;
-        _events.MultilaserEnd -= OnMultilaserEnd;
-        _events.IonSphereUse -= OnIonSphereUse;
         _events.Invunerable -= OnForceFieldActive;
-        _events.DroneDestroyed -= OnDroneDestruction;
+
+        _bonusHandler.Reset();
+        _healthResetHandler.Reset();
     }
 }

@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour
             Time.timeScale = 1;
 
         StopGame();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(GlobalConstants.MainMenuSceneName);
     }
 
     private void OnDestroy()

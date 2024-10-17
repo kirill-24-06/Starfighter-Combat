@@ -17,7 +17,8 @@ namespace Ui.DialogWindows
             {typeof(PauseMenuDialog),"PauseMenuDialog"},
             {typeof(YouWinDialog),"YouWinDialog"},
             {typeof(MainMenuDialog),"MainMenuDialog"},
-            {typeof(SettingsDialog),"SettingsDialog" }
+            {typeof(SettingsDialog),"SettingsDialog" },
+            {typeof(WelcomeDialog), "WelcomeDialog" }
 
         };
 

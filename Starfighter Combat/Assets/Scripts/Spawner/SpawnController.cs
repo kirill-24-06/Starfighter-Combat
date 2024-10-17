@@ -1,5 +1,6 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using System.Threading;
 
 public class SpawnController : MonoBehaviour
 {
@@ -7,12 +8,10 @@ public class SpawnController : MonoBehaviour
 
     private Spawner _spawner;
 
-    private IEnumerator _enemySpawner;
-    private IEnumerator _hardEnemySpawner;
-    private IEnumerator _bonusSpawner;
+    private CancellationTokenSource _newStageToken;
 
     private int _activeEnemies = 0;
-    private int _activeHardEnemies = 0;
+    private int _activeEliteEnemies = 0;
 
     private bool _bonusIsActive = false;
 
@@ -21,10 +20,6 @@ public class SpawnController : MonoBehaviour
     public void Initialise()
     {
         _spawner = EntryPoint.Instance.Spawner;
-
-        _enemySpawner = EnemySpawner();
-        _hardEnemySpawner = HardEnemySpawner();
-        _bonusSpawner = BonusSpawner();
 
         EntryPoint.Instance.Events.Start += OnStart;
         EntryPoint.Instance.Events.EnemyDestroyed += OnEnemyDestroyed;
@@ -38,18 +33,63 @@ public class SpawnController : MonoBehaviour
 
     public void NewStage(SpawnerData newData)
     {
-        StopAllCoroutines();
+        CancelPreviousStage();
 
         _data = newData;
 
+        StartSpawnLoop();
+    }
+
+    private void StartSpawnLoop()
+    {
         if (_data.Enemies.Count > 0)
-            StartCoroutine(_enemySpawner);
-     
-        if (_data.HardEnemies.Count > 0)
-            StartCoroutine(_hardEnemySpawner);
-        
+            EnemySpawner(_newStageToken.Token).Forget();
+
+        if (_data.EliteEnemies.Count > 0)
+            EliteEnemySpawner(_newStageToken.Token).Forget();
+
         if (_data.Bonuses.Count > 0)
-            StartCoroutine(_bonusSpawner);
+            BonusSpawner(_newStageToken.Token).Forget();
+    }
+
+    private async UniTaskVoid EnemySpawner(CancellationToken token)
+    {
+
+        await UniTask.Delay(_data.SpawnDelay, cancellationToken: token);
+
+        while (_isGameActive)
+        {
+            SpawnEnemy();
+
+            await UniTask.Delay(_data.SpawnTime, cancellationToken: token);
+        }
+    }
+
+    private async UniTaskVoid EliteEnemySpawner(CancellationToken token)
+    {
+        await UniTask.Delay(_data.SpawnDelay, cancellationToken: token);
+
+        while (_isGameActive)
+        {
+            SpawnEliteEnemy();
+
+            await UniTask.Delay(_data.EliteSpawnTime, cancellationToken: token);
+        }
+    }
+
+    private async UniTaskVoid BonusSpawner(CancellationToken token)
+    {
+        await UniTask.Delay(_data.SpawnDelay, cancellationToken: token);
+
+        while (_isGameActive)
+        {
+            if (!_bonusIsActive)
+            {
+                SpawnBonus();
+                _bonusIsActive = true;
+            }
+            await UniTask.Delay(_data.BonusSpawnTime, cancellationToken: token);
+        }
     }
 
     private void SpawnEnemy()
@@ -61,14 +101,14 @@ public class SpawnController : MonoBehaviour
         _activeEnemies++;
     }
 
-    private void SpawnHardEnemy()
+    private void SpawnEliteEnemy()
     {
-        if (_activeEnemies >= _data.MaxEnemies || _activeHardEnemies >= _data.MaxHardEnemies)
+        if (_activeEnemies >= _data.MaxEnemies || _activeEliteEnemies >= _data.MaxHardEnemies)
             return;
 
-        _spawner.SpawnEnemy(_data.HardEnemies[Random.Range(0, _data.HardEnemies.Count)]);
+        _spawner.SpawnEnemy(_data.EliteEnemies[Random.Range(0, _data.EliteEnemies.Count)]);
         _activeEnemies++;
-        _activeHardEnemies++;
+        _activeEliteEnemies++;
     }
 
     private void SpawnBonus()
@@ -80,21 +120,11 @@ public class SpawnController : MonoBehaviour
         _bonusIsActive = true;
     }
 
-    public void RespawnPlayer() => StartCoroutine(Respawn());
-    
+    public void RespawnPlayer() => Respawn(this.GetCancellationTokenOnDestroy()).Forget();
 
-    //bug
-    private IEnumerator Respawn()
+    private async UniTaskVoid Respawn(CancellationToken cancellationToken)
     {
-        float count = 0;
-
-        while (count < 2.0f)
-        {
-            count += Time.deltaTime;
-
-            yield return null;
-        }
-
+        await UniTask.Delay(2000, cancellationToken: cancellationToken);
         _spawner.SpawnPlayer();
     }
 
@@ -103,7 +133,7 @@ public class SpawnController : MonoBehaviour
         if (enemyStrenght == EnemyStrenght.Hard)
         {
             _activeEnemies--;
-            _activeHardEnemies--;
+            _activeEliteEnemies--;
         }
 
         else if (enemyStrenght == EnemyStrenght.Basic)
@@ -114,10 +144,9 @@ public class SpawnController : MonoBehaviour
 
     private void OnBonusTaken() => _bonusIsActive = false;
 
-
     public void BossArrival(BossWave bossWave)
     {
-        StopAllCoroutines();
+        CancelPreviousStage();
 
         _data = bossWave.SpawnerData;
 
@@ -126,80 +155,20 @@ public class SpawnController : MonoBehaviour
             _spawner.SpawnEnemy(boss);
         }
 
-        if (_data.Enemies.Count > 0)
-            StartCoroutine(_enemySpawner);
-
-        if (_data.HardEnemies.Count > 0)
-            StartCoroutine(_hardEnemySpawner);
-
-        if (_data.Bonuses.Count > 0)
-            StartCoroutine(_bonusSpawner);
+       StartSpawnLoop();
     }
 
-
-    private IEnumerator EnemySpawner()
+    private void CancelPreviousStage()
     {
-        float count = 0;
-        yield return new WaitForSeconds(_data.SpawnDelay);
+        _newStageToken?.Cancel();
+        _newStageToken?.Dispose();
 
-        while (_isGameActive)
-        {
-            count += Time.deltaTime;
-
-            if (count >= _data.SpawnTime)
-            {
-                SpawnEnemy();
-                count = 0;
-            }
-
-            yield return null;
-        }
+        _newStageToken = new CancellationTokenSource();
     }
 
-    private IEnumerator HardEnemySpawner()
+    private void OnDestroy()
     {
-        float count = 0;
-        yield return new WaitForSeconds(_data.SpawnDelay);
-
-        while (_isGameActive)
-        {
-            count += Time.deltaTime;
-
-            if (count >= _data.SpawnTime * 2)
-            {
-                SpawnHardEnemy();
-                count = 0;
-            }
-
-            yield return null;
-        }
-    }
-
-    private IEnumerator BonusSpawner()
-    {
-        float count = 0;
-        yield return new WaitForSeconds(_data.SpawnDelay);
-
-        while (_isGameActive)
-        {
-            count += Time.deltaTime;
-
-            if (count >= _data.BonusSpawnTime)
-            {
-                if (!_bonusIsActive)
-                {
-                    SpawnBonus();
-                    _bonusIsActive = true;
-                    count = 0;
-                }
-
-                else
-                {
-                    count = 0;
-                }
-            }
-
-            yield return null;
-        }
+        _newStageToken?.Cancel();
+        _newStageToken?.Dispose();
     }
 }

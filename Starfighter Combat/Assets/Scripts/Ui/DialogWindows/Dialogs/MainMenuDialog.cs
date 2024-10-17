@@ -22,7 +22,7 @@ public class MainMenuDialog : Dialog
 
     private void StartNewGame()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(GlobalConstants.MainSceneName);
     }
     
     private void OpenSettings()

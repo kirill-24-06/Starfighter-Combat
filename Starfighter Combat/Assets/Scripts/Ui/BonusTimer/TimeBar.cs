@@ -9,6 +9,7 @@ public class TimeBar : Bar
         gameObject.SetActive(false);
 
         EntryPoint.Instance.Events.Stop += OnGameStop;
+        EntryPoint.Instance.Events.PlayerRespawn += OnPlayerRespawn;
     }
 
     private void OnEnable()
@@ -17,7 +18,6 @@ public class TimeBar : Bar
         {
             _timer.HasBeenUpdated += OnValueChange;
             _timer.TimeIsOver += OnTimerEnd;
-
         }
     }
 
@@ -27,22 +27,18 @@ public class TimeBar : Bar
         {
             _timer.HasBeenUpdated -= OnValueChange;
             _timer.TimeIsOver -= OnTimerEnd;
-
         }
     }
 
-    private void OnTimerEnd()
-    {
-        gameObject.SetActive(false);
-    }
+    private void OnPlayerRespawn() => gameObject.SetActive(false);
 
-    private void OnGameStop()
-    {
-        gameObject.SetActive(false);
-    }
+    private void OnTimerEnd() => gameObject.SetActive(false);
+
+    private void OnGameStop() => gameObject.SetActive(false);
 
     private void OnDestroy()
     {
         EntryPoint.Instance.Events.Stop -= OnGameStop;
+        EntryPoint.Instance.Events.PlayerRespawn -= OnPlayerRespawn;
     }
 }

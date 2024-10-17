@@ -23,7 +23,7 @@ namespace Ui.DialogWindows.Dialogs
 
         private void GoToMenu()
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(GlobalConstants.MainMenuSceneName);
         }
     }
 }

@@ -7,8 +7,10 @@ public class PlayerData : ScriptableObject
     [SerializeField] private ObjectTag _tag;
     [SerializeField] private int _health;
     [SerializeField] private int _maxHealth;
+    [SerializeField] private float _tempInvunrabilityTimeSeconds;
     [SerializeField] private float _speed;
-    [SerializeField] private int _ionSpheresStartAmount;
+    [SerializeField] private GameObject _nukePrefab;
+    [SerializeField] private int _nukesStartAmount;
     [SerializeField] private GameObject _weapon;
     [SerializeField] private float _reloadTime;
     [SerializeField] private float _bonusLenght;
@@ -25,6 +27,8 @@ public class PlayerData : ScriptableObject
 
     public int MaxHealth => _maxHealth;
 
+    public int TempInvunrabilityTimeMilliseconds =>(int)(_tempInvunrabilityTimeSeconds * GlobalConstants.MillisecondsConverter);
+
     public float Speed => _speed;
 
     public GameObject Projectile => _weapon;
@@ -35,7 +39,8 @@ public class PlayerData : ScriptableObject
 
     public float BonusTimeLenght => _bonusLenght;
 
-    public int IonSpheresStartAmount => _ionSpheresStartAmount;
+    public GameObject NukePrefab => _nukePrefab;
+    public int NukesStartAmount => _nukesStartAmount;
 
     public GameObject Explosion => _explosionPrefab;
 

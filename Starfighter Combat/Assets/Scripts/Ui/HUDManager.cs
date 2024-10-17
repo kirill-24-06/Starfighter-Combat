@@ -7,21 +7,26 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private Button _pauseButton;
     [SerializeField] private TimeBar _bonusTimer;
+    [SerializeField] private GameObject _bossHealthBarSlider;
+
+    private IResetable _bossHealthBar;
 
     public void Initialise()
     {
         EntryPoint.Instance.Events.ChangeScore += UpdateScore;
-       //EntryPoint.Instance.Events.BonusCollected += ActivateBonusTimer;
-       
+
         _pauseButton.onClick.AddListener(Pause);
 
         _bonusTimer.Initialise(EntryPoint.Instance.Player.BonusTimer);
+
+        _bossHealthBar = new BossHealthBar(_bossHealthBarSlider);
+
     }
 
     private void OnDestroy()
     {
         EntryPoint.Instance.Events.ChangeScore -= UpdateScore;
-        //EntryPoint.Instance.Events.BonusCollected -= ActivateBonusTimer;
+        _bossHealthBar.Reset();
 
         _pauseButton.onClick.RemoveAllListeners();
     }
@@ -33,8 +38,7 @@ public class HUDManager : MonoBehaviour
 
     public void ActivateBonusTimer()
     {
-        //if (tag == BonusTag.Multilaser || tag == BonusTag.ForceField)
-            _bonusTimer.gameObject.SetActive(true);
+        _bonusTimer.gameObject.SetActive(true);
     }
 
     private void Pause()

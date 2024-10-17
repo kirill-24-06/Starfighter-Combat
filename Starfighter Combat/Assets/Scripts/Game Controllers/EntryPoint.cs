@@ -1,3 +1,4 @@
+using Ui.DialogWindows;
 using UnityEngine;
 
 public class EntryPoint : MonoBehaviour
@@ -59,10 +60,7 @@ public class EntryPoint : MonoBehaviour
         Initialize();
     }
 
-    private void Start()
-    {
-        _gameController.StartGame();
-    }
+    private void Start() => DialogManager.ShowDialog<WelcomeDialog>();
 
     private void Initialize()
     {

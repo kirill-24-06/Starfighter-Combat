@@ -30,6 +30,10 @@ public class PlayerController : MonoBehaviour
         _events.Multilaser += EnableMultilaser;
     }
 
+    private void Start()
+    {
+        _isGameActive = true;
+    }
     private void OnStart()
     {
         _isGameActive = true;

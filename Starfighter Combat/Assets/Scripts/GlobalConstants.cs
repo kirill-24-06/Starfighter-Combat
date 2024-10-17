@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class GlobalConstants
 {
+    //Conversion
+    public static readonly float FloatConverter = 1.0f;
+    public static readonly int MillisecondsConverter = 1000;
 
-    // Данные зон спавна
+    // SpawnZones Data
     public static readonly Dictionary<string, AreaTag> AreaTagsByName = new()
     {
         {"SpawnAreaUpper",AreaTag.Upper},
@@ -19,5 +22,13 @@ public class GlobalConstants
         {AreaTag.Right, Quaternion.Euler(0, 0,90) }
     };
 
-    public static readonly int CollisionDamage = 1; 
+    //Collision damage
+    public static readonly int CollisionDamage = 1;
+
+
+    //Scenes
+
+    public static readonly string MainSceneName = "MainScene";
+
+    public static readonly string MainMenuSceneName = "MainMenu";
 }

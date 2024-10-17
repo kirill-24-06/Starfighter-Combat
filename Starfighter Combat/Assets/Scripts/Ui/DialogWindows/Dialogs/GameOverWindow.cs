@@ -12,15 +12,11 @@ namespace Ui.DialogWindows.Dialogs
         [SerializeField] private Button _mainMenuButton;
 
         [SerializeField] private TextMeshProUGUI _scoreText;
-
-        //private EventManager _events;
-
+     
         private void Start()
         {
             _retryButton.onClick.AddListener(TryAgain);
             _mainMenuButton.onClick.AddListener(GoToMenu);
-
-            //_events = EventManager.GetInstance();
         }
 
         public void Initialise(int score)
@@ -30,12 +26,12 @@ namespace Ui.DialogWindows.Dialogs
 
         private void TryAgain()
         {
-            SceneManager.LoadScene(0);  
+            SceneManager.LoadScene(GlobalConstants.MainSceneName);  
         }
 
         private void GoToMenu()
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(GlobalConstants.MainMenuSceneName);
         }
     }
 }
