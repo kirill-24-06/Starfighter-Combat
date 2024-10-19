@@ -40,7 +40,7 @@ public class LevelController : MonoBehaviour
 
     private void Update()
     {
-        if (!_isGameActive) 
+        if (!_isGameActive)
             return;
 
         CheckLevelCompletion();
@@ -50,7 +50,7 @@ public class LevelController : MonoBehaviour
     {
         if (_isBossFight)
         {
-            if (!_isBossDefeated) 
+            if (!_isBossDefeated)
                 return;
 
             EntryPoint.Instance.Events.LevelCompleted?.Invoke();
@@ -60,15 +60,9 @@ public class LevelController : MonoBehaviour
             AdvanceToNextStage();
     }
 
-    private void OnBossDefeat()
-    {
-        _isBossDefeated = true;
-    }
+    private void OnBossDefeat() => _isBossDefeated = true;
 
-    private void OnStop()
-    {
-        _isGameActive = false;
-    }
+    private void OnStop() => _isGameActive = false;
 
     private void AdvanceToNextStage()
     {
@@ -81,7 +75,7 @@ public class LevelController : MonoBehaviour
         else
         {
             _isBossFight = true;
-            _spawnController.BossArrival(_data.BossWave);
+            _spawnController.BossArrival(_data.BossWave, _data.BossWaveDelay).Forget();
         }
     }
 

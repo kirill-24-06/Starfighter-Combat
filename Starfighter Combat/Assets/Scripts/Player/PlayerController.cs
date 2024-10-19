@@ -24,30 +24,16 @@ public class PlayerController : MonoBehaviour
 
         _isPaused = false;
 
-        _events.Start += OnStart;
         _events.Stop += OnStop;
         _events.Pause += OnPause;
         _events.Multilaser += EnableMultilaser;
     }
 
-    private void Start()
-    {
-        _isGameActive = true;
-    }
-    private void OnStart()
-    {
-        _isGameActive = true;
-    }
+    private void Start() => _isGameActive = true;
+    
+    private void OnStop() => _isGameActive = false;
 
-    private void OnStop()
-    {
-        _isGameActive = false;
-    }
-
-    private void OnPause(bool value)
-    {
-        _isPaused = value;
-    }
+    private void OnPause(bool value) => _isPaused = value;
 
     private void Update()
     {
@@ -128,7 +114,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDestroy()
     {
-        _events.Start -= OnStart;
         _events.Stop -= OnStop;
         _events.Pause -= OnPause;
         _events.Multilaser -= EnableMultilaser;

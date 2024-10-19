@@ -22,3 +22,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e39aa530e21b2374f9f2ce5500ea2067, type: 2}
   - {fileID: 11400000, guid: 92e19666a23f85448933663031fb1195, type: 2}
   _bossWave: {fileID: 11400000, guid: a9dd5620383c28b438c1e980996055ac, type: 2}
+  _bossWaveDelay: 10

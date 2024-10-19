@@ -18,15 +18,15 @@ MonoBehaviour:
   _score: 1000
   _disableBorders: {x: 40, y: 40}
   _spawnZones: 000000000100000002000000
-  _maxHealth: 300
+  _maxHealth: 200
   _stages:
   - {fileID: 11400000, guid: 7ad5428a481e8ee49ad842ba65c5ed26, type: 2}
   - {fileID: 11400000, guid: 886f8b43e33b71546948a47a8446d3d9, type: 2}
   - {fileID: 11400000, guid: c121653c8933e9f43a123ade530272b7, type: 2}
   - {fileID: 11400000, guid: df25a93cebb4ab24b99ce3a864806343, type: 2}
   - {fileID: 11400000, guid: 8a5ad7379365f0c488e969dc083dd5f4, type: 2}
-  _gameArea: {x: 19, y: 12}
-  _minY: 0
+  _gameArea: {x: 16, y: 12}
+  _minY: 2
   _explosion: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
   _explosionSound: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
   _explosionSoundVolume: 0.158

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectile: {fileID: 814541193105084480, guid: 536963f2d150db94da7913647ee77fc2, type: 3}
   _defenceDrone: {fileID: 11400000, guid: 5dff61437e7de1749aa2332ef24cea1e, type: 2}
-  _defenceDronesAmount: 3
+  _defenceDronesAmount: 4
   _colorChangeDuration: 5

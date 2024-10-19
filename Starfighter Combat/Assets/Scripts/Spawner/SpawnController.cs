@@ -144,18 +144,18 @@ public class SpawnController : MonoBehaviour
 
     private void OnBonusTaken() => _bonusIsActive = false;
 
-    public void BossArrival(BossWave bossWave)
+    public async UniTaskVoid BossArrival(BossWave bossWave, int delayMilliseconds)
     {
         CancelPreviousStage();
+
+        await UniTask.Delay(delayMilliseconds, cancellationToken: _newStageToken.Token);
 
         _data = bossWave.SpawnerData;
 
         foreach (var boss in bossWave.Bosses)
-        {
             _spawner.SpawnEnemy(boss);
-        }
 
-       StartSpawnLoop();
+        StartSpawnLoop();
     }
 
     private void CancelPreviousStage()

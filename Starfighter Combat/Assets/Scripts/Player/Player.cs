@@ -43,7 +43,6 @@ public class Player : MonoBehaviour
 
         _forceField.Initialise();
 
-        _events.Start += OnStart;
         _events.Stop += OnStop;
         _events.PlayerDied += OnPlayerDied;
         _events.Invunerable += OnForceFieldActive;
@@ -56,12 +55,7 @@ public class Player : MonoBehaviour
         _events.ChangeHealth?.Invoke(PlayerData.Health);
         _bonusHandler.OnStart();
     }
-    private void OnStart()
-    {
-        _events.ChangeHealth?.Invoke(PlayerData.Health);
-        _bonusHandler.OnStart();
-    }
-
+    
     private void OnStop() => _isInvunerable = true;
 
     private void OnPlayerDied() => gameObject.SetActive(false);
@@ -70,16 +64,6 @@ public class Player : MonoBehaviour
     {
         _isInvunerable = true;
         _spriteRenderer.color = _tempInvunrabilityColor;
-
-        //BonusTimer.TimeIsOver += () =>
-        //{
-        //    _isInvunerable = false;
-        //    _spriteRenderer.color = Color.white;
-        //    BonusTimer.ResetTimer();
-        //};
-
-        //BonusTimer.SetTimer(3);
-        //BonusTimer.StartTimer();
 
         await UniTask.Delay(_playerData.TempInvunrabilityTimeMilliseconds, cancellationToken: destroyCancellationToken);
 
@@ -105,7 +89,6 @@ public class Player : MonoBehaviour
 
     private void OnDestroy()
     {
-        _events.Start -= OnStart;
         _events.Stop -= OnStop;
         _events.PlayerDied -= OnPlayerDied;
         _events.Invunerable -= OnForceFieldActive;

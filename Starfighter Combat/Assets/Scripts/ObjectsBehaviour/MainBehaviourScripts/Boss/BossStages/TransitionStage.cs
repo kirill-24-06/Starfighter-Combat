@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TransitionStage : BossStage
 {
@@ -9,8 +8,8 @@ public class TransitionStage : BossStage
 
     private PolygonCollider2D _bossCollider;
     private Animator[] _engines;
-    private SpriteRenderer _texture;
-    private Color _stealthColor = new Color(1, 1, 1, 0f);
+
+    private GameObject _emergencyShield;
 
     private int _activeDronesCount;
     private int _activeDrones;
@@ -25,7 +24,8 @@ public class TransitionStage : BossStage
     {
         _boss = boss;
         _bossCollider = _boss.GetComponent<PolygonCollider2D>();
-        _texture = _boss.transform.Find("Texture").GetComponent<SpriteRenderer>();
+
+        _emergencyShield = _boss.transform.Find("EmergencyShield").gameObject;
         _defenceDrones = new BossDefenceDrone[_data.DefenceDronesAmount];
         _activeDrones = _data.DefenceDronesAmount;
 
@@ -48,10 +48,9 @@ public class TransitionStage : BossStage
 
         else
         {
-            _bossCollider.enabled = true;
+            //_bossCollider.enabled = true;
+            _emergencyShield.SetActive(false);
             _boss.SetInvunrability(false);
-
-            ColorChanger(Color.white).Forget();
 
             foreach (var engine in _engines)
             {
@@ -68,10 +67,9 @@ public class TransitionStage : BossStage
 
         _alreadyStarted = true;
 
-        _bossCollider.enabled = false;
+        //_bossCollider.enabled = false;
+        _emergencyShield.SetActive(true);
         _boss.SetInvunrability(true);
-
-        ColorChanger(_stealthColor).Forget();
 
         foreach (var engine in _engines)
         {
@@ -81,19 +79,6 @@ public class TransitionStage : BossStage
         for (int i = 0; i < _defenceDrones.Length; i++)
         {
             _defenceDrones[i] = _spawner.SpawnEnemy(_data.BossDefenceDrone).GetComponent<BossDefenceDrone>().InitialiseByBoss();
-        }
-    }
-
-    private async UniTaskVoid ColorChanger(Color targetColor)
-    {
-        float count = 0;
-
-        while (count <= _data.ColorChangeDuration && !_boss.destroyCancellationToken.IsCancellationRequested)
-        {
-            _texture.color = Color.Lerp(_texture.color, targetColor, count/_data.ColorChangeDuration);
-            count += Time.deltaTime;
-
-            await UniTask.Yield(PlayerLoopTiming.Update);
         }
     }
 

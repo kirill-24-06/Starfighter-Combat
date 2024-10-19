@@ -14,6 +14,7 @@ public class EnemyAce : Boss
     {
         EntryPoint.Instance.SpawnedObjects.RegisterObject(gameObject, ObjectTag.Enemy);
         EntryPoint.Instance.SpawnedObjects.RegisterObject(_bossShield.gameObject, ObjectTag.Enemy);
+        EntryPoint.Instance.SpawnedObjects.RegisterObject(transform.Find("EmergencyShield").gameObject, ObjectTag.Enemy);
         EntryPoint.Instance.Events.BossArrival?.Invoke();
     }
 

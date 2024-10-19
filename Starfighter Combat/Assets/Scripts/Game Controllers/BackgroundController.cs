@@ -16,7 +16,6 @@ public class BackgroundController : MonoBehaviour
         foreach (var layer in _layers)
             layer.Initialise(offset);
 
-        EntryPoint.Instance.Events.Start += OnStart;
         EntryPoint.Instance.Events.Stop += OnStop;
     }
 
@@ -33,11 +32,7 @@ public class BackgroundController : MonoBehaviour
             layer.Move(_speed);
     }
 
-    private void Start()
-    {
-        _isGameActive = true;
-    }
-    private void OnStart() => _isGameActive = true;
+    private void Start() => _isGameActive = true;
 
     private void OnStop() => StartCoroutine(Stop());
 
@@ -47,9 +42,5 @@ public class BackgroundController : MonoBehaviour
         _isGameActive = false;
     }
 
-    private void OnDestroy()
-    {
-        EntryPoint.Instance.Events.Start -= OnStart;
-        EntryPoint.Instance.Events.Stop -= OnStop;
-    }
+    private void OnDestroy() => EntryPoint.Instance.Events.Stop -= OnStop;  
 }

@@ -20,7 +20,7 @@ MonoBehaviour:
   _nukePrefab: {fileID: 7415189649973966450, guid: 45738f5a740101f4da84bb876e3e6c40, type: 3}
   _nukesStartAmount: 2
   _weapon: {fileID: 8661907242895563437, guid: ef352fa18d4281b44a7602165486ee4c, type: 3}
-  _reloadTime: 0.155
+  _reloadTime: 0.16
   _bonusLenght: 10
   _gameBorders: {x: 19, y: 14}
   _explosionPrefab: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
