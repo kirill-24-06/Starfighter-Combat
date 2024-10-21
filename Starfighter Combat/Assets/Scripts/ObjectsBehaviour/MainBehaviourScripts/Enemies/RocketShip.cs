@@ -88,7 +88,8 @@ public class RocketShip : Enemy
 
     protected override void Disable()
     {
-        Instantiate(_data.Explosion, transform.position, _data.Explosion.transform.rotation);
+        ObjectPoolManager.SpawnObject(_data.Explosion, transform.position,
+            _data.Explosion.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
 
         ObjectPoolManager.ReturnObjectToPool(gameObject);
 

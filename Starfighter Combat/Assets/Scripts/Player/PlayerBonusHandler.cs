@@ -121,7 +121,8 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
 
     private void OnNukeUse()
     {
-        GameObject.Instantiate(_nukePrefab, _nukePoint.position, _nukePrefab.transform.rotation);
+        ObjectPoolManager.SpawnObject(_nukePrefab, _nukePoint.position,
+            _nukePrefab.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
 
         _nukesAmount--;
         _isEquiped = _nukesAmount > 0;
@@ -160,7 +161,11 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         {
             if (_defenceDrones[i].gameObject.activeInHierarchy)
             {
-                GameObject.Instantiate(_defenceDrones[i].Explosion, _defenceDrones[i].gameObject.transform.position, _defenceDrones[i].Explosion.transform.rotation);
+                ObjectPoolManager.SpawnObject(_defenceDrones[i].Explosion,
+                    _defenceDrones[i].gameObject.transform.position,
+                    _defenceDrones[i].Explosion.transform.rotation,
+                    ObjectPoolManager.PoolType.ParticleSystem);
+
                 _defenceDrones[i].gameObject.SetActive(false);
                 break;
             }

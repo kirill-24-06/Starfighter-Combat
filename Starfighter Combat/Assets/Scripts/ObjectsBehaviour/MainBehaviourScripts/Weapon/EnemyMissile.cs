@@ -16,7 +16,9 @@ public class EnemyMissile : Missile
     {
         if (Player.IsPlayer(collision.gameObject) || collision.gameObject == EntryPoint.Instance.Player.ForceField.gameObject)
         {
-            Instantiate(_explosionPrefab, transform.position, _explosionPrefab.transform.rotation);
+            ObjectPoolManager.SpawnObject(_explosionPrefab, transform.position,
+                _explosionPrefab.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+
             Interact();
         }
 

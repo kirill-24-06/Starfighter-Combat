@@ -9,7 +9,9 @@ public class PlayerProjectile : Projectile
         {
             _events.EnemyDamaged?.Invoke(collision.gameObject, _data.Damage);
 
-            Instantiate(_collideEffect, transform.position, _collideEffect.transform.rotation);
+            ObjectPoolManager.SpawnObject(_collideEffect, transform.position,
+                _collideEffect.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+
             Disable();
         }
     }

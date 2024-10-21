@@ -52,7 +52,4 @@ public abstract class Projectile : BasicObject
             Disable();
         }
     }
-
-    //protected void OnDestroy() => EntryPoint.Instance.Events.IonSphereUse -= OnIonSphereUse;
-    
 }

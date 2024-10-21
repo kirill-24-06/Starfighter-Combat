@@ -8,7 +8,8 @@ public class EnemyProjectile : Projectile
     {
         if (Player.IsPlayer(collision.gameObject) || collision.gameObject == EntryPoint.Instance.Player.ForceField.gameObject)
         {
-            Instantiate(_collideEffect, transform.position, _collideEffect.transform.rotation);
+            ObjectPoolManager.SpawnObject(_collideEffect, transform.position,
+                _collideEffect.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
             Interact();
         }
     }

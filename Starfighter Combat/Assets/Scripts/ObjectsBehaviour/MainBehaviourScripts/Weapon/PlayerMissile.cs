@@ -19,7 +19,9 @@ public class PlayerMissile : Missile
         {
             _events.EnemyDamaged?.Invoke(collision.gameObject, _data.Damage);
 
-            Instantiate(_explosionPrefab, transform.position, _explosionPrefab.transform.rotation);
+            ObjectPoolManager.SpawnObject(_explosionPrefab, transform.position,
+                _explosionPrefab.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+
             Disable();
         }
     }
