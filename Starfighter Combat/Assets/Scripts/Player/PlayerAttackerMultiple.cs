@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerAttackerMultiple : PlayerAttacker
 {
-    private readonly List<Transform> _projectileSpawnPoints = new List<Transform>();
+    private readonly List<Transform> _firePoints = new List<Transform>();
 
     public PlayerAttackerMultiple(Player player) : base(player)
     {
@@ -12,21 +12,25 @@ public class PlayerAttackerMultiple : PlayerAttacker
 
     public override void Fire(GameObject projectile)
     {
-        GameObject newProjectile;
-
         if (!_isShooted)
         {
             _isShooted = true;
 
-            foreach (Transform position in _projectileSpawnPoints)
+            for (int i = 0; i < _firePoints.Count; i++)
             {
-                newProjectile = ObjectPoolManager.SpawnObject(projectile, position.position, position.rotation, ObjectPoolManager.PoolType.Weapon);
-                RegistrProjectile(newProjectile);
+                ObjectPoolManager.SpawnObject(projectile, _firePoints[i].position, _firePoints[i].rotation, ObjectPoolManager.PoolType.Weapon);
             }
 
-            _reloadTimer.SetTimer(_player.PlayerData.ReloadTime);
-            _reloadTimer.StartTimer();
+            Reload();
         }
+    }
+
+    private void Reload()
+    {
+        if (!_player.gameObject.activeInHierarchy) return;
+
+        _reloadTimer.SetTimer(_player.PlayerData.ReloadTime);
+        _reloadTimer.StartTimer();
     }
 
     private void FindSpawnPoints()
@@ -34,9 +38,7 @@ public class PlayerAttackerMultiple : PlayerAttacker
         foreach (Transform child in _player.transform)
         {
             if (child.name == "ProjectilePosition")
-            {
-                _projectileSpawnPoints.Add(child);
-            }
+                _firePoints.Add(child);
         }
     }
 }

@@ -8,27 +8,29 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private GameObject _heartsLayout;
     [SerializeField] private List<Image> _hearts;
 
-    [SerializeField] private GameObject _textHealthBar;
+    [SerializeField] private GameObject _healtImage;
     [SerializeField] private TextMeshProUGUI _healthText;
+    private GameObject _healthTextGameObject;
 
 
     public void Initialise()
     {
+        _healthTextGameObject = _healthText.gameObject;
        EntryPoint.Instance.Events.ChangeHealth += ShowHealth;
     }
 
     private void ShowHealth(int newHealth)
     {
-        bool canShow = newHealth <= 5;
+        bool useLayout = newHealth <= 5;
+        
+        _heartsLayout.SetActive(useLayout);
 
-        _heartsLayout.SetActive(canShow);
-        _textHealthBar.SetActive(!canShow);
+        _healtImage.SetActive(!useLayout);
+        _healthTextGameObject.SetActive(!useLayout);
 
-        if (_textHealthBar.activeInHierarchy)
-        {
+        if (_healtImage.activeInHierarchy)
             _healthText.text = "X " + newHealth;
-        }
-
+       
         else if (_heartsLayout.activeInHierarchy)
         {
             for (int i = 0; i < _hearts.Count; i++)
@@ -39,8 +41,5 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        EntryPoint.Instance.Events.ChangeHealth -= ShowHealth;
-    }
+    private void OnDestroy() => EntryPoint.Instance.Events.ChangeHealth -= ShowHealth;
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BossDefenceDrone
   m_EditorClassIdentifier: 
   _prefab: {fileID: 4453898694590413567, guid: f642d481c44c5014aa5aadb54ba1ab43, type: 3}
+  _prewarmAmount: 4
   _tag: 0
   _speed: 10
   _score: 100

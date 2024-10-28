@@ -15,10 +15,16 @@ public class Fighter : Enemy
         Initialise();
     }
 
-    protected override void OnEnable()
+    private void Start()
     {
-        base.OnEnable();
+        var collider = GetComponent<Collider2D>();
+        EntryPoint.Instance.CollisionMap.Register(collider, this);
+        EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
+        EntryPoint.Instance.MissileTargets.AddEnemy(transform);
+    }
 
+    private void OnEnable()
+    {
         _health = _data.Health;
         _attacker.Reset();
     }
@@ -30,12 +36,6 @@ public class Fighter : Enemy
         _attacker.Fire(_data.EnemyProjectile.gameObject);
     }
 
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        StopAllCoroutines();
-    }
-
     protected override void Initialise()
     {
         _mover = new Mover(transform);
@@ -44,6 +44,11 @@ public class Fighter : Enemy
         _audioPlayer = EntryPoint.Instance.GlobalSoundFX;
 
         Data = _data;
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 
     protected override void Move()
@@ -64,13 +69,4 @@ public class Fighter : Enemy
 
         _audioPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
     }
-}
-
-public interface IShooterData
-{
-    public float ReloadCountDown { get; }
-
-    public AudioClip FireSound { get; }
-
-    public float FireSoundVolume { get; }
 }

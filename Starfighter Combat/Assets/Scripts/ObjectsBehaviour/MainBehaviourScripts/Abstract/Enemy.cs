@@ -7,7 +7,7 @@ public enum EnemyStrenght
     Hard
 }
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IInteractableEnemy,INukeInteractable
 {
     protected EventManager _events;
 
@@ -15,26 +15,26 @@ public abstract class Enemy : MonoBehaviour
 
     public IData Data { get; protected set; }
 
-    protected abstract void Disable();
     protected abstract void Initialise();
     protected abstract void Move();
+    protected abstract void Disable();
 
     protected virtual void Awake() => _events = EntryPoint.Instance.Events;
-   
-    protected virtual void OnEnable()
-    {
-        _events.IonSphereUse += OnIonSphereUse;
-        _events.EnemyDamaged += OnDamaged;
-    }
 
+    //protected virtual void Start()
+    //{
+    //    var collider = GetComponent<Collider2D>();
+    //    EntryPoint.Instance.CollisionMap.Register(collider,this);
+    //    EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
+    //    EntryPoint.Instance.MissileTargets.AddEnemy(transform);
+    //}
+
+   
     protected virtual void Update()
     {
-        if(!gameObject.activeInHierarchy)
-            return;
-
         Move();
     }
-   
+
     protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (Player.IsPlayer(collision.gameObject) || collision.gameObject == EntryPoint.Instance.Player.ForceField.gameObject)
@@ -52,7 +52,9 @@ public abstract class Enemy : MonoBehaviour
         Disable();
     }
 
-    protected void TakeDamage(int damage)
+    public void Interact() => TakeDamage(GlobalConstants.CollisionDamage);
+   
+    public void TakeDamage(int damage)
     {
         if (damage > 0)
         {
@@ -66,12 +68,8 @@ public abstract class Enemy : MonoBehaviour
             Disable();
     }
 
-    protected virtual void OnIonSphereUse()
-    {
-        if (gameObject.activeInHierarchy)
-            TakeDamage(10);
-    }
-
+    public void GetDamagedByNuke() => TakeDamage(GlobalConstants.NukeDamage);
+    
     protected void DeactivateOutOfBounds(Vector2 bounds)
     {
         if (transform.position.y < -bounds.y)
@@ -85,17 +83,6 @@ public abstract class Enemy : MonoBehaviour
 
         if (transform.position.x > bounds.x)
             Deactivate();
-    }
-    protected virtual void OnDisable()
-    {
-        _events.IonSphereUse -= OnIonSphereUse;
-        _events.EnemyDamaged -= OnDamaged;
-    }
-
-    protected void OnDamaged(GameObject enemy, int damage)
-    {
-        if (enemy == gameObject)
-            TakeDamage(damage);
     }
 
     private void Deactivate()

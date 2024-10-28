@@ -3,12 +3,13 @@
 
 
 [CreateAssetMenu(fileName = "New SpawnableData", menuName = "Config Data/Spawnable Data", order = 53)]
-public abstract class SpawnableData : ScriptableObject
+public abstract class SpawnableData : PrewarmableData
 {
     [Header("Base")]
-    [SerializeField] protected GameObject _prefab;
+    //[SerializeField] protected GameObject _prefab;
+    //[SerializeField] protected int _prewarmAmount;
 
-    [SerializeField] protected ObjectTag _tag;
+    //[SerializeField] protected ObjectTag _tag;
 
     [SerializeField] protected float _speed;
 
@@ -18,9 +19,10 @@ public abstract class SpawnableData : ScriptableObject
 
     [SerializeField] protected AreaTag[] _spawnZones;
 
-    public GameObject Prefab => _prefab;
+    //public GameObject Prefab => _prefab;
+    //public int PrewarmAmount => _prewarmAmount;
     
-    public ObjectTag Tag => _tag;
+    //public ObjectTag Tag => _tag;
 
     public float Speed => _speed;
 

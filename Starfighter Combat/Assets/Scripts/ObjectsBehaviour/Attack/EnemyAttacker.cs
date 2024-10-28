@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyAttacker : IAttacker
 {
     private Transform _firePoint;
+    private GameObject _client;
 
     protected readonly Timer _reloadTimer;
     protected IShooterData _shooterData;
@@ -13,8 +14,9 @@ public class EnemyAttacker : IAttacker
 
     public EnemyAttacker(MonoBehaviour client, IShooterData shooterData)
     {
-        _firePoint = client.transform.Find("FirePoint");
-        _audioPlayer = client.GetComponentInChildren<AudioSource>();
+        _client = client.gameObject;
+        _firePoint = _client.transform.Find("FirePoint");
+        _audioPlayer = _client.GetComponentInChildren<AudioSource>();
 
         _shooterData = shooterData;
 
@@ -24,32 +26,31 @@ public class EnemyAttacker : IAttacker
 
     public virtual void Fire(GameObject projectile)
     {
-        GameObject newProjectile;
+        if (_isShooted) return;
 
-        if (!_isShooted)
-        {
-            _isShooted = true;
+        _isShooted = true;
 
-            newProjectile = ObjectPoolManager.SpawnObject(projectile, _firePoint.transform.position,
-               _firePoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
-            RegistrProjectile(newProjectile);
+        ObjectPoolManager.SpawnObject(projectile, _firePoint.transform.position,
+           _firePoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
 
-            _reloadTimer.SetTimer(_shooterData.ReloadCountDown);
-            _reloadTimer.StartTimer();
 
-            _audioPlayer.PlayOneShot(_shooterData.FireSound,_shooterData.FireSoundVolume);
-        }
+        if (!_client.activeInHierarchy) return;
+
+        _audioPlayer.PlayOneShot(_shooterData.FireSound, _shooterData.FireSoundVolume);
+
+        Reload();
+    }
+
+    private void Reload()
+    {
+        _reloadTimer.SetTimer(_shooterData.ReloadCountDown);
+        _reloadTimer.StartTimer();
     }
 
     public void Reset()
     {
         _reloadTimer.StopTimer();
         _isShooted = false;
-    }
-
-    protected void RegistrProjectile(GameObject projectile)
-    {
-        EntryPoint.Instance.SpawnedObjects.RegisterObject(projectile, ObjectTag.EnemyWeapon);
     }
 
     protected void OnReloadTimerExpired() => _isShooted = false;

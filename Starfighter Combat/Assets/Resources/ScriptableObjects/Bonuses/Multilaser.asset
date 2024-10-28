@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Multilaser
   m_EditorClassIdentifier: 
   _prefab: {fileID: 7814738750723293713, guid: 2f53a4a642d417b49a9487ae423894c7, type: 3}
+  _prewarmAmount: 1
   _tag: 2
   _speed: 5
   _score: 100

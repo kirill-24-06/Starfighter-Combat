@@ -7,6 +7,7 @@ public class EventManager
     public Action Start;
     public Action Stop;
     public Action<bool> Pause;
+    public Action PrewarmRequired;
     public Action LevelCompleted;
     public Action MainMenuExit;
 
@@ -29,7 +30,7 @@ public class EventManager
 
     //Enemies
     public Action<EnemyStrenght> EnemyDestroyed;
-    public Action<GameObject, int> EnemyDamaged;
+    //public Action<GameObject, int> EnemyDamaged;
     public Action<GameObject, Transform> LockTarget;
 
     //Boss

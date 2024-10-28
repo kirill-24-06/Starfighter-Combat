@@ -15,6 +15,15 @@ public class GlobalConstants
         {"SpawnAreaRight",AreaTag.Right}
     };
 
+    public static readonly Dictionary<ObjectTag, ObjectPoolManager.PoolType> PoolTypesByTag = new()
+    {
+        {ObjectTag.Bonus, ObjectPoolManager.PoolType.Bonus},
+        {ObjectTag.Enemy, ObjectPoolManager.PoolType.Enemy},
+        {ObjectTag.EnemyWeapon, ObjectPoolManager.PoolType.Weapon},
+        {ObjectTag.PlayerWeapon, ObjectPoolManager.PoolType.Weapon },
+        {ObjectTag.Particles, ObjectPoolManager.PoolType.ParticleSystem}
+    };
+
     public static readonly Dictionary<AreaTag, Quaternion> AreaRotationsByTag = new()
     {
         {AreaTag.Upper,Quaternion.Euler(0, 0, 180)},
@@ -24,6 +33,8 @@ public class GlobalConstants
 
     //Collision damage
     public static readonly int CollisionDamage = 1;
+
+    public static readonly int NukeDamage = 10;
 
 
     //Scenes

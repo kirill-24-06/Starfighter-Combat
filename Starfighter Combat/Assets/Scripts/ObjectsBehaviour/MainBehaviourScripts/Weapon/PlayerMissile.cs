@@ -4,20 +4,30 @@ using UnityEngine;
 public class PlayerMissile : Missile
 {
     [SerializeField] private GameObject _explosionPrefab;
-    private ObjectHolder _enemies;
+    private Transform _transform;
+    private MissileTargets _missileTargets;
+    private Dictionary<Collider2D, IInteractableEnemy> _enemies;
 
     protected override void Awake()
     {
         base.Awake();
 
-        _enemies = EntryPoint.Instance.SpawnedObjects;
+        _transform = transform;
+        _missileTargets = EntryPoint.Instance.MissileTargets;
+        _enemies = EntryPoint.Instance.CollisionMap.Interactables;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(GetComponent<Collider2D>(), this);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (EntryPoint.Instance.SpawnedObjects.FindRegisteredObject(collision.gameObject, ObjectTag.Enemy))
+        if (_enemies.TryGetValue(collision.collider, out var enemy))
         {
-            _events.EnemyDamaged?.Invoke(collision.gameObject, _data.Damage);
+            enemy.Interact();
 
             ObjectPoolManager.SpawnObject(_explosionPrefab, transform.position,
                 _explosionPrefab.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
@@ -36,26 +46,22 @@ public class PlayerMissile : Missile
     {
         Transform nearestEnemy = null;
 
-        List<GameObject> targets;
-        float nearestEnemyDistance = Mathf.Infinity;
+        var nearestEnemyDistance = Mathf.Infinity;
 
-        targets = _enemies.GetRegisteredObjectsByTag(ObjectTag.Enemy);
+        var targets = _missileTargets.PlayerMissileTargets;
 
-        foreach (GameObject target in targets)
+        for (int i = 0; i < targets.Count; i++)
         {
-            if (target.activeInHierarchy)
+            if (!targets[i].gameObject.activeSelf) continue;
+
+            var currentDistance = Vector2.Distance(_transform.position, targets[i].position);
+
+            if (currentDistance < nearestEnemyDistance)
             {
-                float currdistance = Vector2.Distance(transform.position, target.transform.position);
-
-                if (currdistance < nearestEnemyDistance)
-                {
-                    nearestEnemy = target.transform;
-
-                    nearestEnemyDistance = currdistance;
-                }
+                nearestEnemy = targets[i];
+                nearestEnemyDistance = currentDistance;
             }
         }
-
         _target = nearestEnemy;
     }
 

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0532591d6d772c04181ef7a8a3aa4584, type: 3}
   m_Name: PlayerMissile
   m_EditorClassIdentifier: 
-  _objectTag: 4
+  _prefab: {fileID: 7058419182287617534, guid: b6ffb6600f5c1f544951127d662abd55, type: 3}
+  _prewarmAmount: 2
+  _tag: 4
   _objectSpeed: 12
   _gameZoneBorders: {x: 20, y: 15}
   _damage: 1

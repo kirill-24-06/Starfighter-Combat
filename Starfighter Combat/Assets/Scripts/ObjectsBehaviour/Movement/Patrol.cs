@@ -48,10 +48,9 @@ public class Patrol : AdvancedMove
 
     private Vector3 GenerateMovePoint(Bounds area)
     {
-        float randomX = Random.Range(area.min.x, area.max.x);
-        float randomY = Random.Range(area.min.y, area.max.y);
-        float Z = 0;
+        _randomDirection.x = Random.Range(area.min.x, area.max.x);
+        _randomDirection.y = Random.Range(area.min.y, area.max.y);
 
-        return new Vector3(randomX, randomY, Z);
+        return _randomDirection;
     }
 }

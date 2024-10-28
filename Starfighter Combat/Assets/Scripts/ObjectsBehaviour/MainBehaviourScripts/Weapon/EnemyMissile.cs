@@ -4,6 +4,12 @@ public class EnemyMissile : Missile
 {
     [SerializeField] private GameObject _explosionPrefab;
 
+    protected override void Start()
+    {
+        base.Start();
+        EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(GetComponent<Collider2D>(), this);
+    }
+
     protected override void OnHomingStart()
     {
         LockOnTarget();

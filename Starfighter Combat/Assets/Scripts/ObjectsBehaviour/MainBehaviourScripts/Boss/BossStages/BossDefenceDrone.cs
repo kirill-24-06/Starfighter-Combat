@@ -30,15 +30,21 @@ public class BossDefenceDrone : Enemy
         _mover.Arrival += OnArrival;
     }
 
-    protected override void OnEnable()
+    private void Start()
     {
-        base.OnEnable();
+        var collider = GetComponent<Collider2D>();
+        EntryPoint.Instance.CollisionMap.Register(collider, this);
+        EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
+        EntryPoint.Instance.MissileTargets.AddEnemy(transform);
+    }
+
+    private void OnEnable()
+    {
         _health = _data.Health;
     }
 
     public void Handle()
     {
-        Move();
         Attack();
     }
 
@@ -50,8 +56,11 @@ public class BossDefenceDrone : Enemy
 
     private void Attack()
     {
-        _mover.LookInTargetDirection(_target.position);
-        _attacker.Fire(_data.EnemyMissile.gameObject);
+        if (_target.gameObject.activeInHierarchy)
+        {
+            _mover.LookInTargetDirection(_target.position);
+            _attacker.Fire(_data.EnemyMissile.gameObject);
+        }
     }
 
     protected override void Collide()
@@ -62,7 +71,7 @@ public class BossDefenceDrone : Enemy
         else if (!EntryPoint.Instance.Player.IsInvunerable && EntryPoint.Instance.Player.IsDroneActive)
             _events.DroneDestroyed?.Invoke();
 
-        TakeDamage(GlobalConstants.CollisionDamage*5);
+        TakeDamage(GlobalConstants.CollisionDamage * 5);
     }
 
     private void OnArrival() => StartCoroutine(Patrol());
@@ -93,12 +102,11 @@ public class BossDefenceDrone : Enemy
         _audioPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
     }
 
-    protected override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
-        _attacker.Reset();
-        _mover.Reset();
-        _mover.NewMovePoints();
+        _attacker?.Reset();
+        _mover?.Reset();
+        _mover?.NewMovePoints();
         StopAllCoroutines();
     }
 }

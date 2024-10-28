@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59f7f606d554724cbeb7df47dedbcbb, type: 3}
   m_Name: PlayerLaser
   m_EditorClassIdentifier: 
-  _objectTag: 4
+  _prefab: {fileID: 8661907242895563437, guid: ef352fa18d4281b44a7602165486ee4c, type: 3}
+  _prewarmAmount: 17
+  _tag: 4
   _objectSpeed: 25
   _gameZoneBorders: {x: 25, y: 15}
   _damage: 1

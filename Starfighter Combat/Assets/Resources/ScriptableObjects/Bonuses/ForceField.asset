@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ForceField
   m_EditorClassIdentifier: 
   _prefab: {fileID: 4804490326390636464, guid: 430fb55d6a2587f4784af378d0b61cd5, type: 3}
+  _prewarmAmount: 1
   _tag: 2
   _speed: 5
   _score: 100

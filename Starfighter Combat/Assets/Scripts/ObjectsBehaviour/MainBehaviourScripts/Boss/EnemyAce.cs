@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 public class EnemyAce : Boss
 {
     private BossShieldBehaviour _bossShield;
@@ -7,14 +9,14 @@ public class EnemyAce : Boss
         base.Initialise();
 
         _bossShield = transform.Find("BossShield").gameObject.GetComponent<BossShieldBehaviour>();
-        EntryPoint.Instance.Events.EnemyDamaged += _bossShield.OnDamage;
     }
 
     private void Start()
     {
-        EntryPoint.Instance.SpawnedObjects.RegisterObject(gameObject, ObjectTag.Enemy);
-        EntryPoint.Instance.SpawnedObjects.RegisterObject(_bossShield.gameObject, ObjectTag.Enemy);
-        EntryPoint.Instance.SpawnedObjects.RegisterObject(transform.Find("EmergencyShield").gameObject, ObjectTag.Enemy);
+        var collider = GetComponent<PolygonCollider2D>();
+        EntryPoint.Instance.CollisionMap.Register(collider, this);
+        EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
+        EntryPoint.Instance.MissileTargets.AddEnemy(transform);
         EntryPoint.Instance.Events.BossArrival?.Invoke();
     }
 
@@ -41,12 +43,5 @@ public class EnemyAce : Boss
         gameObject.SetActive(false);
 
         _audioPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-
-        EntryPoint.Instance.Events.EnemyDamaged -= _bossShield.OnDamage;
     }
 }

@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 6423359297069344680}
   - component: {fileID: 816609371932373760}
   - component: {fileID: -3230720160720055146}
+  - component: {fileID: 1759643553766032572}
   m_Layer: 7
   m_Name: BossMinion
   m_TagString: Enemy
@@ -308,6 +309,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: dd7129f867dfef445a129afae6dda29a, type: 2}
+--- !u!50 &1759643553766032572
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7814316821086288463}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &9221276126064346239
 GameObject:
   m_ObjectHideFlags: 0

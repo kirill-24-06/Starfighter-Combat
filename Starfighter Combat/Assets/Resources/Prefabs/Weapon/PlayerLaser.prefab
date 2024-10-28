@@ -94,8 +94,8 @@ GameObject:
   m_Component:
   - component: {fileID: 726774579907385627}
   - component: {fileID: 6507135769335377749}
-  - component: {fileID: -1166318560061952239}
   - component: {fileID: -8470036642564847155}
+  - component: {fileID: -660021465445948496}
   m_Layer: 8
   m_Name: PlayerLaser
   m_TagString: PlayerWeapon
@@ -165,7 +165,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5416342, y: 0.64049053}
   m_EdgeRadius: 0
---- !u!50 &-1166318560061952239
+--- !u!114 &-8470036642564847155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8661907242895563437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b19fb0d63722b40a45cb397ab9b35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: 5dac8bebdc387144992b0d4efba1c05e, type: 2}
+  _collideEffect: {fileID: 668591103999106783, guid: 3da1fd1653b81ba418ec263e239b2f62, type: 3}
+--- !u!50 &-660021465445948496
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -190,22 +204,8 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &-8470036642564847155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8661907242895563437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b19fb0d63722b40a45cb397ab9b35c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data: {fileID: 11400000, guid: 5dac8bebdc387144992b0d4efba1c05e, type: 2}
-  _collideEffect: {fileID: 668591103999106783, guid: 3da1fd1653b81ba418ec263e239b2f62, type: 3}
 --- !u!1 &9157885195624265381
 GameObject:
   m_ObjectHideFlags: 0

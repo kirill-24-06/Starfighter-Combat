@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Repair
   m_EditorClassIdentifier: 
   _prefab: {fileID: 7600786741289274528, guid: 4ff4d5cca135dc244b498c54d22e43b0, type: 3}
+  _prewarmAmount: 1
   _tag: 2
   _speed: 5
   _score: 100

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ace Data
   m_EditorClassIdentifier: 
   _prefab: {fileID: 100304783673828352, guid: b63b321d3b1b44349a03f08214f3975c, type: 3}
+  _prewarmAmount: 1
   _tag: 0
   _speed: 15
   _score: 1000

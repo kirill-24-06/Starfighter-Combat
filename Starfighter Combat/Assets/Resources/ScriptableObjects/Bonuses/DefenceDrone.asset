@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DefenceDrone
   m_EditorClassIdentifier: 
   _prefab: {fileID: 4676734641365123114, guid: af62c431e7dc7f84c8c7f4afc44befdd, type: 3}
+  _prewarmAmount: 1
   _tag: 2
   _speed: 5
   _score: 100

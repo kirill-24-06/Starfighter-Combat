@@ -29,6 +29,12 @@ public class Bonus : BasicObject
         Arrival += OnArrival;
     }
 
+    //protected override void Start()
+    //{
+    //    base.Start();
+    //    EntryPoint.Instance.SpawnedObjects.RegisterObject(gameObject,_data.Tag);
+    //}
+
     private void OnEnable()
     {
         _isArrived = false;
@@ -86,17 +92,6 @@ public class Bonus : BasicObject
                 Interact();
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (_data.BonusTag != BonusTag.None)
-    //    {
-    //        if (Player.IsPlayer(collision.gameObject))
-    //        {
-    //            Interact();
-    //        }
-    //    }
-    //}
 
     private void Interact()
     {

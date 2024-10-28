@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public class PlayerBonusHandler : IBonusHandler, IResetable
 {
@@ -8,8 +9,10 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
     private Timer _bonusTimer;
 
     private DefenceDroneBehaviour[] _defenceDrones;
+
     private GameObject _nukePrefab;
     private Transform _nukePoint;
+    private Collider2D[] _nukeTargets;
 
     private int _nukesAmount = 0;
     private int _dronesAmount = 0;
@@ -33,6 +36,7 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         _defenceDrones = _player.GetComponentsInChildren<DefenceDroneBehaviour>();
         _nukePrefab = _playerData.NukePrefab;
         _nukePoint = _player.transform.Find("NukePoint");
+        _nukeTargets = new Collider2D[0];
 
         _events = EntryPoint.Instance.Events;
 
@@ -119,10 +123,28 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         EntryPoint.Instance.Events.BonusAmountUpdate?.Invoke(_nukesAmount);
     }
 
-    private void OnNukeUse()
+    private void OnNukeUse() => UseNuke().Forget();
+    private async UniTaskVoid UseNuke()
     {
+        _player.StartTempInvunrability().Forget();
+
         ObjectPoolManager.SpawnObject(_nukePrefab, _nukePoint.position,
             _nukePrefab.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+
+        _nukeTargets = Physics2D.OverlapCircleAll(_nukePoint.position, 30f); // переделать в non alloc
+
+        await UniTask.Delay(500, cancellationToken: _player.destroyCancellationToken);
+
+        var count = _nukeTargets.Length;
+        Debug.Log(count);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (EntryPoint.Instance.CollisionMap.NukeInteractables.TryGetValue(_nukeTargets[i], out INukeInteractable interactable))
+            {
+                interactable.GetDamagedByNuke();
+            }
+        }
 
         _nukesAmount--;
         _isEquiped = _nukesAmount > 0;

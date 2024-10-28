@@ -6,7 +6,6 @@ public class TransitionStage : BossStage
     private BossDefenceDrone[] _defenceDrones;
     private Spawner _spawner;
 
-    private PolygonCollider2D _bossCollider;
     private Animator[] _engines;
 
     private GameObject _emergencyShield;
@@ -23,7 +22,6 @@ public class TransitionStage : BossStage
     public override BossStage Initialise(Boss boss)
     {
         _boss = boss;
-        _bossCollider = _boss.GetComponent<PolygonCollider2D>();
 
         _emergencyShield = _boss.transform.Find("EmergencyShield").gameObject;
         _defenceDrones = new BossDefenceDrone[_data.DefenceDronesAmount];
@@ -47,8 +45,7 @@ public class TransitionStage : BossStage
             return false;
 
         else
-        {
-            //_bossCollider.enabled = true;
+        {           
             _emergencyShield.SetActive(false);
             _boss.SetInvunrability(false);
 
@@ -67,7 +64,6 @@ public class TransitionStage : BossStage
 
         _alreadyStarted = true;
 
-        //_bossCollider.enabled = false;
         _emergencyShield.SetActive(true);
         _boss.SetInvunrability(true);
 

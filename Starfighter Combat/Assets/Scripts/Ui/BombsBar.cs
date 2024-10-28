@@ -10,24 +10,26 @@ public class BombsBar : MonoBehaviour
 
     [SerializeField] private GameObject _textBombBar;
     [SerializeField] private TextMeshProUGUI _bombText;
+    private GameObject _bombTextGameObject;
 
 
     public void Initialise()
     {
+        _bombTextGameObject = _bombText.gameObject;
         EntryPoint.Instance.Events.BonusAmountUpdate += ShowBombs;
     }
 
     private void ShowBombs(int newBombsAmount)
     {
-        bool canShow = newBombsAmount <= 5;
+        bool useLayout = newBombsAmount <= 5;
 
-        _bombsLayout.SetActive(canShow);
-        _textBombBar.SetActive(!canShow);
+        _bombsLayout.SetActive(useLayout);
+
+        _textBombBar.SetActive(!useLayout);
+        _bombTextGameObject.SetActive(!useLayout);
 
         if (_textBombBar.activeInHierarchy)
-        {
             _bombText.text = "X " + newBombsAmount;
-        }
 
         else if (_bombsLayout.activeInHierarchy)
         {

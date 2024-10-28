@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Missile : BasicObject
+public abstract class Missile : BasicObject,INukeInteractable
 {
     [SerializeField] protected MissileData _data;
 
@@ -8,6 +8,8 @@ public abstract class Missile : BasicObject
     private Vector3 _direction;
 
     private IMover _mover;
+    private Mover _forwardMover;
+    private MissileMover _homingMover;
 
     private Timer _launchTimer;
 
@@ -19,17 +21,24 @@ public abstract class Missile : BasicObject
     {
         _launchTimer = new Timer(this);
         _homingTimer = new Timer(this);
+
+        _forwardMover = new Mover(transform);
+        _homingMover = new MissileMover(transform);
     }
+
+    //protected override void Start()
+    //{
+    //    base.Start();
+    //    EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(GetComponent<Collider2D>(), this);
+    //}
 
     protected void OnEnable()
     {
-        _mover = new Mover(transform);
+        _mover = _forwardMover;
         _direction = Vector3.up;
 
         _launchTimer.TimeIsOver += OnHomingStart;
         _homingTimer.TimeIsOver += OnHomingEnd;
-
-        EntryPoint.Instance.Events.IonSphereUse += OnIonSphereUse;
 
         _launchTimer.SetTimer(_data.LaunchTime);
         _launchTimer.StartTimer();
@@ -50,7 +59,7 @@ public abstract class Missile : BasicObject
     protected override void Move()
     {
         if (_homing && _target != null)
-            _mover.Move(_target.transform.position, _data.Speed);
+            _mover.Move(_target.position, _data.Speed);
 
         else
             _mover.Move(_direction, _data.Speed);
@@ -70,15 +79,13 @@ public abstract class Missile : BasicObject
 
         _launchTimer.TimeIsOver -= OnHomingStart;
         _homingTimer.TimeIsOver -= OnHomingEnd;
-
-        EntryPoint.Instance.Events.IonSphereUse -= OnIonSphereUse;
     }
 
     protected virtual void OnHomingStart()
     {
         if (_target != null)
         {
-            _mover = new MissileMover(transform);
+            _mover = _homingMover;
             _homing = true;
 
             _homingTimer.SetTimer(_data.HomingTime);
@@ -88,46 +95,40 @@ public abstract class Missile : BasicObject
 
     private void OnHomingEnd()
     {
-        _mover = new Mover(transform);
+        _mover = _forwardMover;
 
         _homing = false;
         _direction = Vector3.up;
     }
 
-    private void OnIonSphereUse()
-    {
-        if (gameObject.activeInHierarchy)
-            Disable();
-    }
+    //private void OnIonSphereUse()
+    //{
+    //    if (gameObject.activeInHierarchy)
+    //        Disable();
+    //}
 
+    public void GetDamagedByNuke() => Disable();
+   
     private void DeactivateOutOfBounds()
     {
-        if (transform.position.y < -_data.GameZoneBorders.y)
+        if (transform.position.y < -_data.DisableBorders.y)
         {
             Disable();
         }
 
-        if (transform.position.y > _data.GameZoneBorders.y)
+        if (transform.position.y > _data.DisableBorders.y)
         {
             Disable();
         }
 
-        if (transform.position.x < -_data.GameZoneBorders.x)
+        if (transform.position.x < -_data.DisableBorders.x)
         {
             Disable();
         }
 
-        if (transform.position.x > _data.GameZoneBorders.x)
+        if (transform.position.x > _data.DisableBorders.x)
         {
             Disable();
         }
     }
-
-    //protected void OnDestroy()
-    //{
-    //    _launchTimer.TimeIsOver -= OnHomingStart;
-    //    _homingTimer.TimeIsOver -= OnHomingEnd;
-
-    //    EntryPoint.Instance.Events.IonSphereUse -= OnIonSphereUse;
-    //}
 }

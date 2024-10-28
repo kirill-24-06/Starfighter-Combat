@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Boss : MonoBehaviour
+public abstract class Boss : MonoBehaviour,IInteractableEnemy,INukeInteractable
 {
     [SerializeField] protected BossData _data;
     protected EventManager _events;
@@ -12,12 +12,10 @@ public abstract class Boss : MonoBehaviour
 
     protected AudioSource _audioPlayer;
 
-    protected bool _isInvunerable = false;
+    public bool _isInvunerable = false;
 
     public BossData Data => _data;
     public int CurrentHealth => _currentHealth;
-
-    public BossStage CurrentStage => _stages[_currentStage];
 
     protected abstract void Disable();
 
@@ -29,8 +27,10 @@ public abstract class Boss : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        _events.IonSphereUse += OnIonSphereUse;
-        _events.EnemyDamaged += OnDamaged;
+        //_events.IonSphereUse += OnIonSphereUse;
+        //EntryPoint.Instance.MissileTargets.AddEnemy(transform);
+        //EntryPoint.Instance.CollisionMap.Register(GetComponent<PolygonCollider2D>(), this);
+        //_events.EnemyDamaged += OnDamaged;
     }
 
     protected virtual void Initialise()
@@ -87,6 +87,8 @@ public abstract class Boss : MonoBehaviour
         TakeDamage(GlobalConstants.CollisionDamage);
     }
 
+    public void Interact() => TakeDamage(GlobalConstants.CollisionDamage);
+
     protected virtual void TakeDamage(int damage)
     {
         if (_isInvunerable || damage <= 0)
@@ -101,21 +103,24 @@ public abstract class Boss : MonoBehaviour
 
     public void SetInvunrability(bool value) => _isInvunerable = value;
 
-    protected virtual void OnIonSphereUse()
-    {
-        if (gameObject.activeInHierarchy)
-            TakeDamage(5);
-    }
+    public void GetDamagedByNuke() => TakeDamage(5);
+
+    //protected virtual void OnIonSphereUse()
+    //{
+    //    if (gameObject.activeInHierarchy)
+    //        TakeDamage(5);
+    //}
 
     protected virtual void OnDisable()
     {
-        _events.IonSphereUse -= OnIonSphereUse;
-        _events.EnemyDamaged -= OnDamaged;
+        //_events.IonSphereUse -= OnIonSphereUse;
+        //EntryPoint.Instance.MissileTargets.RemoveEnemy(transform);
+        //_events.EnemyDamaged -= OnDamaged;
     }
 
-    protected void OnDamaged(GameObject enemy, int damage)
-    {
-        if (enemy == gameObject)
-            TakeDamage(damage);
-    }
+    //protected void OnDamaged(GameObject enemy, int damage)
+    //{
+    //    if (enemy == gameObject)
+    //        TakeDamage(damage);
+    //}
 }

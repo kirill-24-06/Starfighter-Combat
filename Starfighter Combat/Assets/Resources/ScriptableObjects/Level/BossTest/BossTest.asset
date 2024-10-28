@@ -16,3 +16,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b8c2e773c41324147956c0f018a8cdde, type: 2}
   _bossWave: {fileID: 11400000, guid: a9dd5620383c28b438c1e980996055ac, type: 2}
   _bossWaveDelay: 5
+  _prewarmables:
+  - {fileID: 11400000, guid: 7cac5bf82c669094d8b34b275e418e69, type: 2}

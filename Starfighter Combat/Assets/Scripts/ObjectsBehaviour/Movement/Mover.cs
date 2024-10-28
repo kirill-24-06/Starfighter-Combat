@@ -3,7 +3,7 @@ using UnityEngine;
 public class Mover : IMover
 {
     private readonly Transform _client;
-
+    
     public Mover(Transform client)
     {
         _client = client;

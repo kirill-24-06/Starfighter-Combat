@@ -18,13 +18,21 @@ public class RocketShip : Enemy
         Initialise();
     }
 
-
-    protected override void OnEnable()
+    private void Start()
     {
-        base.OnEnable();
-        _health = _data.Health;
+        var collider = GetComponent<Collider2D>();
+        EntryPoint.Instance.CollisionMap.Register(collider, this);
+        EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
+        EntryPoint.Instance.MissileTargets.AddEnemy(transform);
     }
 
+    private void OnEnable()
+    {
+        _health = _data.Health;
+        _attacker.Reset();
+        _mover.Reset();
+        _mover.NewMovePoints();
+    }
 
     protected override void Update()
     {
@@ -33,12 +41,11 @@ public class RocketShip : Enemy
         Attack();
     }
 
-    protected override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
-        _attacker.Reset();
-        _mover.Reset();
-        _mover.NewMovePoints();
+        //_attacker.Reset();
+        //_mover.Reset();
+        //_mover.NewMovePoints();
         StopAllCoroutines();
     }
 

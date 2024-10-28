@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: IonSphere
   m_EditorClassIdentifier: 
   _prefab: {fileID: 4251740357380213555, guid: d1f83061973196c49afe966e2017bb29, type: 3}
+  _prewarmAmount: 1
   _tag: 2
   _speed: 5
   _score: 100

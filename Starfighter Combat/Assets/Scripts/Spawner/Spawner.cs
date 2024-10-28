@@ -4,7 +4,7 @@ using UnityEngine;
 public class Spawner
 {
     private List<SpawnArea> _spawnAreas;
-    private ObjectHolder _spawnedObjects;
+    //private ObjectHolder _spawnedObjects;
     private Player _player;
     private Vector3 _playerStartPosition;
 
@@ -31,19 +31,26 @@ public class Spawner
             Debug.LogError("Зоны спавна не найденны");
 
 
-        _spawnedObjects = EntryPoint.Instance.SpawnedObjects;
+        //_spawnedObjects = EntryPoint.Instance.SpawnedObjects;
     }
 
-
+    public void Prewarm(PrewarmableData objectToPrewarm)
+    {
+        for (int i = 0; i < objectToPrewarm.PrewarmAmount; i++)
+        {
+            ObjectPoolManager.Prewarm(objectToPrewarm.Prefab, GlobalConstants.PoolTypesByTag[objectToPrewarm.Tag]);
+            //_spawnedObjects.RegisterObject(spawnedObject,objectToPrewarm.Tag);
+        }
+    }
 
     public GameObject SpawnEnemy(SpawnableData enemyToSpawn)
     {
         SpawnArea area = SelectSpawnArea(enemyToSpawn.SpawnZones);
 
-        GameObject spawnedObject =  ObjectPoolManager.SpawnObject(enemyToSpawn.Prefab, area.GenerateSpawnPosition(), area.Rotation, ObjectPoolManager.PoolType.Enemy);
-        _spawnedObjects.RegisterObject(spawnedObject, ObjectTag.Enemy);
+        var enemy = ObjectPoolManager.SpawnObject(enemyToSpawn.Prefab, area.GenerateSpawnPosition(),
+            area.Rotation, ObjectPoolManager.PoolType.Enemy);
 
-        return spawnedObject;
+        return enemy;
     }
 
 
@@ -51,8 +58,8 @@ public class Spawner
     {
         SpawnArea area = SelectSpawnArea(bonusToSpawn.SpawnZones);
 
-        GameObject spawnedObject = ObjectPoolManager.SpawnObject(bonusToSpawn.Prefab, area.GenerateSpawnPosition(), bonusToSpawn.Prefab.transform.rotation, ObjectPoolManager.PoolType.Bonus);
-        _spawnedObjects.RegisterObject(spawnedObject, ObjectTag.Bonus);
+        ObjectPoolManager.SpawnObject(bonusToSpawn.Prefab, area.GenerateSpawnPosition(),
+            bonusToSpawn.Prefab.transform.rotation, ObjectPoolManager.PoolType.Bonus);
     }
 
     public void SpawnPlayer()

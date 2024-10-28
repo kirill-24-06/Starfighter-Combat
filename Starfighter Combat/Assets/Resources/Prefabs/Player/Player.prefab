@@ -1033,12 +1033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: be4638d607ce7314eaf4dba27fae787b, type: 2}
-  _defenceDrones:
-  - {fileID: 1681907433834950448}
-  - {fileID: 1815912504729044914}
-  _ionSphere: {fileID: 7415189649973966450, guid: 45738f5a740101f4da84bb876e3e6c40, type: 3}
   _forceField: {fileID: 6139795110037072555}
-  _nukePoint: {fileID: 8919541374738851485}
 --- !u!114 &3635922177323475510
 MonoBehaviour:
   m_ObjectHideFlags: 0

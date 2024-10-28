@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RocketShip
   m_EditorClassIdentifier: 
   _prefab: {fileID: 3451239107400144383, guid: 9da209289423327409fec95972d42dbd, type: 3}
+  _prewarmAmount: 3
   _tag: 0
   _speed: 6
   _score: 100

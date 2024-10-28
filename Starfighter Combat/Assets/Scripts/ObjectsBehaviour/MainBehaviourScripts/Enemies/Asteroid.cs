@@ -14,10 +14,16 @@ public class Asteroid : Enemy
         Initialise();
     }
 
-    protected override void OnEnable()
+    private void Start()
     {
-        base.OnEnable();
+        var collider = GetComponent<Collider2D>();
+        EntryPoint.Instance.CollisionMap.Register(collider, this);
+        EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
+        EntryPoint.Instance.MissileTargets.AddEnemy(transform);
+    }
 
+    private void OnEnable()
+    {
         _health = _data.Health;
     }
 

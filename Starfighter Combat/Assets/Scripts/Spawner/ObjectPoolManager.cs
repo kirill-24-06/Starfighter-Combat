@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class ObjectPoolManager : MonoBehaviour
@@ -47,6 +46,30 @@ public class ObjectPoolManager : MonoBehaviour
         _bonusEmpty.transform.SetParent(_objectPoolEmptyHolder.transform);
     }
 
+    //прогрев
+    public static GameObject Prewarm(GameObject objectToPrewarm, PoolType poolType = PoolType.None)
+    {
+        //string objectName = objectToPrewarm.name.Substring(0, objectToPrewarm.name.Length - 7);
+
+        PooledObjectInfo pool = ObjectPools.Find(p => p.LookupString == objectToPrewarm.name);
+
+        if (pool == null)
+        {
+            pool = new PooledObjectInfo() { LookupString = objectToPrewarm.name };
+            ObjectPools.Add(pool);
+        }
+
+        GameObject prewarmableObject = Instantiate(objectToPrewarm);
+        GameObject parrentObject = SetParrentObject(poolType);
+
+        if (parrentObject != null)
+            prewarmableObject.transform.SetParent(parrentObject.transform);
+
+        ReturnObjectToPool(prewarmableObject);
+
+        return prewarmableObject;
+    }
+
     public static GameObject SpawnObject(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, PoolType poolType = PoolType.None)
     {
         PooledObjectInfo pool = ObjectPools.Find(objectInfo => objectInfo.LookupString == objectToSpawn.name);
@@ -57,7 +80,8 @@ public class ObjectPoolManager : MonoBehaviour
             ObjectPools.Add(pool);
         }
 
-        GameObject spawnableObject = pool.InnactiveObjects.FirstOrDefault();
+        pool.InnactiveObjects.TryPop(out GameObject result);
+        GameObject spawnableObject = result;
 
         if (spawnableObject == null)
         {
@@ -74,7 +98,7 @@ public class ObjectPoolManager : MonoBehaviour
         else
         {
             spawnableObject.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
-            pool.InnactiveObjects.Remove(spawnableObject);
+            //pool.InnactiveObjects.Remove(spawnableObject);
             spawnableObject.SetActive(true);
         }
 
@@ -91,7 +115,10 @@ public class ObjectPoolManager : MonoBehaviour
             ObjectPools.Add(pool);
         }
 
-        GameObject spawnableObject = pool.InnactiveObjects.FirstOrDefault();
+        pool.InnactiveObjects.TryPop(out GameObject result);
+
+        GameObject spawnableObject = result;
+
 
         if (spawnableObject == null)
         {
@@ -100,7 +127,7 @@ public class ObjectPoolManager : MonoBehaviour
 
         else
         {
-            pool.InnactiveObjects.Remove(spawnableObject);
+            //pool.InnactiveObjects.Remove(spawnableObject);
             spawnableObject.SetActive(true);
         }
 
@@ -122,7 +149,7 @@ public class ObjectPoolManager : MonoBehaviour
         else
         {
             objectToReturn.SetActive(false);
-            pool.InnactiveObjects.Add(objectToReturn);
+            pool.InnactiveObjects.Push(objectToReturn);
         }
     }
 
@@ -161,5 +188,7 @@ public class PooledObjectInfo
 {
     public string LookupString;
 
-    public List<GameObject> InnactiveObjects = new List<GameObject>();
+    //public List<GameObject> InnactiveObjects = new List<GameObject>();
+
+    public Stack<GameObject> InnactiveObjects = new Stack<GameObject>();
 }

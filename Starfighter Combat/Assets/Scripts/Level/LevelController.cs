@@ -30,6 +30,7 @@ public class LevelController : MonoBehaviour
         EntryPoint.Instance.Events.Start += OnStart;
         EntryPoint.Instance.Events.Stop += OnStop;
         EntryPoint.Instance.Events.BossDefeated += OnBossDefeat;
+        EntryPoint.Instance.Events.PrewarmRequired += OnPrewarmRequire;
     }
 
     private void OnStart()
@@ -37,6 +38,8 @@ public class LevelController : MonoBehaviour
         _isGameActive = true;
         _stages[currentStage].StartStage();
     }
+
+    private void OnPrewarmRequire() => _spawnController.Prewarm(_data.Prewarmables);
 
     private void Update()
     {

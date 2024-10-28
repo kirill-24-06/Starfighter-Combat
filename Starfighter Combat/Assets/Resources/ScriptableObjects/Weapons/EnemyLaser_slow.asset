@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59f7f606d554724cbeb7df47dedbcbb, type: 3}
   m_Name: EnemyLaser_slow
   m_EditorClassIdentifier: 
-  _objectTag: 5
+  _prefab: {fileID: 814541193105084480, guid: 1e94fcb7fccef914593cf9153d1123aa, type: 3}
+  _prewarmAmount: 0
+  _tag: 5
   _objectSpeed: 10
   _gameZoneBorders: {x: 25, y: 20}
   _damage: 1

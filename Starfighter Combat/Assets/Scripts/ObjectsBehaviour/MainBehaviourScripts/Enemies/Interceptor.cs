@@ -18,10 +18,19 @@ public class Interceptor : Enemy
         Initialise();
     }
 
-    protected override void OnEnable()
+    private void Start()
     {
-        base.OnEnable();
+        var collider = GetComponent<Collider2D>();
+        EntryPoint.Instance.CollisionMap.Register(collider, this);
+        EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
+        EntryPoint.Instance.MissileTargets.AddEnemy(transform);
+    }
+
+    private void OnEnable()
+    {
         _health = _data.Health;
+        _attacker.Reset();
+        _mover.Reset();
     }
 
     protected override void Update()
@@ -31,11 +40,10 @@ public class Interceptor : Enemy
         Attack();
     }
 
-    protected override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
-        _attacker.Reset();
-        _mover.Reset();
+        //_attacker.Reset();
+        //_mover.Reset();
         StopAllCoroutines();
     }
 
@@ -68,7 +76,7 @@ public class Interceptor : Enemy
         if (!_mover.IsMoving && _target.gameObject.activeInHierarchy)
         {
             _mover.LookInTargetDirection(_target.position);
-            _attacker.Fire(_data.EnemyProjectile.gameObject);
+            _attacker.Fire(_data.EnemyProjectile);
         }
     }
 

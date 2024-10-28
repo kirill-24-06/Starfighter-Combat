@@ -19,19 +19,23 @@ public class PlayerAttacker : IAttacker
 
     public virtual void Fire(GameObject projectile)
     {
-        GameObject newProjectile;
-
         if (!_isShooted)
         {
             _isShooted = true;
 
-            newProjectile = ObjectPoolManager.SpawnObject(projectile, _projectileSpawnPoint.transform.position,
+            ObjectPoolManager.SpawnObject(projectile, _projectileSpawnPoint.transform.position,
                _projectileSpawnPoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
-            RegistrProjectile(newProjectile);
-
-            _reloadTimer.SetTimer(_player.PlayerData.ReloadTime);
-            _reloadTimer.StartTimer();
+       
+            Reload();
         }
+    }
+
+    private void Reload()
+    {
+        if(!_player.gameObject.activeInHierarchy) return;
+
+        _reloadTimer.SetTimer(_player.PlayerData.ReloadTime);
+        _reloadTimer.StartTimer();
     }
 
     public void Reset()
@@ -39,13 +43,5 @@ public class PlayerAttacker : IAttacker
         _reloadTimer.StopTimer();
         _isShooted = false;
     }
-
-    protected void RegistrProjectile(GameObject projectile)
-    {
-
-        EntryPoint.Instance.SpawnedObjects.RegisterObject(projectile, ObjectTag.PlayerWeapon);
-
-    }
-
     protected void OnReloadTimerExpired() => _isShooted = false;
 }

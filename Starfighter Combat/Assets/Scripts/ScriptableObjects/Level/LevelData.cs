@@ -8,7 +8,11 @@ public class LevelData : ScriptableObject
     [SerializeField] private BossWave _bossWave;
     [SerializeField] private float _bossWaveDelay;
 
+    [SerializeField] private List<PrewarmableData> _prewarmables;
+
     public List<StageData> Stages => _stages;
+
+    public List<PrewarmableData>Prewarmables => _prewarmables;
 
     public BossWave BossWave => _bossWave;
 

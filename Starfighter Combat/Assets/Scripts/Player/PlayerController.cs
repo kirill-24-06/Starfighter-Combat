@@ -7,7 +7,10 @@ public class PlayerController : MonoBehaviour
 
     private EventManager _events;
     private IInput _inputHandler;
+
     private IAttacker _attackHandler;
+    private PlayerAttacker _singleCannon;
+    private PlayerAttackerMultiple _multipleCannons;
 
 
     private bool _isGameActive;
@@ -20,7 +23,10 @@ public class PlayerController : MonoBehaviour
         _events = EntryPoint.Instance.Events;
 
         _inputHandler = new KeyboardInput();
-        _attackHandler = new PlayerAttacker(_player);
+
+        _singleCannon = new PlayerAttacker(_player);
+        _multipleCannons = new PlayerAttackerMultiple(_player);
+        _attackHandler = _singleCannon;
 
         _isPaused = false;
 
@@ -30,7 +36,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Start() => _isGameActive = true;
-    
+
     private void OnStop() => _isGameActive = false;
 
     private void OnPause(bool value) => _isPaused = value;
@@ -51,7 +57,7 @@ public class PlayerController : MonoBehaviour
         if (_inputHandler.ShootInput())
         {
             _attackHandler.Fire(_player.PlayerData.Projectile);
-            _playerAudio.PlayOneShot(_player.PlayerData.FireSound,_player.PlayerData.FireSoundVolume);
+            _playerAudio.PlayOneShot(_player.PlayerData.FireSound, _player.PlayerData.FireSoundVolume);
         }
 
         if (_inputHandler.BonusInput() && _player.IsEquiped)
@@ -62,7 +68,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        _attackHandler = new PlayerAttacker(_player);
+        _attackHandler.Reset();
+        _attackHandler = _singleCannon;
     }
 
     public void Move(Vector3 direction, float speed)
@@ -73,43 +80,30 @@ public class PlayerController : MonoBehaviour
 
     private void EnableMultilaser(bool isEnabled)
     {
+        _attackHandler.Reset();
+
         if (isEnabled)
-        {
-            _attackHandler = new PlayerAttackerMultiple(_player);
-        }
+            _attackHandler = _multipleCannons;
 
         else if (!isEnabled)
-        {
-            _attackHandler = new PlayerAttacker(_player);
-        }
+            _attackHandler = _singleCannon;
     }
 
-    private void UseSpehre()
-    {
-        _events.IonSphereUse?.Invoke();
-    }
+    private void UseSpehre() => _events.IonSphereUse?.Invoke();
 
     private void CheckBorders()
     {
         if (transform.position.x < -_player.PlayerData.GameZoneBorders.x)
-        {
             transform.position = new Vector3(-_player.PlayerData.GameZoneBorders.x, transform.position.y, transform.position.z);
-        }
 
         if (transform.position.x > _player.PlayerData.GameZoneBorders.x)
-        {
             transform.position = new Vector3(_player.PlayerData.GameZoneBorders.x, transform.position.y, transform.position.z);
-        }
 
         if (transform.position.y < -_player.PlayerData.GameZoneBorders.y)
-        {
             transform.position = new Vector3(transform.position.x, -_player.PlayerData.GameZoneBorders.y, transform.position.z);
-        }
 
         if (transform.position.y > _player.PlayerData.GameZoneBorders.y)
-        {
             transform.position = new Vector3(transform.position.x, _player.PlayerData.GameZoneBorders.y, transform.position.z);
-        }
     }
 
     private void OnDestroy()

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAdvancedAttacker : IAttacker
 {
+    private MonoBehaviour _client;
     private List<Transform> _firePoints;
 
     protected readonly Timer _reloadTimer;
@@ -20,46 +21,49 @@ public class EnemyAdvancedAttacker : IAttacker
 
     public EnemyAdvancedAttacker(MonoBehaviour client, IShooterData shooterData, int shotsPerAttackRun)
     {
-        _audioPlayer = client.GetComponentInChildren<AudioSource>();
+        _client = client;
+        _audioPlayer = _client.GetComponentInChildren<AudioSource>();
 
         _shooterData = shooterData;
         _shotsPerAttackRun = shotsPerAttackRun;
 
         _firePoints = new List<Transform>();
-        FindFirePoints(client.transform);
+        FindFirePoints(_client.transform);
 
-        _reloadTimer = new Timer(client);
+        _reloadTimer = new Timer(_client);
         _reloadTimer.TimeIsOver += OnReloadTimerExpired;
 
     }
 
     public void Fire(GameObject projectile)
     {
-        GameObject newProjectile;
+        if (_isShooted) return;
 
-        if (!_isShooted)
+        _isShooted = true;
+
+        for (int i = 0; i < _firePoints.Count; i++)
         {
-            _isShooted = true;
-
-            foreach (Transform position in _firePoints)
-            {
-                newProjectile = ObjectPoolManager.SpawnObject(projectile, position.position, position.rotation, ObjectPoolManager.PoolType.Weapon);
-                RegistrProjectile(newProjectile);
-            }
-
-            _reloadTimer.SetTimer(_shooterData.ReloadCountDown);
-            _reloadTimer.StartTimer();
-
-            _audioPlayer.PlayOneShot(_shooterData.FireSound, _shooterData.FireSoundVolume);
-
-            _shotsFired++;
+            ObjectPoolManager.SpawnObject(projectile, _firePoints[i].position, _firePoints[i].rotation, ObjectPoolManager.PoolType.Weapon);
         }
 
-        if(_shotsFired >= _shotsPerAttackRun)
+        _shotsFired++;
+        _audioPlayer.PlayOneShot(_shooterData.FireSound, _shooterData.FireSoundVolume);
+
+        if (_shotsFired >= _shotsPerAttackRun)
         {
             AttackRunComplete?.Invoke();
             _shotsFired = 0;
         }
+
+        Reload();
+    }
+
+    private void Reload()
+    {
+        if (!_client.gameObject.activeInHierarchy) return;
+
+        _reloadTimer.SetTimer(_shooterData.ReloadCountDown);
+        _reloadTimer.StartTimer();
     }
 
     public void Reset()
@@ -69,11 +73,6 @@ public class EnemyAdvancedAttacker : IAttacker
         _shotsFired = 0;
     }
 
-    protected void RegistrProjectile(GameObject projectile)
-    {
-        EntryPoint.Instance.SpawnedObjects.RegisterObject(projectile, ObjectTag.EnemyWeapon);
-    }
-
     protected void OnReloadTimerExpired() => _isShooted = false;
 
     private void FindFirePoints(Transform client)
@@ -81,9 +80,7 @@ public class EnemyAdvancedAttacker : IAttacker
         foreach (Transform child in client)
         {
             if (child.name == "FirePoint")
-            {
                 _firePoints.Add(child);
-            }
         }
     }
 }

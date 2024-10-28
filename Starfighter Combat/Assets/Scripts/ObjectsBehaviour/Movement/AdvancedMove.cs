@@ -8,7 +8,11 @@ public class AdvancedMove
     private readonly float _minY;
 
     protected IMover _mover;
+    protected Mover _forwardMover;
+    protected AdvancedMover _randomDirectionMover;
+
     protected Vector3 _direction = Vector2.up;
+    protected Vector3 _randomDirection = Vector3.zero;
 
     private bool _isArrived = false;
 
@@ -22,7 +26,9 @@ public class AdvancedMove
         _area = movableData.Area;
         _minY = movableData.MinY;
 
-        _mover = new Mover(client);
+        _forwardMover = new Mover(client);
+        _randomDirectionMover = new AdvancedMover(client);
+        _mover = _forwardMover;
 
         Arrival += OnArrive;
     }
@@ -37,7 +43,7 @@ public class AdvancedMove
 
     public void Disengage()
     {
-        _mover = new Mover(_client);
+        _mover = _forwardMover;
         SetNewDirection();
     }
 
@@ -60,7 +66,7 @@ public class AdvancedMove
     {
         _isArrived = true;
 
-        _mover = new AdvancedMover(_client);
+        _mover = _randomDirectionMover;
         SetNewDirection();
     }
 
@@ -89,17 +95,17 @@ public class AdvancedMove
 
     protected virtual Vector3 GenerateMovePoint()
     {
-        float positionX = UnityEngine.Random.Range(-_area.x, _area.x);
-        float positionY = UnityEngine.Random.Range(_minY, _area.y);
+        _randomDirection.x = UnityEngine.Random.Range(-_area.x, _area.x);
+        _randomDirection.y = UnityEngine.Random.Range(_minY, _area.y);
 
-        return new Vector3(positionX, positionY, 0);
+        return _randomDirection;
     }
 
     public void Reset()
     {
         _isArrived = false;
 
-        _mover = new Mover(_client);
+        _mover = _forwardMover;
         _direction = Vector3.up;
     }
 }

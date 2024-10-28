@@ -18,8 +18,10 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private SpriteRenderer[] _patrolArea;
 
     private EventManager _events;
-    private ObjectHolder _spawnedObjects;
+    //private ObjectHolder _spawnedObjects;
     private Spawner _spawner;
+    private CollisionMap _collisionMap;
+    private MissileTargets _missileTargets;
 
     public static EntryPoint Instance { get; private set; }
 
@@ -31,11 +33,9 @@ public class EntryPoint : MonoBehaviour
 
     public ScoreController ScoreController => _scoreController;
 
-    public ObjectHolder SpawnedObjects => _spawnedObjects;
+    //public ObjectHolder SpawnedObjects => _spawnedObjects;
 
     public SpawnController SpawnController => _spawnController;
-
-    public LevelController LevelController => _levelController;
 
     public Spawner Spawner => _spawner;
 
@@ -47,6 +47,9 @@ public class EntryPoint : MonoBehaviour
 
     public AudioSource GlobalSoundFX => _globalSoundFX;
 
+    public CollisionMap CollisionMap => _collisionMap;
+
+    public MissileTargets MissileTargets => _missileTargets;
 
 
     private void Awake()
@@ -60,13 +63,20 @@ public class EntryPoint : MonoBehaviour
         Initialize();
     }
 
-    private void Start() => DialogManager.ShowDialog<WelcomeDialog>();
+    private void Start()
+    {
+        _events.PrewarmRequired?.Invoke();
+        DialogManager.ShowDialog<WelcomeDialog>();
+    }
 
     private void Initialize()
     {
         _events = new EventManager();
-        _spawnedObjects = new ObjectHolder();
+        //_spawnedObjects = new ObjectHolder();
         _spawner = new Spawner();
+        _collisionMap = new CollisionMap();
+        _missileTargets = new MissileTargets();
+
 
         PatrolAreaInit();
         _player.Initialise();
@@ -87,8 +97,6 @@ public class EntryPoint : MonoBehaviour
         PatrolArea = new Bounds[_patrolArea.Length];
 
         for (int i = 0; i < _patrolArea.Length; i++)
-        {
             PatrolArea[i] = _patrolArea[i].bounds;
-        }
     }
 }

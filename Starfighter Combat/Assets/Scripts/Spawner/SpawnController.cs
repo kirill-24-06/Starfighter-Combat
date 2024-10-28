@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System.Threading;
+using System.Collections.Generic;
 
 public class SpawnController : MonoBehaviour
 {
@@ -25,6 +26,14 @@ public class SpawnController : MonoBehaviour
         EntryPoint.Instance.Events.EnemyDestroyed += OnEnemyDestroyed;
         EntryPoint.Instance.Events.BonusTaken += OnBonusTaken;
         EntryPoint.Instance.Events.Stop += OnStop;
+    }
+
+    public SpawnController Prewarm(List<PrewarmableData> prewarmables)
+    {
+        foreach (var prewarmable in prewarmables)
+            _spawner.Prewarm(prewarmable);     
+        
+        return this;
     }
 
     private void OnStart() => _isGameActive = true;

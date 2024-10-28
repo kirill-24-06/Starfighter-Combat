@@ -9,6 +9,7 @@ public enum ObjectTag
     Boss,
     PlayerWeapon,
     EnemyWeapon,
+    Particles,
     None
 }
 
