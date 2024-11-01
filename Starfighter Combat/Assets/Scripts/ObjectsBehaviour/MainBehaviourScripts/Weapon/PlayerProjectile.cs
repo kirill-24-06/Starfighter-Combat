@@ -6,16 +6,10 @@ public class PlayerProjectile : Projectile
     [SerializeField] private GameObject _collideEffect;
     private Dictionary<Collider2D,IInteractableEnemy> _enemies;
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
-        _enemies = EntryPoint.Instance.CollisionMap.Interactables;
-    }
-
-    protected override void Start()
-    {
-        base.Start();
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(GetComponent<Collider2D>(), this);
+        _enemies = EntryPoint.Instance.CollisionMap.Interactables;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -24,10 +18,10 @@ public class PlayerProjectile : Projectile
         {
             enemy.Interact();
 
-            ObjectPoolManager.SpawnObject(_collideEffect, transform.position,
-                _collideEffect.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+            ObjectPool.Get(_collideEffect, transform.position,
+                _collideEffect.transform.rotation);
 
-            Disable();
+            ObjectPool.Release(_gameObject);
         }
     }
 }

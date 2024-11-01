@@ -48,8 +48,8 @@ public class PlayerHealthHandler : IDamageble, IHealable, IResetable
             _player.gameObject.SetActive(false);
         }
 
-        ObjectPoolManager.SpawnObject(_playerData.Explosion, _player.transform.position,
-            _playerData.Explosion.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+        ObjectPool.Get(_playerData.Explosion, _player.transform.position,
+            _playerData.Explosion.transform.rotation);
 
         _playerAudio.PlayOneShot(_playerData.ExplosionSound, _playerData.ExplosionSoundVolume);
     }

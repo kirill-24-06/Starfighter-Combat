@@ -2,25 +2,24 @@ using UnityEngine;
 
 public class DefenceDroneBehaviour : MonoBehaviour
 {
-    [SerializeField] PlayerMissile _missile;
     [SerializeField] GameObject _explosionPrefab;
     [SerializeField] DefenceDroneData _data;
 
-
     private IAttacker _droneAttackHandler;
+    private IResetable _attacker;
 
     public GameObject Explosion => _explosionPrefab;
 
     private void Start()
     {
-        _droneAttackHandler = new EnemyAttacker(this, _data);
+        var attacker = new EnemyAttacker(this, _data);
+        _attacker = attacker;
+        _droneAttackHandler = attacker;
+
         gameObject.SetActive(false);
     }
 
-    private void Update() => _droneAttackHandler.Fire(_missile.gameObject);
+    private void Update() => _droneAttackHandler.Fire();
 
-    private void OnDisable()
-    {
-        _droneAttackHandler.Reset();
-    }
+    private void OnDisable() => _attacker.Reset(); 
 }

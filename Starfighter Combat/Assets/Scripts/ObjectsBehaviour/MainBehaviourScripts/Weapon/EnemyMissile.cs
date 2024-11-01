@@ -2,11 +2,8 @@ using UnityEngine;
 
 public class EnemyMissile : Missile
 {
-    [SerializeField] private GameObject _explosionPrefab;
-
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(GetComponent<Collider2D>(), this);
     }
 
@@ -22,12 +19,11 @@ public class EnemyMissile : Missile
     {
         if (Player.IsPlayer(collision.gameObject) || collision.gameObject == EntryPoint.Instance.Player.ForceField.gameObject)
         {
-            ObjectPoolManager.SpawnObject(_explosionPrefab, transform.position,
-                _explosionPrefab.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+            ObjectPool.Get(_explosionPrefab, _transform.position,
+                _explosionPrefab.transform.rotation);
 
             Interact();
         }
-
     }
 
     protected void Interact()
@@ -42,6 +38,6 @@ public class EnemyMissile : Missile
             _events.DroneDestroyed?.Invoke();
         }
 
-        Disable();
+        ObjectPool.Release(_gameObject);
     }
 }

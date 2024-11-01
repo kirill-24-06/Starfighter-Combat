@@ -29,3 +29,4 @@ MonoBehaviour:
   _explosionSoundVolume: 0.153
   _fireSound: {fileID: 8300000, guid: 5b9f5799f67117042987b08d3835bbcc, type: 3}
   _fireSoundVolume: 0.2
+  _nukeResist: 0.6

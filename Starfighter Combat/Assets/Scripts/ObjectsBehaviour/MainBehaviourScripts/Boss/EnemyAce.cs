@@ -16,7 +16,7 @@ public class EnemyAce : Boss
         var collider = GetComponent<PolygonCollider2D>();
         EntryPoint.Instance.CollisionMap.Register(collider, this);
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
-        EntryPoint.Instance.MissileTargets.AddEnemy(transform);
+        EntryPoint.Instance.CollisionMap.RegisterMissileTarget(transform);
         EntryPoint.Instance.Events.BossArrival?.Invoke();
     }
 

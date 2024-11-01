@@ -1,51 +1,31 @@
 using UnityEngine;
 
-public abstract class Projectile : BasicObject,INukeInteractable
+public abstract class Projectile : MonoBehaviour,INukeInteractable
 {
     [SerializeField] protected ProjectileData _data;
 
+    protected GameObject _gameObject;
+    protected Transform _transform;
+
     private IMover _mover;
 
-    protected virtual void Awake() => _mover = new Mover(transform);
+    protected EventManager _events;
 
-    //protected override void Start()
-    //{
-    //    base.Start();
-    //    EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(GetComponent<Collider2D>(), this);
-    //}
-
-    protected void Update()
+    protected virtual void Awake()
     {
-        Move();
-        DeactivateOutOfBounds();
+        _events = EntryPoint.Instance.Events;
+
+        _gameObject = gameObject;
+        _transform = transform;
+
+        _mover = new Mover(_transform);
+
+        PoolMap.SetParrentObject(GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
-    public void GetDamagedByNuke() => Disable();
+    private void Update() => _mover.Move(Vector2.up, _data.Speed);
 
-    protected override void Move() => _mover.Move(Vector2.up, _data.Speed);
+    public void GetDamagedByNuke() => ObjectPool.Release(gameObject);
 
-    protected override void Disable() => ObjectPoolManager.ReturnObjectToPool(gameObject);
-
-    protected void DeactivateOutOfBounds()
-    {
-        if (transform.position.y < -_data.DisableBorders.y)
-        {
-            Disable();
-        }
-
-        if (transform.position.y > _data.DisableBorders.y)
-        {
-            Disable();
-        }
-
-        if (transform.position.x < -_data.DisableBorders.x)
-        {
-            Disable();
-        }
-
-        if (transform.position.x > _data.DisableBorders.x)
-        {
-            Disable();
-        }
-    }
+    private void OnTriggerEnter2D(Collider2D collision) => ObjectPool.Release(_gameObject);
 }

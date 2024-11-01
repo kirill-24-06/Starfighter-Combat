@@ -1,65 +1,47 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner
 {
-    private List<SpawnArea> _spawnAreas;
-    //private ObjectHolder _spawnedObjects;
+    private SpawnArea[] _spawnAreas;
     private Player _player;
     private Vector3 _playerStartPosition;
-
 
     public void Initialise()
     {
         _player = EntryPoint.Instance.Player;
         _playerStartPosition = _player.transform.position;
 
-        _spawnAreas = new List<SpawnArea>();
+        _spawnAreas = GameObject.FindObjectsOfType<SpawnArea>();
 
-        SpawnArea[] existedAreas = GameObject.FindObjectsOfType<SpawnArea>();
-
-        if (existedAreas != null)
+        if (_spawnAreas != null)
         {
-            foreach (var item in existedAreas)
-            {
-                item.Initialise(item.name);
-                _spawnAreas.Add(item);
-            }
+            for (int i = 0; i < _spawnAreas.Length; i++)
+                _spawnAreas[i].Initialise(_spawnAreas[i].name);
         }
 
         else
             Debug.LogError("Зоны спавна не найденны");
-
-
-        //_spawnedObjects = EntryPoint.Instance.SpawnedObjects;
     }
 
     public void Prewarm(PrewarmableData objectToPrewarm)
     {
-        for (int i = 0; i < objectToPrewarm.PrewarmAmount; i++)
-        {
-            ObjectPoolManager.Prewarm(objectToPrewarm.Prefab, GlobalConstants.PoolTypesByTag[objectToPrewarm.Tag]);
-            //_spawnedObjects.RegisterObject(spawnedObject,objectToPrewarm.Tag);
-        }
+        ObjectPool.NewPool(objectToPrewarm.Prefab, objectToPrewarm.PrewarmAmount);
     }
 
     public GameObject SpawnEnemy(SpawnableData enemyToSpawn)
     {
-        SpawnArea area = SelectSpawnArea(enemyToSpawn.SpawnZones);
+        var area = SelectSpawnArea(enemyToSpawn.SpawnZones);
 
-        var enemy = ObjectPoolManager.SpawnObject(enemyToSpawn.Prefab, area.GenerateSpawnPosition(),
-            area.Rotation, ObjectPoolManager.PoolType.Enemy);
+        var enemy = ObjectPool.Get(enemyToSpawn.Prefab, area.GenerateSpawnPosition(), area.Rotation);
 
         return enemy;
     }
 
-
     public void SpawnBonus(SpawnableData bonusToSpawn)
     {
-        SpawnArea area = SelectSpawnArea(bonusToSpawn.SpawnZones);
+        var area = SelectSpawnArea(bonusToSpawn.SpawnZones);
 
-        ObjectPoolManager.SpawnObject(bonusToSpawn.Prefab, area.GenerateSpawnPosition(),
-            bonusToSpawn.Prefab.transform.rotation, ObjectPoolManager.PoolType.Bonus);
+        ObjectPool.Get(bonusToSpawn.Prefab, area.GenerateSpawnPosition(), bonusToSpawn.Prefab.transform.rotation);
     }
 
     public void SpawnPlayer()
@@ -72,6 +54,7 @@ public class Spawner
 
     private SpawnArea SelectSpawnArea(AreaTag[] spawnZones)
     {
+        SpawnArea areaForSpawn = null;
         AreaTag spawnAreaTag = AreaTag.None;
 
         if (spawnZones.Length > 1)
@@ -83,15 +66,31 @@ public class Spawner
         else
             Debug.LogError("Теги зон спавна не указанны");
 
-        SpawnArea spawnArea = _spawnAreas.Find(spawnArea => spawnArea.Tag == spawnAreaTag);
-
-        if (spawnArea != null)
-            return spawnArea;
-
-        else
+        for (int i = 0; i < _spawnAreas.Length; i++)
         {
-            Debug.LogError("Зона с таким тегом отстутствует");
-            return null;
+            if (_spawnAreas[i].Tag == spawnAreaTag)
+            {
+                areaForSpawn = _spawnAreas[i];
+                break;
+            }
         }
+
+        return areaForSpawn != null ? areaForSpawn : null;
     }
 }
+        //foreach (var spawnArea in _spawnAreas)
+        //    areaForSpawn = spawnArea.Tag == spawnAreaTag ? spawnArea  : null;
+//SpawnArea spawnArea = _spawnAreas.//Find(spawnArea => spawnArea.Tag == spawnAreaTag);
+//{
+//    Debug.LogError("Зона с таким тегом отстутствует");
+//    return null;
+//};
+
+//if (areaForSpawn != null)
+//    return areaForSpawn;
+
+//else
+//{
+//    Debug.LogError("Зона с таким тегом отстутствует");
+//    return null;
+//}

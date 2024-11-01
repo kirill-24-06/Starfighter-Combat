@@ -81,7 +81,7 @@ public class Bonus : BasicObject
 
     protected override void Disable()
     {
-        ObjectPoolManager.ReturnObjectToPool(gameObject);
+        ObjectPool.Release(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

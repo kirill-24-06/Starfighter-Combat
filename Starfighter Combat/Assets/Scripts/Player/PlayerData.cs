@@ -10,6 +10,7 @@ public class PlayerData : ScriptableObject
     [SerializeField] private float _tempInvunrabilityTimeSeconds;
     [SerializeField] private float _speed;
     [SerializeField] private GameObject _nukePrefab;
+    [SerializeField] private float _nukeCd;
     [SerializeField] private int _nukesStartAmount;
     [SerializeField] private GameObject _weapon;
     [SerializeField] private float _reloadTime;
@@ -27,7 +28,7 @@ public class PlayerData : ScriptableObject
 
     public int MaxHealth => _maxHealth;
 
-    public int TempInvunrabilityTimeMilliseconds =>(int)(_tempInvunrabilityTimeSeconds * GlobalConstants.MillisecondsConverter);
+    public int TempInvunrabilityTimeMilliseconds => (int)(_tempInvunrabilityTimeSeconds * GlobalConstants.MillisecondsConverter);
 
     public float Speed => _speed;
 
@@ -51,4 +52,6 @@ public class PlayerData : ScriptableObject
     public AudioClip ExplosionSound => _explosionSound;
 
     public float ExplosionSoundVolume => _explosionSoundVolume;
+
+    public int NukeCooldown => (int)(_nukeCd * GlobalConstants.MillisecondsConverter);
 }

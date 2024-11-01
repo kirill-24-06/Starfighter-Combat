@@ -34,9 +34,10 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         _bonusTimer = new Timer(_player);
 
         _defenceDrones = _player.GetComponentsInChildren<DefenceDroneBehaviour>();
+
         _nukePrefab = _playerData.NukePrefab;
         _nukePoint = _player.transform.Find("NukePoint");
-        _nukeTargets = new Collider2D[0];
+        _nukeTargets = new Collider2D[27];
 
         _events = EntryPoint.Instance.Events;
 
@@ -124,19 +125,17 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
     }
 
     private void OnNukeUse() => UseNuke().Forget();
+
     private async UniTaskVoid UseNuke()
     {
         _player.StartTempInvunrability().Forget();
 
-        ObjectPoolManager.SpawnObject(_nukePrefab, _nukePoint.position,
-            _nukePrefab.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+        GameObject.Instantiate(_nukePrefab, _nukePoint.position,
+             _nukePrefab.transform.rotation);
 
-        _nukeTargets = Physics2D.OverlapCircleAll(_nukePoint.position, 30f); // переделать в non alloc
+        var count = Physics2D.OverlapCircleNonAlloc(_nukePoint.position, 30f, _nukeTargets);
 
-        await UniTask.Delay(500, cancellationToken: _player.destroyCancellationToken);
-
-        var count = _nukeTargets.Length;
-        Debug.Log(count);
+        await UniTask.Delay(500, cancellationToken: _player.GetCancellationTokenOnDestroy());
 
         for (int i = 0; i < count; i++)
         {
@@ -183,10 +182,9 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         {
             if (_defenceDrones[i].gameObject.activeInHierarchy)
             {
-                ObjectPoolManager.SpawnObject(_defenceDrones[i].Explosion,
-                    _defenceDrones[i].gameObject.transform.position,
-                    _defenceDrones[i].Explosion.transform.rotation,
-                    ObjectPoolManager.PoolType.ParticleSystem);
+                GameObject.Instantiate(_defenceDrones[i].Explosion,
+                    _defenceDrones[i].transform.position,
+                    _defenceDrones[i].Explosion.transform.rotation);
 
                 _defenceDrones[i].gameObject.SetActive(false);
                 break;

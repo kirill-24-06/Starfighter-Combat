@@ -31,8 +31,8 @@ public class SpawnController : MonoBehaviour
     public SpawnController Prewarm(List<PrewarmableData> prewarmables)
     {
         foreach (var prewarmable in prewarmables)
-            _spawner.Prewarm(prewarmable);     
-        
+            _spawner.Prewarm(prewarmable);
+
         return this;
     }
 
@@ -143,12 +143,16 @@ public class SpawnController : MonoBehaviour
         {
             _activeEnemies--;
             _activeEliteEnemies--;
+
+            if (_activeEliteEnemies < 0)
+                _activeEliteEnemies = 0;
         }
 
         else if (enemyStrenght == EnemyStrenght.Basic)
-        {
             _activeEnemies--;
-        }
+
+        if (_activeEnemies < 0)
+            _activeEnemies = 0;
     }
 
     private void OnBonusTaken() => _bonusIsActive = false;

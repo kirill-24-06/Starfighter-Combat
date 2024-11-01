@@ -4,9 +4,8 @@ public class EnemyProjectile : Projectile
 {
     [SerializeField] private GameObject _collideEffect;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(GetComponent<Collider2D>(), this);
     }
 
@@ -14,8 +13,7 @@ public class EnemyProjectile : Projectile
     {
         if (Player.IsPlayer(collision.gameObject) || collision.gameObject == EntryPoint.Instance.Player.ForceField.gameObject)
         {
-            ObjectPoolManager.SpawnObject(_collideEffect, transform.position,
-                _collideEffect.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
+            ObjectPool.Get(_collideEffect, _transform.position,_collideEffect.transform.rotation);
             Collide();
         }
     }
@@ -28,6 +26,6 @@ public class EnemyProjectile : Projectile
         else if (!EntryPoint.Instance.Player.IsInvunerable && EntryPoint.Instance.Player.IsDroneActive)
             _events.DroneDestroyed?.Invoke();
 
-        Disable();
+        ObjectPool.Release(_gameObject);
     }
 }

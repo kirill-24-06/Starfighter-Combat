@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAdvancedAttacker : IAttacker
+public class EnemyAdvancedAttacker : IAttacker,IResetable
 {
-    private MonoBehaviour _client;
+    private GameObject _client;
     private List<Transform> _firePoints;
-
-    protected readonly Timer _reloadTimer;
-    protected IShooterData _shooterData;
+    private GameObject _projectile;
 
     private AudioSource _audioPlayer;
+    private AudioClip _fireSound;
+    private float _fireSoundVolume;
+
+    protected readonly Timer _reloadTimer;
+    private float _reloadCd;
 
     protected bool _isShooted = false;
 
@@ -21,21 +24,23 @@ public class EnemyAdvancedAttacker : IAttacker
 
     public EnemyAdvancedAttacker(MonoBehaviour client, IShooterData shooterData, int shotsPerAttackRun)
     {
-        _client = client;
-        _audioPlayer = _client.GetComponentInChildren<AudioSource>();
-
-        _shooterData = shooterData;
-        _shotsPerAttackRun = shotsPerAttackRun;
-
+        _client = client.gameObject;
         _firePoints = new List<Transform>();
         FindFirePoints(_client.transform);
+        _projectile = shooterData.Projectile;
 
-        _reloadTimer = new Timer(_client);
+        _audioPlayer = _client.GetComponentInChildren<AudioSource>();
+        _fireSound = shooterData.FireSound;
+        _fireSoundVolume = shooterData.FireSoundVolume;
+
+        _shotsPerAttackRun = shotsPerAttackRun;
+
+        _reloadTimer = new Timer(client);
+        _reloadCd = shooterData.ReloadCountDown;
         _reloadTimer.TimeIsOver += OnReloadTimerExpired;
-
     }
 
-    public void Fire(GameObject projectile)
+    public void Fire()
     {
         if (_isShooted) return;
 
@@ -43,11 +48,10 @@ public class EnemyAdvancedAttacker : IAttacker
 
         for (int i = 0; i < _firePoints.Count; i++)
         {
-            ObjectPoolManager.SpawnObject(projectile, _firePoints[i].position, _firePoints[i].rotation, ObjectPoolManager.PoolType.Weapon);
+            ObjectPool.Get(_projectile, _firePoints[i].position, _firePoints[i].rotation);
         }
 
         _shotsFired++;
-        _audioPlayer.PlayOneShot(_shooterData.FireSound, _shooterData.FireSoundVolume);
 
         if (_shotsFired >= _shotsPerAttackRun)
         {
@@ -55,6 +59,7 @@ public class EnemyAdvancedAttacker : IAttacker
             _shotsFired = 0;
         }
 
+        _audioPlayer.PlayOneShot(_fireSound, _fireSoundVolume);
         Reload();
     }
 
@@ -62,7 +67,7 @@ public class EnemyAdvancedAttacker : IAttacker
     {
         if (!_client.gameObject.activeInHierarchy) return;
 
-        _reloadTimer.SetTimer(_shooterData.ReloadCountDown);
+        _reloadTimer.SetTimer(_reloadCd);
         _reloadTimer.StartTimer();
     }
 

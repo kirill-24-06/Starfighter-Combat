@@ -23,8 +23,7 @@ public class BossMissileLaunchAbility : IBossAbility
     {
         foreach (var missilePoint in _missilePoints)
         {
-            ObjectPoolManager.SpawnObject(_missile, missilePoint.position, missilePoint.rotation, ObjectPoolManager.PoolType.Weapon);
-            //EntryPoint.Instance.SpawnedObjects.RegisterObject(_missile, ObjectTag.EnemyWeapon);
+            ObjectPool.Get(_missile, missilePoint.position, missilePoint.rotation);
         }
     }
 }

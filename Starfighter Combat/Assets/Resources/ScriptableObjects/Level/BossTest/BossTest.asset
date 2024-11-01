@@ -18,3 +18,4 @@ MonoBehaviour:
   _bossWaveDelay: 5
   _prewarmables:
   - {fileID: 11400000, guid: 7cac5bf82c669094d8b34b275e418e69, type: 2}
+  - {fileID: 11400000, guid: 5dff61437e7de1749aa2332ef24cea1e, type: 2}

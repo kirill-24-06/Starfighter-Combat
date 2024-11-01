@@ -18,10 +18,9 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private SpriteRenderer[] _patrolArea;
 
     private EventManager _events;
-    //private ObjectHolder _spawnedObjects;
+    private PoolMap _poolMap;
     private Spawner _spawner;
     private CollisionMap _collisionMap;
-    private MissileTargets _missileTargets;
 
     public static EntryPoint Instance { get; private set; }
 
@@ -32,8 +31,6 @@ public class EntryPoint : MonoBehaviour
     public GameController GameController => _gameController;
 
     public ScoreController ScoreController => _scoreController;
-
-    //public ObjectHolder SpawnedObjects => _spawnedObjects;
 
     public SpawnController SpawnController => _spawnController;
 
@@ -48,8 +45,6 @@ public class EntryPoint : MonoBehaviour
     public AudioSource GlobalSoundFX => _globalSoundFX;
 
     public CollisionMap CollisionMap => _collisionMap;
-
-    public MissileTargets MissileTargets => _missileTargets;
 
 
     private void Awake()
@@ -72,10 +67,9 @@ public class EntryPoint : MonoBehaviour
     private void Initialize()
     {
         _events = new EventManager();
-        //_spawnedObjects = new ObjectHolder();
         _spawner = new Spawner();
         _collisionMap = new CollisionMap();
-        _missileTargets = new MissileTargets();
+        _poolMap = new PoolMap();
 
 
         PatrolAreaInit();
@@ -90,6 +84,7 @@ public class EntryPoint : MonoBehaviour
         _levelController.Initialise();
         _musicPlayer.Initialise();
         _backgroundController.Initialise();
+        _poolMap.Initialise(_spawnController.transform);
     }
 
     private void PatrolAreaInit()

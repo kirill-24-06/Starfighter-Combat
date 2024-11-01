@@ -4,7 +4,7 @@ public class InterceptorWithAbilities : BossStage
     private InterceptorWithAbilitiesStageData _data;
     private Transform _target;
 
-    private AdvancedMove _mover;
+    private MovementControl _mover;
     private EnemyAdvancedAttacker _weapon;
     private BossAbilitiesHandler _handler;
 
@@ -18,7 +18,7 @@ public class InterceptorWithAbilities : BossStage
         _boss = boss;
         _target = EntryPoint.Instance.Player.transform;
 
-        _mover = new AdvancedMove(boss.transform, boss.Data);
+        _mover = new MovementControl(boss.transform, boss.Data);
 
         _weapon = new EnemyAdvancedAttacker(boss, _data, _data.ShotsBeforePositionChange);
         _weapon.AttackRunComplete += OnAttackRunComplete;
@@ -50,7 +50,7 @@ public class InterceptorWithAbilities : BossStage
         if (!_mover.IsMoving && _target.gameObject.activeInHierarchy)
         {
             _mover.LookInTargetDirection(_target.position);
-            _weapon.Fire(_data.Projectile);
+            _weapon.Fire();
         }
     }
 

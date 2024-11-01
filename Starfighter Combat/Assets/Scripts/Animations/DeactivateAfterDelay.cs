@@ -14,6 +14,6 @@ public class DeactivateAfterDelay : MonoBehaviour
     {
         await UniTask.Delay(_millisecondsDelay, cancellationToken: destroyCancellationToken);
 
-        ObjectPoolManager.ReturnObjectToPool(gameObject);
+        ObjectPool.Release(gameObject);
     }
 }

@@ -32,10 +32,6 @@ public class InterceptorWithAbilitiesStageData : InterceptorStageData, IAbilityC
                 case Abilities.MissileLaunch:
                     result.Add(new BossMissileLaunchAbility());
                     break;
-
-                case Abilities.Multilaser:
-                    result.Add(new BossMultilaserGun());
-                    break;
             }
         }
         return result;

@@ -1,8 +1,12 @@
 using UnityEngine;
 
-public abstract class Missile : BasicObject,INukeInteractable
+public abstract class Missile : MonoBehaviour, INukeInteractable
 {
     [SerializeField] protected MissileData _data;
+    [SerializeField] protected GameObject _explosionPrefab;
+
+    protected GameObject _gameObject;
+    protected Transform _transform;
 
     protected Transform _target;
     private Vector3 _direction;
@@ -14,23 +18,25 @@ public abstract class Missile : BasicObject,INukeInteractable
     private Timer _launchTimer;
 
     private Timer _homingTimer;
-
     private bool _homing = false;
+
+    protected EventManager _events;
 
     protected virtual void Awake()
     {
+        _events = EntryPoint.Instance.Events;
+
+        _gameObject = gameObject;
+        _transform = transform;
+
         _launchTimer = new Timer(this);
         _homingTimer = new Timer(this);
 
         _forwardMover = new Mover(transform);
         _homingMover = new MissileMover(transform);
-    }
 
-    //protected override void Start()
-    //{
-    //    base.Start();
-    //    EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(GetComponent<Collider2D>(), this);
-    //}
+        PoolMap.SetParrentObject(GlobalConstants.PoolTypesByTag[_data.Tag]);
+    }
 
     protected void OnEnable()
     {
@@ -47,7 +53,6 @@ public abstract class Missile : BasicObject,INukeInteractable
     protected void Update()
     {
         Move();
-        DeactivateOutOfBounds();
 
         if (_target != null && !_target.gameObject.activeInHierarchy)
         {
@@ -56,18 +61,13 @@ public abstract class Missile : BasicObject,INukeInteractable
         }
     }
 
-    protected override void Move()
+    private void Move()
     {
         if (_homing && _target != null)
             _mover.Move(_target.position, _data.Speed);
 
         else
             _mover.Move(_direction, _data.Speed);
-    }
-
-    protected override void Disable()
-    {
-        ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 
     protected void OnDisable()
@@ -101,34 +101,12 @@ public abstract class Missile : BasicObject,INukeInteractable
         _direction = Vector3.up;
     }
 
-    //private void OnIonSphereUse()
-    //{
-    //    if (gameObject.activeInHierarchy)
-    //        Disable();
-    //}
-
-    public void GetDamagedByNuke() => Disable();
-   
-    private void DeactivateOutOfBounds()
+    public void GetDamagedByNuke()
     {
-        if (transform.position.y < -_data.DisableBorders.y)
-        {
-            Disable();
-        }
+        ObjectPool.Get(_explosionPrefab, _transform.position, _explosionPrefab.transform.rotation);
 
-        if (transform.position.y > _data.DisableBorders.y)
-        {
-            Disable();
-        }
-
-        if (transform.position.x < -_data.DisableBorders.x)
-        {
-            Disable();
-        }
-
-        if (transform.position.x > _data.DisableBorders.x)
-        {
-            Disable();
-        }
+        ObjectPool.Release(gameObject);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision) => ObjectPool.Release(_gameObject);
 }

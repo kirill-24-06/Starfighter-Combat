@@ -4,69 +4,80 @@ public class Fighter : Enemy
 {
     [SerializeField] private FighterData _data;
 
-    private IAttacker _attacker;
     private IMover _mover;
 
-    private AudioSource _audioPlayer;
+    private IAttacker _attackHandler;
+    private IResetable _attacker;
 
     protected override void Awake()
     {
         base.Awake();
-        Initialise();
+        PoolMap.SetParrentObject(GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()
     {
+        Initialise();
+
         var collider = GetComponent<Collider2D>();
         EntryPoint.Instance.CollisionMap.Register(collider, this);
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
-        EntryPoint.Instance.MissileTargets.AddEnemy(transform);
-    }
-
-    private void OnEnable()
-    {
-        _health = _data.Health;
-        _attacker.Reset();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-
-        _attacker.Fire(_data.EnemyProjectile.gameObject);
+        EntryPoint.Instance.CollisionMap.RegisterMissileTarget(_transform);
     }
 
     protected override void Initialise()
     {
-        _mover = new Mover(transform);
-        _attacker = new EnemyAttacker(this, _data);
+        _mover = new Mover(_transform);
 
-        _audioPlayer = EntryPoint.Instance.GlobalSoundFX;
+        var attacker = new EnemyAttacker(this, _data);
+        _attackHandler = attacker;
+        _attacker = attacker;
 
-        Data = _data;
+        var enemyHealth = new EnemyHealthHandler(_data.Health);
+        _damageHandler = enemyHealth;
+        _health = enemyHealth;
+        enemyHealth.Dead += OnDead;
     }
 
-    private void OnDisable()
+    private void OnEnable()
     {
-        StopAllCoroutines();
+        _health?.Reset();
+        _attacker?.Reset();
     }
 
-    protected override void Move()
-    {
-        _mover.Move(Vector2.up, _data.Speed);
+    private void FixedUpdate() => _attackHandler.Fire();
 
-        DeactivateOutOfBounds(_data.DisableBorders);
+    private void Update() => Move();
+
+    protected override void Move() => _mover.Move(Vector2.up, _data.Speed);
+
+    protected override void Collide()
+    {
+        if (!EntryPoint.Instance.Player.IsInvunerable && !EntryPoint.Instance.Player.IsDroneActive)
+            _events.PlayerDamaged?.Invoke(GlobalConstants.CollisionDamage);
+
+        else if (!EntryPoint.Instance.Player.IsInvunerable && EntryPoint.Instance.Player.IsDroneActive)
+            _events.DroneDestroyed?.Invoke();
+
+        _damageHandler.TakeDamage(GlobalConstants.CollisionDamage * _data.Health);
     }
-    protected override void Disable()
-    {
-        ObjectPoolManager.SpawnObject(_data.Explosion, transform.position,
-            _data.Explosion.transform.rotation, ObjectPoolManager.PoolType.ParticleSystem);
 
-        ObjectPoolManager.ReturnObjectToPool(gameObject);
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
+        ObjectPool.Release(gameObject);
+    }
+
+    protected override void OnDead()
+    {
+        ObjectPool.Get(_data.Explosion, transform.position,
+            _data.Explosion.transform.rotation);
 
         _events.AddScore?.Invoke(_data.Score);
         _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
 
-        _audioPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
+        _soundPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
+
+        ObjectPool.Release(gameObject);
     }
 }

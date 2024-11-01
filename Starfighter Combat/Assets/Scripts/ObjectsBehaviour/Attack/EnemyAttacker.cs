@@ -1,57 +1,62 @@
 using UnityEngine;
 
-public class EnemyAttacker : IAttacker
+public class EnemyAttacker : IAttacker,IResetable
 {
-    private Transform _firePoint;
     private GameObject _client;
-
-    protected readonly Timer _reloadTimer;
-    protected IShooterData _shooterData;
+    private Transform _firePoint;
+    private GameObject _projectile;
 
     private AudioSource _audioPlayer;
+    private AudioClip _fireSound;
+    private float _fireSoundVolume;
 
-    protected bool _isShooted = false;
+    protected readonly Timer _reloadTimer;
+    private float _reloadCd;
+
+    protected bool _isOnReload = false;
 
     public EnemyAttacker(MonoBehaviour client, IShooterData shooterData)
     {
         _client = client.gameObject;
         _firePoint = _client.transform.Find("FirePoint");
-        _audioPlayer = _client.GetComponentInChildren<AudioSource>();
+        _projectile = shooterData.Projectile;
 
-        _shooterData = shooterData;
+        _audioPlayer = _client.GetComponentInChildren<AudioSource>();
+        _fireSound = shooterData.FireSound;
+        _fireSoundVolume = shooterData.FireSoundVolume;
 
         _reloadTimer = new Timer(client);
+        _reloadCd = shooterData.ReloadCountDown;
         _reloadTimer.TimeIsOver += OnReloadTimerExpired;
     }
 
-    public virtual void Fire(GameObject projectile)
+    public virtual void Fire()
     {
-        if (_isShooted) return;
+        if (_isOnReload) return;
 
-        _isShooted = true;
+        _isOnReload = true;
 
-        ObjectPoolManager.SpawnObject(projectile, _firePoint.transform.position,
-           _firePoint.transform.rotation, ObjectPoolManager.PoolType.Weapon);
+        ObjectPool.Get(_projectile, _firePoint.position, _firePoint.rotation);
 
 
         if (!_client.activeInHierarchy) return;
 
-        _audioPlayer.PlayOneShot(_shooterData.FireSound, _shooterData.FireSoundVolume);
+        _audioPlayer.PlayOneShot(_fireSound, _fireSoundVolume);
 
         Reload();
     }
 
     private void Reload()
     {
-        _reloadTimer.SetTimer(_shooterData.ReloadCountDown);
+        _reloadTimer.SetTimer(_reloadCd);
         _reloadTimer.StartTimer();
     }
 
     public void Reset()
     {
         _reloadTimer.StopTimer();
-        _isShooted = false;
+        _isOnReload = false;
     }
 
-    protected void OnReloadTimerExpired() => _isShooted = false;
+    protected void OnReloadTimerExpired() => _isOnReload = false;
 }

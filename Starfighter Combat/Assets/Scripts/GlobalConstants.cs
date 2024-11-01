@@ -15,13 +15,13 @@ public class GlobalConstants
         {"SpawnAreaRight",AreaTag.Right}
     };
 
-    public static readonly Dictionary<ObjectTag, ObjectPoolManager.PoolType> PoolTypesByTag = new()
+    public static readonly Dictionary<ObjectTag, PoolType> PoolTypesByTag = new()
     {
-        {ObjectTag.Bonus, ObjectPoolManager.PoolType.Bonus},
-        {ObjectTag.Enemy, ObjectPoolManager.PoolType.Enemy},
-        {ObjectTag.EnemyWeapon, ObjectPoolManager.PoolType.Weapon},
-        {ObjectTag.PlayerWeapon, ObjectPoolManager.PoolType.Weapon },
-        {ObjectTag.Particles, ObjectPoolManager.PoolType.ParticleSystem}
+        {ObjectTag.Bonus, PoolType.Bonus},
+        {ObjectTag.Enemy, PoolType.Enemy},
+        {ObjectTag.EnemyWeapon,PoolType.Weapon},
+        {ObjectTag.PlayerWeapon, PoolType.Weapon },
+        {ObjectTag.Particles, PoolType.ParticleSystem}
     };
 
     public static readonly Dictionary<AreaTag, Quaternion> AreaRotationsByTag = new()

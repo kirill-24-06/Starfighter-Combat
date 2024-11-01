@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Patrol : AdvancedMove
+public class Patrol : MovementControl
 {
     private Bounds[] _patrolAreas = null;
     private Vector3[] _movePoints = null;

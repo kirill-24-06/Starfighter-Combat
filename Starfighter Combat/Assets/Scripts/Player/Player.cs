@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private ForceFieldBehaviour _forceField;
-
+   
     private EventManager _events;
     private PlayerController _controller;
     private PolygonCollider2D _playerCollider;
@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
     private bool _isInvunerable = false;
 
     public PlayerData PlayerData => _playerData;
-    public bool IsActive => _bonusHandler.BonusIsActive;
     public bool IsInvunerable => _isInvunerable;
     public bool IsEquiped => _bonusHandler.IsEquiped;
     public bool IsDroneActive => _bonusHandler.IsDroneActive;

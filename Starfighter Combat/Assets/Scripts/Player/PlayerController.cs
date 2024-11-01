@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
     private bool _isGameActive;
     private bool _isPaused;
+    private bool _onCooldown;
 
     public void Initialise()
     {
@@ -56,19 +58,21 @@ public class PlayerController : MonoBehaviour
 
         if (_inputHandler.ShootInput())
         {
-            _attackHandler.Fire(_player.PlayerData.Projectile);
+            _attackHandler.Fire();
             _playerAudio.PlayOneShot(_player.PlayerData.FireSound, _player.PlayerData.FireSoundVolume);
         }
 
-        if (_inputHandler.BonusInput() && _player.IsEquiped)
+        if (_inputHandler.BonusInput() && _player.IsEquiped && !_onCooldown)
         {
             UseSpehre();
+            StartCooldown().Forget();
         }
     }
 
     private void OnDisable()
     {
-        _attackHandler.Reset();
+        _singleCannon.Reset();
+        _multipleCannons.Reset();
         _attackHandler = _singleCannon;
     }
 
@@ -80,16 +84,29 @@ public class PlayerController : MonoBehaviour
 
     private void EnableMultilaser(bool isEnabled)
     {
-        _attackHandler.Reset();
-
         if (isEnabled)
+        {
+            _singleCannon.Reset();
             _attackHandler = _multipleCannons;
+        }
 
         else if (!isEnabled)
+        {
+            _multipleCannons.Reset();
             _attackHandler = _singleCannon;
+        }
     }
 
     private void UseSpehre() => _events.IonSphereUse?.Invoke();
+
+    private async UniTaskVoid StartCooldown()
+    {
+        _onCooldown = true;
+
+        await UniTask.Delay(_player.PlayerData.NukeCooldown, cancellationToken: _player.destroyCancellationToken);
+
+        _onCooldown = false;
+    }
 
     private void CheckBorders()
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New RocketShipData", menuName = "Config Data/Spawnable Data/Enemy/RocketShip", order = 53)]
-public class RocketShipData : SpawnableData, IData, IShooterData,IMovableData
+public class RocketShipData : SpawnableData,IShooterData,IMovableData
 {
     [Header("RocketShip")]
     [SerializeField] private EnemyStrenght _enemyStrenght;
@@ -38,7 +38,7 @@ public class RocketShipData : SpawnableData, IData, IShooterData,IMovableData
 
     public Vector2 Area => _engageZone;
 
-    public EnemyMissile EnemyMissile => _enemyMissile;
+    public GameObject Projectile => _enemyMissile.gameObject;
 
     public float ReloadCountDown => _reloadCountDown;
 

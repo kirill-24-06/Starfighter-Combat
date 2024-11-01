@@ -7,4 +7,6 @@ public interface IShooterData
     public AudioClip FireSound { get; }
 
     public float FireSoundVolume { get; }
+
+    public GameObject Projectile { get; }
 }

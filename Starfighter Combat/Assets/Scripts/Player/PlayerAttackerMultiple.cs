@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class PlayerAttackerMultiple : PlayerAttacker
 {
-    private readonly List<Transform> _firePoints = new List<Transform>();
+    private readonly List<Transform> _firePoints;
 
     public PlayerAttackerMultiple(Player player) : base(player)
     {
+        _firePoints = new List<Transform>();
         FindSpawnPoints();
     }
 
-    public override void Fire(GameObject projectile)
+    public override void Fire()
     {
         if (!_isShooted)
         {
@@ -18,7 +19,7 @@ public class PlayerAttackerMultiple : PlayerAttacker
 
             for (int i = 0; i < _firePoints.Count; i++)
             {
-                ObjectPoolManager.SpawnObject(projectile, _firePoints[i].position, _firePoints[i].rotation, ObjectPoolManager.PoolType.Weapon);
+                ObjectPool.Get(_projectile, _firePoints[i].position, _firePoints[i].rotation);
             }
 
             Reload();

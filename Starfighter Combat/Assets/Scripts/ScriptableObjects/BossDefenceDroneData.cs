@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New BossDefenceDrone", menuName = "Config Data/Spawnable Data/Enemy/BossDefenceDrone", order = 53)]
-public class BossDefenceDroneData:SpawnableData,IShooterData, IMovableData
+public class BossDefenceDroneData : SpawnableData, IShooterData, IMovableData
 {
     [SerializeField] private int _health;
     [SerializeField] private Vector2 _engageZone;
@@ -17,6 +17,8 @@ public class BossDefenceDroneData:SpawnableData,IShooterData, IMovableData
     [SerializeField] private AudioClip _fireSound;
     [SerializeField, Range(0.1f, 1)] private float _fireSoundVolume;
 
+    [SerializeField, Range(0.1f, 1)] private float _nukeResist;
+
 
     public GameObject Explosion => _explosionPrefab;
     public AudioClip ExplosionSound => _explosionSound;
@@ -26,8 +28,6 @@ public class BossDefenceDroneData:SpawnableData,IShooterData, IMovableData
 
     public int Health => _health;
 
-    public EnemyMissile EnemyMissile => _enemyMissile;
-
     public float ReloadCountDown => _reloadCountDown;
 
     public AudioClip FireSound => _fireSound;
@@ -35,4 +35,8 @@ public class BossDefenceDroneData:SpawnableData,IShooterData, IMovableData
     public float FireSoundVolume => _fireSoundVolume;
 
     public float MinY => _minY;
+
+    public float NukeResist => _nukeResist;
+
+    public GameObject Projectile => _enemyMissile.gameObject;
 }

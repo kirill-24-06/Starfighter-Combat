@@ -21,8 +21,8 @@ TagManager:
   - EnemyWeapon
   - Bonus
   - Ignore
-  - 
-  - 
+  - PlayerSensor
+  - EnemySensor
   - 
   - 
   - 

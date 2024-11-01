@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "New InterceptorData", menuName = "Config Data/Spawnable Data/Enemy/Interceptor", order = 53)]
-public class InterceptorData : SpawnableData, IData, IShooterData,IMovableData
+public class InterceptorData : SpawnableData,IShooterData,IMovableData
 {
     [Header("Interceptor")]
     [SerializeField] private EnemyStrenght _enemyStrenght;
@@ -37,7 +37,7 @@ public class InterceptorData : SpawnableData, IData, IShooterData,IMovableData
 
     public Vector2 Area => _engageZone;
 
-    public GameObject EnemyProjectile => _enemyProjectile;
+    public GameObject Projectile => _enemyProjectile;
 
     public float ReloadCountDown => _reloadCountDown;
 

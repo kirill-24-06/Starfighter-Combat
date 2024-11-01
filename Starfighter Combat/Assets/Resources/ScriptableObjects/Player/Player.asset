@@ -18,6 +18,7 @@ MonoBehaviour:
   _tempInvunrabilityTimeSeconds: 3
   _speed: 20
   _nukePrefab: {fileID: 7415189649973966450, guid: 45738f5a740101f4da84bb876e3e6c40, type: 3}
+  _nukeCd: 3.5
   _nukesStartAmount: 2
   _weapon: {fileID: 8661907242895563437, guid: ef352fa18d4281b44a7602165486ee4c, type: 3}
   _reloadTime: 0.16

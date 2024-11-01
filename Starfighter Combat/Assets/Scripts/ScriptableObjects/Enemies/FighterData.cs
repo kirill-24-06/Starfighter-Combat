@@ -27,7 +27,7 @@ public class FighterData : SpawnableData, IData, IShooterData
 
     public int Health => _health;
 
-    public EnemyProjectile EnemyProjectile => _enemyProjectile;
+    public GameObject Projectile => _enemyProjectile.gameObject;
 
     public float ReloadCountDown => _reloadCountDown;
 

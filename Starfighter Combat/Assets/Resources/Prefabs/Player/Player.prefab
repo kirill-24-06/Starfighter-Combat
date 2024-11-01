@@ -839,7 +839,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf0bc7677d9a664eab3d7db6f9f6baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _missile: {fileID: 4985403862753283233, guid: b6ffb6600f5c1f544951127d662abd55, type: 3}
   _explosionPrefab: {fileID: 0}
   _data: {fileID: 11400000, guid: fbb762afd40b60c47a0ae36ad0d2eb63, type: 2}
 --- !u!1 &5878852261212448359
@@ -971,7 +970,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf0bc7677d9a664eab3d7db6f9f6baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _missile: {fileID: 4985403862753283233, guid: b6ffb6600f5c1f544951127d662abd55, type: 3}
   _explosionPrefab: {fileID: 0}
   _data: {fileID: 11400000, guid: fbb762afd40b60c47a0ae36ad0d2eb63, type: 2}
 --- !u!1 &7458843554037115615
@@ -1034,6 +1032,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: be4638d607ce7314eaf4dba27fae787b, type: 2}
   _forceField: {fileID: 6139795110037072555}
+  _drones:
+  - {fileID: 1681907433834950448}
+  - {fileID: 1815912504729044914}
 --- !u!114 &3635922177323475510
 MonoBehaviour:
   m_ObjectHideFlags: 0
