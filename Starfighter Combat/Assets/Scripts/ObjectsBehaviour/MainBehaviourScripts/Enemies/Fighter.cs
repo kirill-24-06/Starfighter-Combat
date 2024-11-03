@@ -12,7 +12,7 @@ public class Fighter : Enemy
     protected override void Awake()
     {
         base.Awake();
-        PoolMap.SetParrentObject(GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()
@@ -43,6 +43,7 @@ public class Fighter : Enemy
     {
         _health?.Reset();
         _attacker?.Reset();
+        _isInPool = false;
     }
 
     private void FixedUpdate() => _attackHandler.Fire();
@@ -64,12 +65,18 @@ public class Fighter : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (_isInPool) return;
+        _isInPool = true;
+
         _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
-        ObjectPool.Release(gameObject);
+        ObjectPool.Release(_gameObject);
     }
 
     protected override void OnDead()
     {
+        if (_isInPool) return;
+        _isInPool = true;
+
         ObjectPool.Get(_data.Explosion, transform.position,
             _data.Explosion.transform.rotation);
 
@@ -78,6 +85,6 @@ public class Fighter : Enemy
 
         _soundPlayer.PlayOneShot(_data.ExplosionSound, _data.ExplosionSoundVolume);
 
-        ObjectPool.Release(gameObject);
+        ObjectPool.Release(_gameObject);
     }
 }

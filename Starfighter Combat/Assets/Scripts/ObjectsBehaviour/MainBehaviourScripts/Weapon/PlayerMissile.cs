@@ -10,7 +10,7 @@ public class PlayerMissile : Missile
     private void Start()
     {
         _transform = transform;
-        _missileTargets = new Collider2D[10];
+        _missileTargets = new Collider2D[35];
         _targetsQueue = new Queue<Transform>();
         _collisionMap = EntryPoint.Instance.CollisionMap;
 
@@ -19,14 +19,15 @@ public class PlayerMissile : Missile
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (_isPooled) return;
+        _isPooled = true;
+
         if (_collisionMap.Interactables.TryGetValue(collision.collider, out var enemy))
-        {
             enemy.Interact();
 
-            ObjectPool.Get(_explosionPrefab, _transform.position, _explosionPrefab.transform.rotation);
+        ObjectPool.Get(_explosionPrefab, _transform.position, _explosionPrefab.transform.rotation);
 
-          ObjectPool.Release(_gameObject);
-        }
+        ObjectPool.Release(_gameObject);
     }
 
     protected override void OnHomingStart()
@@ -57,12 +58,11 @@ public class PlayerMissile : Missile
         }
 
         _target = nearestEnemy;
-
     }
 
     private void LockOnTarget()
     {
-        var targets = Physics2D.OverlapCircleNonAlloc(_transform.position, 35f, _missileTargets);
+        var targets = Physics2D.OverlapCircleNonAlloc(_transform.position,55f, _missileTargets);
 
         for (int i = 0; i < targets; i++)
         {

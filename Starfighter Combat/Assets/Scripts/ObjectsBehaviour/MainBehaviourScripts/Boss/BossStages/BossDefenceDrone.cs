@@ -22,7 +22,7 @@ public class BossDefenceDrone : Enemy
     protected override void Awake()
     {
         base.Awake();
-        PoolMap.SetParrentObject(GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     protected override void Initialise()
@@ -57,6 +57,7 @@ public class BossDefenceDrone : Enemy
         _attacker?.Reset();
         _mover?.Reset();
         _mover?.NewMovePoints();
+        _isInPool = false;
     }
 
     public void Handle()
@@ -104,10 +105,19 @@ public class BossDefenceDrone : Enemy
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) => ObjectPool.Release(_gameObject);
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (_isInPool) return;
+        _isInPool = true;
+
+        ObjectPool.Release(_gameObject);
+    }
 
     protected override void OnDead()
     {
+        if (_isInPool) return;
+        _isInPool = true;
+
         ObjectPool.Get(_data.Explosion, _transform.position,
            _data.Explosion.transform.rotation);
 
@@ -117,6 +127,6 @@ public class BossDefenceDrone : Enemy
 
         StopCoroutine(Patrol());
 
-        ObjectPool.Release(_gameObject);
+       ObjectPool.Release(_gameObject);
     }
 }

@@ -11,6 +11,9 @@ public class EnemyProjectile : Projectile
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if(_isPooled) return;
+        _isPooled = true;
+
         if (Player.IsPlayer(collision.gameObject) || collision.gameObject == EntryPoint.Instance.Player.ForceField.gameObject)
         {
             ObjectPool.Get(_collideEffect, _transform.position,_collideEffect.transform.rotation);

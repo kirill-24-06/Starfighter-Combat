@@ -24,7 +24,7 @@ MonoBehaviour:
   _minY: -14
   _enemyMissile: {fileID: -7406995603668914750, guid: 2fc68bd66eee9bb4b868d99ebf5e5843, type: 3}
   _reloadCountDown: 1.5
-  _explosionPrefab: {fileID: 3301597147175911291, guid: a8792fa990cf45742adf2ccdc740a0c7, type: 3}
+  _explosionPrefab: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
   _explosionSound: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
   _explosionSoundVolume: 0.153
   _fireSound: {fileID: 8300000, guid: 5b9f5799f67117042987b08d3835bbcc, type: 3}

@@ -27,13 +27,9 @@ public class Bonus : BasicObject
         _positionChangeTimer.TimeIsOver += OnPositionChangeTimerExpired;
 
         Arrival += OnArrival;
-    }
 
-    //protected override void Start()
-    //{
-    //    base.Start();
-    //    EntryPoint.Instance.SpawnedObjects.RegisterObject(gameObject,_data.Tag);
-    //}
+        PoolMap.SetParrentObject(gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
+    }
 
     private void OnEnable()
     {

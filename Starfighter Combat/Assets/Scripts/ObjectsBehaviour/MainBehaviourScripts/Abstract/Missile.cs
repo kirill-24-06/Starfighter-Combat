@@ -21,6 +21,7 @@ public abstract class Missile : MonoBehaviour, INukeInteractable
     private bool _homing = false;
 
     protected EventManager _events;
+    protected bool _isPooled = true;
 
     protected virtual void Awake()
     {
@@ -35,7 +36,7 @@ public abstract class Missile : MonoBehaviour, INukeInteractable
         _forwardMover = new Mover(transform);
         _homingMover = new MissileMover(transform);
 
-        PoolMap.SetParrentObject(GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     protected void OnEnable()
@@ -48,6 +49,8 @@ public abstract class Missile : MonoBehaviour, INukeInteractable
 
         _launchTimer.SetTimer(_data.LaunchTime);
         _launchTimer.StartTimer();
+
+        _isPooled = false;
     }
 
     protected void Update()
@@ -103,10 +106,19 @@ public abstract class Missile : MonoBehaviour, INukeInteractable
 
     public void GetDamagedByNuke()
     {
+        if (_isPooled) return;
+        _isPooled = true;
+
         ObjectPool.Get(_explosionPrefab, _transform.position, _explosionPrefab.transform.rotation);
 
-        ObjectPool.Release(gameObject);
+        ObjectPool.Release(_gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) => ObjectPool.Release(_gameObject);
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (_isPooled) return;
+        _isPooled = true;
+
+        ObjectPool.Release(_gameObject);
+    }
 }

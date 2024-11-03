@@ -22,6 +22,8 @@ public abstract class Enemy : MonoBehaviour, IInteractableEnemy, INukeInteractab
     protected abstract void OnDead();
     protected abstract void Collide();
 
+    protected bool _isInPool = true;
+
     protected virtual void Awake()
     {
         _gameObject = gameObject;
@@ -36,7 +38,15 @@ public abstract class Enemy : MonoBehaviour, IInteractableEnemy, INukeInteractab
             Collide();
     }
 
-     public virtual void Interact() => _damageHandler.TakeDamage(GlobalConstants.CollisionDamage);
+    public virtual void Interact() => _damageHandler.TakeDamage(GlobalConstants.CollisionDamage);
+
+    //public virtual void GetDamagedByNuke() => GetDamagedByNukeAsync().Forget();
+
+    //private async UniTaskVoid GetDamagedByNukeAsync()
+    //{
+    //    await UniTask.Delay(Random.Range(175, 355), cancellationToken: destroyCancellationToken);
+    //    _damageHandler.TakeDamage(GlobalConstants.NukeDamage);
+    //}
 
     public virtual void GetDamagedByNuke() => _damageHandler.TakeDamage(GlobalConstants.NukeDamage);
 }

@@ -9,7 +9,7 @@ public class Asteroid : Enemy
     protected override void Awake()
     {
         base.Awake();
-        PoolMap.SetParrentObject(GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()
@@ -22,7 +22,11 @@ public class Asteroid : Enemy
         EntryPoint.Instance.CollisionMap.RegisterMissileTarget(_transform);
     }
 
-    private void OnEnable() => _health?.Reset();
+    private void OnEnable()
+    {
+        _isInPool = false;
+        _health?.Reset();
+    }
 
     protected override void Initialise()
     {
@@ -38,7 +42,6 @@ public class Asteroid : Enemy
 
     protected override void Move() => _mover.Move(Vector2.up, _data.Speed);
 
-
     protected override void Collide()
     {
         if (!EntryPoint.Instance.Player.IsInvunerable && !EntryPoint.Instance.Player.IsDroneActive)
@@ -52,12 +55,18 @@ public class Asteroid : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (_isInPool) return;
+        _isInPool = true;
+
         _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
         ObjectPool.Release(_gameObject);
     }
 
     protected override void OnDead()
     {
+        if (_isInPool) return;
+        _isInPool = true;
+
         ObjectPool.Get(_data.Explosion, _transform.position,
          _data.Explosion.transform.rotation);
 

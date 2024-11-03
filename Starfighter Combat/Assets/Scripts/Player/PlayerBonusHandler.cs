@@ -37,7 +37,7 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
 
         _nukePrefab = _playerData.NukePrefab;
         _nukePoint = _player.transform.Find("NukePoint");
-        _nukeTargets = new Collider2D[27];
+        _nukeTargets = new Collider2D[35];
 
         _events = EntryPoint.Instance.Events;
 
@@ -130,7 +130,7 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
     {
         _player.StartTempInvunrability().Forget();
 
-        GameObject.Instantiate(_nukePrefab, _nukePoint.position,
+       ObjectPool.Get(_nukePrefab, _nukePoint.position,
              _nukePrefab.transform.rotation);
 
         var count = Physics2D.OverlapCircleNonAlloc(_nukePoint.position, 30f, _nukeTargets);
@@ -182,7 +182,7 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         {
             if (_defenceDrones[i].gameObject.activeInHierarchy)
             {
-                GameObject.Instantiate(_defenceDrones[i].Explosion,
+                ObjectPool.Get(_defenceDrones[i].Explosion,
                     _defenceDrones[i].transform.position,
                     _defenceDrones[i].Explosion.transform.rotation);
 

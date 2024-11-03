@@ -33,9 +33,9 @@ public class ObjectPool : MonoBehaviour
 
         pool ??= NewPool(objectToGet);
 
-        var obj = pool.Count > 0 ? pool.Pop() : Instantiate(objectToGet);
+         var obj = pool.Count > 0 ? pool.Pop() : Instantiate(objectToGet);
 
-        obj.transform.SetPositionAndRotation(spawnPosition, spawnRotation); //????
+        obj.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
         obj.SetActive(true);
         return obj;
     }
@@ -48,7 +48,7 @@ public class ObjectPool : MonoBehaviour
 
         pool ??= NewPool(obj, 0);
 
-        obj.SetActive(false); //???
+        obj.SetActive(false);
         pool.Push(obj);
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerProjectile : Projectile
 {
     [SerializeField] private GameObject _collideEffect;
-    private Dictionary<Collider2D,IInteractableEnemy> _enemies;
+    private Dictionary<Collider2D, IInteractableEnemy> _enemies;
 
     private void Start()
     {
@@ -14,14 +14,16 @@ public class PlayerProjectile : Projectile
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (_isPooled) return;
+        _isPooled = true;
+
         if (_enemies.TryGetValue(collision.collider, out var enemy))
         {
             enemy.Interact();
-
-            ObjectPool.Get(_collideEffect, transform.position,
-                _collideEffect.transform.rotation);
-
-            ObjectPool.Release(_gameObject);
         }
+        ObjectPool.Get(_collideEffect, transform.position,
+            _collideEffect.transform.rotation);
+
+        ObjectPool.Release(_gameObject);
     }
 }

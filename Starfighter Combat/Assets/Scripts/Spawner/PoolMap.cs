@@ -36,9 +36,9 @@ public class PoolMap
         _bonusEmpty.transform.SetParent(_objectPoolEmptyHolder.transform);
     }
 
-    public static  GameObject SetParrentObject(PoolType poolType)
+    public static  void SetParrentObject(GameObject gameObject,PoolType poolType)
     {
-        return poolType switch
+       GameObject parrent = poolType switch
         {
             PoolType.ParticleSystem => _ParticleSystemEmpty,
             PoolType.Enemy => _enemyEmpty,
@@ -47,5 +47,7 @@ public class PoolMap
             PoolType.None => null,
             _ => null,
         };
+
+        gameObject.transform.SetParent(parrent.transform);
     }
 }

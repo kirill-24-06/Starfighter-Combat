@@ -15,7 +15,7 @@ public class Interceptor : Enemy
     protected override void Awake()
     {
         base.Awake();
-        PoolMap.SetParrentObject(GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()
@@ -53,6 +53,7 @@ public class Interceptor : Enemy
         _attacker?.Reset();
         _mover?.Reset();
         _health?.Reset();
+        _isInPool = false;
     }
 
     private void FixedUpdate() => Attack();
@@ -91,12 +92,18 @@ public class Interceptor : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (_isInPool) return;
+        _isInPool = true;
+
         _events.EnemyDestroyed?.Invoke(_data.EnemyStrenght);
-        ObjectPool.Release(gameObject);
+        ObjectPool.Release(_gameObject);
     }
 
     protected override void OnDead()
     {
+        if (_isInPool) return;
+        _isInPool = true;
+
         ObjectPool.Get(_data.Explosion, _transform.position,
          _data.Explosion.transform.rotation);
 
@@ -107,6 +114,6 @@ public class Interceptor : Enemy
 
         _liveTimer.StopTimer();
 
-        ObjectPool.Release(gameObject);
+        ObjectPool.Release(_gameObject);
     }
 }

@@ -1,36 +1,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Boss : MonoBehaviour,IInteractableEnemy,INukeInteractable
+public abstract class Boss : MonoBehaviour, IInteractableEnemy, INukeInteractable
 {
     [SerializeField] protected BossData _data;
-    protected EventManager _events;
-    protected int _currentHealth;
+    protected GameObject _gameObject;
+    protected Transform _transform;
 
     private List<BossStage> _stages;
     private int _currentStage;
+    protected int _currentHealth;
+
+    protected IDamageble _damageHandler;
+    protected IResetable _health;
 
     protected AudioSource _audioPlayer;
-
-    public bool _isInvunerable = false;
+    protected EventManager _events;
 
     public BossData Data => _data;
     public int CurrentHealth => _currentHealth;
 
-    protected abstract void Disable();
+    protected bool _isInvunerable = false;
+    protected bool _isInPool = true;
 
-    private void Awake()
+    protected abstract void OnDeath();
+
+    protected virtual void Awake()
     {
         _events = EntryPoint.Instance.Events;
-        Initialise();
-    }
-
-    protected virtual void OnEnable()
-    {
-        //_events.IonSphereUse += OnIonSphereUse;
-        //EntryPoint.Instance.MissileTargets.AddEnemy(transform);
-        //EntryPoint.Instance.CollisionMap.Register(GetComponent<PolygonCollider2D>(), this);
-        //_events.EnemyDamaged += OnDamaged;
+        _audioPlayer = EntryPoint.Instance.GlobalSoundFX;
+        _gameObject = gameObject;
+        _transform = gameObject.transform;
     }
 
     protected virtual void Initialise()
@@ -44,8 +44,6 @@ public abstract class Boss : MonoBehaviour,IInteractableEnemy,INukeInteractable
         {
             _stages.Add(_data.Stages[i].GetBossStage().Initialise(this));
         }
-
-        _audioPlayer = EntryPoint.Instance.GlobalSoundFX;
     }
 
     private void Update()
@@ -91,36 +89,13 @@ public abstract class Boss : MonoBehaviour,IInteractableEnemy,INukeInteractable
 
     protected virtual void TakeDamage(int damage)
     {
-        if (_isInvunerable || damage <= 0)
+        if (_isInvunerable)
             return;
 
-        _currentHealth -= damage;
-
-        if (_currentHealth < 0) _currentHealth = 0;
-
-        if (_currentHealth == 0) Disable();
+        _damageHandler.TakeDamage(damage);
     }
 
     public void SetInvunrability(bool value) => _isInvunerable = value;
 
     public void GetDamagedByNuke() => TakeDamage(5);
-
-    //protected virtual void OnIonSphereUse()
-    //{
-    //    if (gameObject.activeInHierarchy)
-    //        TakeDamage(5);
-    //}
-
-    protected virtual void OnDisable()
-    {
-        //_events.IonSphereUse -= OnIonSphereUse;
-        //EntryPoint.Instance.MissileTargets.RemoveEnemy(transform);
-        //_events.EnemyDamaged -= OnDamaged;
-    }
-
-    //protected void OnDamaged(GameObject enemy, int damage)
-    //{
-    //    if (enemy == gameObject)
-    //        TakeDamage(damage);
-    //}
 }

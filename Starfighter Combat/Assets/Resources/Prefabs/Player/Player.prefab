@@ -299,7 +299,7 @@ Transform:
   m_GameObject: {fileID: 2359473544617138461}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalPosition: {x: 0, y: 0.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -623,7 +623,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 6312609663956989472, guid: 6ec0958242aca9247a083c20b644e602, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1032,9 +1032,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: be4638d607ce7314eaf4dba27fae787b, type: 2}
   _forceField: {fileID: 6139795110037072555}
-  _drones:
-  - {fileID: 1681907433834950448}
-  - {fileID: 1815912504729044914}
 --- !u!114 &3635922177323475510
 MonoBehaviour:
   m_ObjectHideFlags: 0
