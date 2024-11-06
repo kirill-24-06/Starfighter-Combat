@@ -94,4 +94,5 @@ public class EntryPoint : MonoBehaviour
         for (int i = 0; i < _patrolArea.Length; i++)
             PatrolArea[i] = _patrolArea[i].bounds;
     }
+   
 }

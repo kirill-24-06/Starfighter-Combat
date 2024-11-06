@@ -17,9 +17,9 @@ public class BackgroundMover : MonoBehaviour
         _offset = offset;
     }
 
-    public void Move(Vector3 transition)
+    public void Move(Vector3 translation)
     {
-        _transform.position += transition;
+        _transform.Translate(translation);
 
         if (_transform.position.y < _startPosition.y - _offset)
             _transform.position = _startPosition;

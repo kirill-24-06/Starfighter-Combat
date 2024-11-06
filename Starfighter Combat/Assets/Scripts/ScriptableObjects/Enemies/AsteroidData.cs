@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "New AsteroidData", menuName = "Config Data/Spawnable Data/Enemy/ Asteroid", order = 53)]
-public class AsteroidData : SpawnableData, IData
+public class AsteroidData : SpawnableData
 {
     [Header("Asteroid")]
     [SerializeField] private EnemyStrenght _enemyStrenght;

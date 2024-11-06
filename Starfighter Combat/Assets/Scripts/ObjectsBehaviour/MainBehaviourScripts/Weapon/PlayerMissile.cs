@@ -62,7 +62,7 @@ public class PlayerMissile : Missile
 
     private void LockOnTarget()
     {
-        var targets = Physics2D.OverlapCircleNonAlloc(_transform.position,55f, _missileTargets);
+        var targets = Physics2D.OverlapCircleNonAlloc(_transform.position,25f, _missileTargets);
 
         for (int i = 0; i < targets; i++)
         {

@@ -1,4 +1,6 @@
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public enum EnemyStrenght
 {
@@ -11,6 +13,7 @@ public abstract class Enemy : MonoBehaviour, IInteractableEnemy, INukeInteractab
 {
     protected EventManager _events;
     protected AudioSource _soundPlayer;
+    protected CancellationToken _sceneExitToken;
     protected GameObject _gameObject;
     protected Transform _transform;
 
@@ -30,6 +33,7 @@ public abstract class Enemy : MonoBehaviour, IInteractableEnemy, INukeInteractab
         _transform = transform;
         _events = EntryPoint.Instance.Events;
         _soundPlayer = EntryPoint.Instance.GlobalSoundFX;
+        _sceneExitToken = EntryPoint.Instance.destroyCancellationToken;
     }
 
     protected void OnCollisionEnter2D(Collision2D collision)
@@ -40,13 +44,11 @@ public abstract class Enemy : MonoBehaviour, IInteractableEnemy, INukeInteractab
 
     public virtual void Interact() => _damageHandler.TakeDamage(GlobalConstants.CollisionDamage);
 
-    //public virtual void GetDamagedByNuke() => GetDamagedByNukeAsync().Forget();
+    public virtual void GetDamagedByNuke() => GetDamagedByNukeAsync().Forget();
 
-    //private async UniTaskVoid GetDamagedByNukeAsync()
-    //{
-    //    await UniTask.Delay(Random.Range(175, 355), cancellationToken: destroyCancellationToken);
-    //    _damageHandler.TakeDamage(GlobalConstants.NukeDamage);
-    //}
-
-    public virtual void GetDamagedByNuke() => _damageHandler.TakeDamage(GlobalConstants.NukeDamage);
+    private async UniTaskVoid GetDamagedByNukeAsync()
+    {
+        await UniTask.Delay(Random.Range(175, 355), cancellationToken: _sceneExitToken);
+        _damageHandler.TakeDamage(GlobalConstants.NukeDamage);
+    }
 }

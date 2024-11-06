@@ -6,6 +6,7 @@ public class BackgroundController : MonoBehaviour
     [SerializeField] private BackgroundMover[] _layers;
     [SerializeField] private float _speed;
 
+    private WaitForSeconds _delay;
     private Vector3[] _transitions;
     private bool _isGameActive = false;
 
@@ -19,7 +20,7 @@ public class BackgroundController : MonoBehaviour
             layer.Initialise(offset);
 
         EntryPoint.Instance.Events.Stop += OnStop;
-
+        _delay = new WaitForSeconds(2.0f);
     }
 
     private void Update()
@@ -27,12 +28,6 @@ public class BackgroundController : MonoBehaviour
         if (!_isGameActive) return;
 
         Calculate();
-    }
-
-    private void LateUpdate()
-    {
-        if (!_isGameActive) return;
-
         Move();
     }
 
@@ -58,7 +53,7 @@ public class BackgroundController : MonoBehaviour
 
     private IEnumerator Stop()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return _delay;
         _isGameActive = false;
     }
 

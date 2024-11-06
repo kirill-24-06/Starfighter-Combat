@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New FighterData", menuName = "Config Data/Spawnable Data/Enemy/ Fighter", order = 53)]
-public class FighterData : SpawnableData, IData, IShooterData
+public class FighterData : SpawnableData, IShooterData
 {
     [Header("Fighter")]
     [SerializeField] private EnemyStrenght _enemyStrenght;

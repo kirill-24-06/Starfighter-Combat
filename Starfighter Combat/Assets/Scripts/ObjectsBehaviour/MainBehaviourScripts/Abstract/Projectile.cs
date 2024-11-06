@@ -25,17 +25,16 @@ public abstract class Projectile : MonoBehaviour, INukeInteractable
         PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
-    protected virtual void OnEnable()
-    {
-        _isPooled = false;
-    }
-
+    protected virtual void OnEnable() => _isPooled = false;
+  
     private void Update() => _mover.Move(Vector2.up, _data.Speed);
 
     public void GetDamagedByNuke()
     {
         if (_isPooled) return;
         _isPooled = true;
+
+        ObjectPool.Get(_data.ExplosionPrefab, _transform.position, _data.ExplosionPrefab.transform.rotation);
 
         ObjectPool.Release(_gameObject);
     }

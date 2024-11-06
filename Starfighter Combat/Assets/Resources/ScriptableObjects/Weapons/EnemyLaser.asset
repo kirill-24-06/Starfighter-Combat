@@ -16,5 +16,6 @@ MonoBehaviour:
   _prewarmAmount: 52
   _tag: 5
   _objectSpeed: 15
+  _explosionPrefab: {fileID: 3301597147175911291, guid: a8792fa990cf45742adf2ccdc740a0c7, type: 3}
   _gameZoneBorders: {x: 25, y: 20}
   _damage: 1

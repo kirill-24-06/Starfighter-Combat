@@ -13,7 +13,7 @@ public class MissileMover : IMover
     {
         Vector3 newDirection = (direñtion - _client.transform.position).normalized;
 
-        _client.transform.position += speed * Time.deltaTime * newDirection;
+        _client.transform.position += speed *Time.deltaTime * newDirection;
 
         LookInTargetDirection(direñtion);
     }

@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 public class PlayerBonusHandler : IBonusHandler, IResetable
@@ -21,6 +22,8 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
     private bool _isDroneActive;
     private bool _bonusIsActive = false;
 
+    private CancellationToken _sceneExitToken;
+
     public bool IsDroneActive => _isDroneActive;
     public bool BonusIsActive => _bonusIsActive;
     public bool IsEquiped => _isEquiped;
@@ -40,6 +43,8 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         _nukeTargets = new Collider2D[35];
 
         _events = EntryPoint.Instance.Events;
+
+        _sceneExitToken = EntryPoint.Instance.destroyCancellationToken;
 
         _events.BonusCollected += Handle;
         _events.MultilaserEnd += OnMultilaserEnd;
@@ -130,12 +135,12 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
     {
         _player.StartTempInvunrability().Forget();
 
-       ObjectPool.Get(_nukePrefab, _nukePoint.position,
-             _nukePrefab.transform.rotation);
+        ObjectPool.Get(_nukePrefab, _nukePoint.position,
+              _nukePrefab.transform.rotation);
 
         var count = Physics2D.OverlapCircleNonAlloc(_nukePoint.position, 30f, _nukeTargets);
 
-        await UniTask.Delay(500, cancellationToken: _player.GetCancellationTokenOnDestroy());
+        await UniTask.Delay(300, cancellationToken: _sceneExitToken);
 
         for (int i = 0; i < count; i++)
         {

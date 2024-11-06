@@ -163,7 +163,7 @@ ScriptedImporter:
     uvTransform: {x: 524, y: 4}
   - name: "\xD0\xA1\xD0\xBB\xD0\xBE\xD0\xB9 3"
     originalName: 
-    pivot: {x: 0.49902153, y: 0}
+    pivot: {x: 0.5029354, y: 0.0013003901}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -230,8 +230,8 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 1
-        y: 0
+        x: -1
+        y: -1
         width: 511
         height: 769
       spriteId: 642b309e9a22fe941b1890f3d08e662c

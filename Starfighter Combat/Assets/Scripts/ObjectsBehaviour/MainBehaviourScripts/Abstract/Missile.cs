@@ -33,6 +33,9 @@ public abstract class Missile : MonoBehaviour, INukeInteractable
         _launchTimer = new Timer(this);
         _homingTimer = new Timer(this);
 
+        _launchTimer.TimeIsOver += OnHomingStart;
+        _homingTimer.TimeIsOver += OnHomingEnd;
+
         _forwardMover = new Mover(transform);
         _homingMover = new MissileMover(transform);
 
@@ -43,9 +46,6 @@ public abstract class Missile : MonoBehaviour, INukeInteractable
     {
         _mover = _forwardMover;
         _direction = Vector3.up;
-
-        _launchTimer.TimeIsOver += OnHomingStart;
-        _homingTimer.TimeIsOver += OnHomingEnd;
 
         _launchTimer.SetTimer(_data.LaunchTime);
         _launchTimer.StartTimer();
@@ -78,10 +78,8 @@ public abstract class Missile : MonoBehaviour, INukeInteractable
         _target = null;
         _homing = false;
 
-        StopAllCoroutines();
-
-        _launchTimer.TimeIsOver -= OnHomingStart;
-        _homingTimer.TimeIsOver -= OnHomingEnd;
+        _launchTimer.StopTimer();
+        _homingTimer.StopTimer();
     }
 
     protected virtual void OnHomingStart()

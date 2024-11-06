@@ -10,6 +10,7 @@ public class SpawnController : MonoBehaviour
     private Spawner _spawner;
 
     private CancellationTokenSource _newStageToken;
+    private CancellationToken _sceneExitToken;
 
     private int _activeEnemies = 0;
     private int _activeEliteEnemies = 0;
@@ -21,6 +22,8 @@ public class SpawnController : MonoBehaviour
     public void Initialise()
     {
         _spawner = EntryPoint.Instance.Spawner;
+
+        _sceneExitToken = EntryPoint.Instance.destroyCancellationToken;
 
         EntryPoint.Instance.Events.Start += OnStart;
         EntryPoint.Instance.Events.EnemyDestroyed += OnEnemyDestroyed;
@@ -63,7 +66,6 @@ public class SpawnController : MonoBehaviour
 
     private async UniTaskVoid EnemySpawner(CancellationToken token)
     {
-
         await UniTask.Delay(_data.SpawnDelay, cancellationToken: token);
 
         while (_isGameActive)
@@ -129,7 +131,7 @@ public class SpawnController : MonoBehaviour
         _bonusIsActive = true;
     }
 
-    public void RespawnPlayer() => Respawn(this.GetCancellationTokenOnDestroy()).Forget();
+    public void RespawnPlayer() => Respawn(_sceneExitToken).Forget();
 
     private async UniTaskVoid Respawn(CancellationToken cancellationToken)
     {
@@ -161,7 +163,7 @@ public class SpawnController : MonoBehaviour
     {
         CancelPreviousStage();
 
-        await UniTask.Delay(delayMilliseconds, cancellationToken: _newStageToken.Token);
+        await UniTask.Delay(delayMilliseconds, cancellationToken:_sceneExitToken);
 
         _data = bossWave.SpawnerData;
 
@@ -175,7 +177,6 @@ public class SpawnController : MonoBehaviour
     {
         _newStageToken?.Cancel();
         _newStageToken?.Dispose();
-
         _newStageToken = new CancellationTokenSource();
     }
 

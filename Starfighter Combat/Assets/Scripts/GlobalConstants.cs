@@ -1,6 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ObjectTag
+{
+    Enemy,
+    Player,
+    Bonus,
+    Boss,
+    PlayerWeapon,
+    EnemyWeapon,
+    Particles,
+    None
+}
+
 public class GlobalConstants
 {
     //Conversion

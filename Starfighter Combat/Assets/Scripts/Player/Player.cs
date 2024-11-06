@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private static Player _instance;
+    private static GameObject _instanceGO;
 
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private ForceFieldBehaviour _forceField;
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
 
     public void Initialise()
     {
-        _instance = this;
+        _instanceGO = this.gameObject;
         _controller = GetComponent<PlayerController>();
         _playerCollider = GetComponent<PolygonCollider2D>();
         _spriteRenderer = transform.Find("Texture").GetComponent<SpriteRenderer>();
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
 
     public static bool IsPlayer(GameObject gameObject)
     {
-        return gameObject.gameObject == _instance.gameObject;
+        return gameObject == _instanceGO;
     }
 
     private void OnDestroy()
