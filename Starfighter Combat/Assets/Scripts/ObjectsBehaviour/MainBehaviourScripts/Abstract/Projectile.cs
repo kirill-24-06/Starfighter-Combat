@@ -8,7 +8,7 @@ public abstract class Projectile : MonoBehaviour, INukeInteractable
     protected Transform _transform;
 
     private IMover _mover;
-
+  
     protected EventManager _events;
 
     protected bool _isPooled = true;
@@ -26,7 +26,7 @@ public abstract class Projectile : MonoBehaviour, INukeInteractable
     }
 
     protected virtual void OnEnable() => _isPooled = false;
-  
+
     private void Update() => _mover.Move(Vector2.up, _data.Speed);
 
     public void GetDamagedByNuke()

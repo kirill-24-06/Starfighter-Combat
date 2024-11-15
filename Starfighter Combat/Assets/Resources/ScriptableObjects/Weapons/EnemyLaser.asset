@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyLaser
   m_EditorClassIdentifier: 
   _prefab: {fileID: 814541193105084480, guid: 536963f2d150db94da7913647ee77fc2, type: 3}
-  _prewarmAmount: 52
+  _prewarmAmount: 100
   _tag: 5
   _objectSpeed: 15
   _explosionPrefab: {fileID: 3301597147175911291, guid: a8792fa990cf45742adf2ccdc740a0c7, type: 3}

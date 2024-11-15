@@ -29,6 +29,6 @@ public class PauseMenuDialog : Dialog
 
     private void GoToMainMenu()
     {
-        EntryPoint.Instance.Events.MainMenuExit?.Invoke();  
+        EntryPoint.Instance.Events.MainMenuExit?.Invoke();
     }
 }

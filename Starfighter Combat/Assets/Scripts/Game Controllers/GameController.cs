@@ -1,7 +1,6 @@
 using Ui.DialogWindows;
 using Ui.DialogWindows.Dialogs;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -61,7 +60,7 @@ public class GameController : MonoBehaviour
             Time.timeScale = 1;
 
         StopGame();
-        SceneManager.LoadScene(GlobalConstants.MainMenuSceneName);
+        SceneLoader.LoadScene(GlobalConstants.MainMenuSceneName);
     }
 
     private void OnDestroy()

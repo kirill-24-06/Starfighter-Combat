@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Nuke
   m_EditorClassIdentifier: 
   _prefab: {fileID: 7415189649973966450, guid: 45738f5a740101f4da84bb876e3e6c40, type: 3}
-  _prewarmAmount: 2
+  _prewarmAmount: 1
   _tag: 6

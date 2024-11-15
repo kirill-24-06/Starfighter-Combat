@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Explosion_small
   m_EditorClassIdentifier: 
   _prefab: {fileID: 3301597147175911291, guid: a8792fa990cf45742adf2ccdc740a0c7, type: 3}
-  _prewarmAmount: 5
+  _prewarmAmount: 10
   _tag: 6

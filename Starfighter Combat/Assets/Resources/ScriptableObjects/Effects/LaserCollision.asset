@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: LaserCollision
   m_EditorClassIdentifier: 
   _prefab: {fileID: 668591103999106783, guid: 3da1fd1653b81ba418ec263e239b2f62, type: 3}
-  _prewarmAmount: 14
+  _prewarmAmount: 35
   _tag: 6

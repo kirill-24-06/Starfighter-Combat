@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Interceptor
   m_EditorClassIdentifier: 
   _prefab: {fileID: 7814316821086288463, guid: 6b1289e3f261cbd4fa6ead85ad168ad9, type: 3}
-  _prewarmAmount: 3
+  _prewarmAmount: 5
   _tag: 0
   _speed: 10
   _score: 70

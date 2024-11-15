@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BossMissile
   m_EditorClassIdentifier: 
   _prefab: {fileID: 3025663165139613927, guid: 2fc68bd66eee9bb4b868d99ebf5e5843, type: 3}
-  _prewarmAmount: 10
+  _prewarmAmount: 30
   _tag: 5
   _objectSpeed: 8
   _gameZoneBorders: {x: 35, y: 20}

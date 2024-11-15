@@ -78,19 +78,3 @@ public class Spawner
         return areaForSpawn != null ? areaForSpawn : null;
     }
 }
-        //foreach (var spawnArea in _spawnAreas)
-        //    areaForSpawn = spawnArea.Tag == spawnAreaTag ? spawnArea  : null;
-//SpawnArea spawnArea = _spawnAreas.//Find(spawnArea => spawnArea.Tag == spawnAreaTag);
-//{
-//    Debug.LogError("Зона с таким тегом отстутствует");
-//    return null;
-//};
-
-//if (areaForSpawn != null)
-//    return areaForSpawn;
-
-//else
-//{
-//    Debug.LogError("Зона с таким тегом отстутствует");
-//    return null;
-//}

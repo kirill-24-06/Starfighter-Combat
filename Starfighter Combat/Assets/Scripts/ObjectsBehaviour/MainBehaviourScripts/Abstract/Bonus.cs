@@ -64,7 +64,6 @@ public class Bonus : BasicObject
     private void OnDisable()
     {
         _liveTimer.StopTimer();
-        StopAllCoroutines();
         _positionChangeTimer.StopTimer();
         _isPositionChangeTimerStart = false;
         EntryPoint.Instance.Events.BonusTaken?.Invoke();

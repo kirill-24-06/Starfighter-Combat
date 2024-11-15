@@ -9,13 +9,12 @@ public class BombsBar : MonoBehaviour
     [SerializeField] private List<Image> _bombs;
 
     [SerializeField] private GameObject _textBombBar;
-    [SerializeField] private TextMeshProUGUI _bombText;
-    private GameObject _bombTextGameObject;
+    [SerializeField] private TextMeshProUGUI _bombTextDynamic;
+    [SerializeField] private GameObject _bombTextGameObject;
 
 
     public void Initialise()
     {
-        _bombTextGameObject = _bombText.gameObject;
         EntryPoint.Instance.Events.BonusAmountUpdate += ShowBombs;
     }
 
@@ -29,7 +28,7 @@ public class BombsBar : MonoBehaviour
         _bombTextGameObject.SetActive(!useLayout);
 
         if (_textBombBar.activeInHierarchy)
-            _bombText.text = "X " + newBombsAmount;
+            _bombTextDynamic.text = newBombsAmount.ToString();
 
         else if (_bombsLayout.activeInHierarchy)
         {

@@ -18,9 +18,9 @@ public class PlayerAttackerMultiple : PlayerAttacker
             _isShooted = true;
 
             for (int i = 0; i < _firePoints.Count; i++)
-            {
                 ObjectPool.Get(_projectile, _firePoints[i].position, _firePoints[i].rotation);
-            }
+
+            _playerAudio.PlayOneShot(_player.PlayerData.FireSound, _player.PlayerData.FireSoundVolume);
 
             Reload();
         }

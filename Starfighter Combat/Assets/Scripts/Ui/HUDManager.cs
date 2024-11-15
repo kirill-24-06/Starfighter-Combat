@@ -34,7 +34,7 @@ public class HUDManager : MonoBehaviour
         _pauseButton.onClick.RemoveAllListeners();
     }
 
-    private void UpdateScore(int newScore) => _scoreText.text = "Score: " + newScore;
+    private void UpdateScore(int newScore) => _scoreText.text = newScore.ToString();
 
     public void ActivateBonusTimer() => _bonusTimer.gameObject.SetActive(true); 
 

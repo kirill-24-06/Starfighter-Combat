@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Player _player;
-    private AudioSource _playerAudio;
 
     private EventManager _events;
     private IInput _inputHandler;
@@ -21,7 +20,6 @@ public class PlayerController : MonoBehaviour
     public void Initialise()
     {
         _player = EntryPoint.Instance.Player;
-        _playerAudio = GetComponentInChildren<AudioSource>();
         _events = EntryPoint.Instance.Events;
 
         _inputHandler = new KeyboardInput();
@@ -59,7 +57,6 @@ public class PlayerController : MonoBehaviour
         if (_inputHandler.ShootInput())
         {
             _attackHandler.Fire();
-            _playerAudio.PlayOneShot(_player.PlayerData.FireSound, _player.PlayerData.FireSoundVolume);
         }
 
         if (_inputHandler.BonusInput() && _player.IsEquiped && !_onCooldown)

@@ -1,6 +1,5 @@
 using Ui.DialogWindows;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuDialog : Dialog
@@ -20,7 +19,8 @@ public class MainMenuDialog : Dialog
 
     private void StartNewGame()
     {
-        SceneManager.LoadScene(GlobalConstants.MainSceneName);
+        SceneLoader.LoadScene(GlobalConstants.MainSceneName);
+        Hide();
     }
     
     private void OpenSettings()

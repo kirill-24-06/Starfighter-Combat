@@ -52,6 +52,5 @@ public class GlobalConstants
     //Scenes
 
     public static readonly string MainSceneName = "MainScene";
-
     public static readonly string MainMenuSceneName = "MainMenu";
 }

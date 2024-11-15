@@ -40,7 +40,7 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
 
         _nukePrefab = _playerData.NukePrefab;
         _nukePoint = _player.transform.Find("NukePoint");
-        _nukeTargets = new Collider2D[35];
+        _nukeTargets = new Collider2D[55];
 
         _events = EntryPoint.Instance.Events;
 

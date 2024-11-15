@@ -8,8 +8,6 @@ public class BackgroundMover : MonoBehaviour
     private Vector3 _startPosition;
     private Transform _transform;
 
-    public float ParalaxCoeff => _paralaxCoeff;
-
     public void Initialise(float offset)
     {
         _transform = transform;
@@ -17,9 +15,9 @@ public class BackgroundMover : MonoBehaviour
         _offset = offset;
     }
 
-    public void Move(Vector3 translation)
+    public void Move(float speed)
     {
-        _transform.Translate(translation);
+        _transform.Translate(speed * _paralaxCoeff * Time.deltaTime * Vector3.down);
 
         if (_transform.position.y < _startPosition.y - _offset)
             _transform.position = _startPosition;

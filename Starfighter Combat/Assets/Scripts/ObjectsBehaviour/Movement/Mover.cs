@@ -11,6 +11,6 @@ public class Mover : IMover
 
     public void Move(Vector3 direñtion, float speed)
     {
-        _client.transform.Translate(speed * Time.deltaTime * direñtion);
+        _client.Translate(speed * Time.deltaTime * direñtion);
     }
 }

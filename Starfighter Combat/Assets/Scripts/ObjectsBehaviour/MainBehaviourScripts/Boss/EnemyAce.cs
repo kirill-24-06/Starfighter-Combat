@@ -7,14 +7,13 @@ public class EnemyAce : Boss
     protected override void Awake()
     {
         base.Awake();
+        Initialise();
 
         PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()
     {
-        Initialise();
-
         var collider = GetComponent<PolygonCollider2D>();
         EntryPoint.Instance.CollisionMap.Register(collider, this);
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
@@ -24,7 +23,7 @@ public class EnemyAce : Boss
 
     private void OnEnable()
     {
-        _health?.Reset();
+        _health.Reset();
         _isInPool = false;
     }
 

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 
@@ -26,12 +25,12 @@ namespace Ui.DialogWindows.Dialogs
 
         private void TryAgain()
         {
-            SceneManager.LoadScene(GlobalConstants.MainSceneName);  
+            SceneLoader.LoadScene(GlobalConstants.MainSceneName);
         }
 
         private void GoToMenu()
         {
-            SceneManager.LoadScene(GlobalConstants.MainMenuSceneName);
+            SceneLoader.LoadScene(GlobalConstants.MainMenuSceneName);
         }
     }
 }

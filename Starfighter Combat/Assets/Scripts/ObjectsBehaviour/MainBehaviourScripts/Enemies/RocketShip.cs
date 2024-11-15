@@ -15,13 +15,13 @@ public class RocketShip : Enemy
     protected override void Awake()
     {
         base.Awake();
+        Initialise();
+
         PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()
     {
-        Initialise();
-
         var collider = GetComponent<Collider2D>();
         EntryPoint.Instance.CollisionMap.Register(collider, this);
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
@@ -51,10 +51,10 @@ public class RocketShip : Enemy
 
     private void OnEnable()
     {
-        _attacker?.Reset();
-        _mover?.Reset();
-        _mover?.NewMovePoints();
-        _health?.Reset();
+        _attacker.Reset();
+        _mover.Reset();
+        _mover.NewMovePoints();
+        _health.Reset();
         _isInPool = false;
     }
 
@@ -116,6 +116,6 @@ public class RocketShip : Enemy
 
         _liveTimer.StopTimer();
 
-       ObjectPool.Release(_gameObject);    
+        ObjectPool.Release(_gameObject);
     }
 }

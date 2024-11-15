@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Asteroid : Enemy
@@ -10,13 +9,13 @@ public class Asteroid : Enemy
     protected override void Awake()
     {
         base.Awake();
+        Initialise();
+
         PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()
     {
-        Initialise();
-
         var collider = GetComponent<Collider2D>();
         EntryPoint.Instance.CollisionMap.Register(collider, this);
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);
@@ -25,8 +24,8 @@ public class Asteroid : Enemy
 
     private void OnEnable()
     {
+        _health.Reset();
         _isInPool = false;
-        _health?.Reset();
     }
 
     protected override void Initialise()

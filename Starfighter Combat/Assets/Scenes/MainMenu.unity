@@ -168,7 +168,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.3
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -372,6 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixer: {fileID: 24100000, guid: 6ec0958242aca9247a083c20b644e602, type: 2}
+  _targetFPS: 60
 --- !u!4 &442155013
 Transform:
   m_ObjectHideFlags: 0

@@ -65,7 +65,7 @@ public class EnemyAdvancedAttacker : IAttacker,IResetable
 
     private void Reload()
     {
-        if (!_client.gameObject.activeInHierarchy) return;
+        if (!_client.activeInHierarchy) return;
 
         _reloadTimer.SetTimer(_reloadCd);
         _reloadTimer.StartTimer();

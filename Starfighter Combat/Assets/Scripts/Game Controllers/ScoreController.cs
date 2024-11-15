@@ -13,7 +13,6 @@ public class ScoreController : MonoBehaviour
 
         _events.Start += OnGameStarted;
         _events.AddScore += OnScoreAdded;
-        _events.LevelCompleted += OnLevelFinished;
     }
 
     private void OnGameStarted()
@@ -28,15 +27,9 @@ public class ScoreController : MonoBehaviour
         _events.ChangeScore(_score);
     }
 
-    private void OnLevelFinished()
-    {
-       //ToDo Records
-    }
-
     private void OnDestroy()
     {
         _events.Start -= OnGameStarted;
         _events.AddScore -= OnScoreAdded;
-        _events.LevelCompleted -= OnLevelFinished;
     }
 }

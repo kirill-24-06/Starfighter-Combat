@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class MovementControl: IResetable
+public class MovementControl : IResetable
 {
     private readonly Transform _client;
     private readonly Vector2 _area;
@@ -35,10 +35,11 @@ public class MovementControl: IResetable
 
     public void Move(float speed)
     {
-        _mover.Move(_direction, speed);
-
-        CheckArrival();
         IsMoving = _client.position != _direction;
+        if(!IsMoving) return;
+
+        _mover.Move(_direction, speed);
+        CheckArrival();
     }
 
     public void Disengage()
@@ -62,6 +63,7 @@ public class MovementControl: IResetable
             }
         }
     }
+
     private void OnArrive()
     {
         _isArrived = true;
@@ -82,7 +84,7 @@ public class MovementControl: IResetable
             case AdvancedMover:
 
                 _direction = GenerateMovePoint();
-                LookInTargetDirection(_direction);
+                 LookInTargetDirection(_direction);
                 break;
         }
     }

@@ -18,8 +18,6 @@ public class BossShieldBehaviour : MonoBehaviour, IInteractableEnemy
         _currentHealth = _maxHealth;
         IsActive = true;
         _bossCollider.enabled = false;
-
-        //EntryPoint.Instance.Events.EnemyDamaged += OnDamage;
     }
 
     protected void OnCollisionEnter2D(Collision2D collision)
@@ -38,12 +36,6 @@ public class BossShieldBehaviour : MonoBehaviour, IInteractableEnemy
 
         TakeDamage(GlobalConstants.CollisionDamage);
     }
-
-    //public void OnDamage(GameObject damaged, int damage)
-    //{
-    //    if (damaged == gameObject)
-    //        TakeDamage(damage);
-    //}
 
     public void Interact() => TakeDamage(GlobalConstants.CollisionDamage);
 
@@ -68,7 +60,5 @@ public class BossShieldBehaviour : MonoBehaviour, IInteractableEnemy
     {
         IsActive = false;
         _bossCollider.enabled = true;
-
-        //EntryPoint.Instance.Events.EnemyDamaged -= OnDamage;
     }
 }
