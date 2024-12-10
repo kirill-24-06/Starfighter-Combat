@@ -2,6 +2,10 @@ using Ui.DialogWindows;
 using UnityEngine;
 using UnityEngine.UI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class MainMenuDialog : Dialog
 {
     [SerializeField] private Button _newGameButton;
@@ -22,7 +26,7 @@ public class MainMenuDialog : Dialog
         SceneLoader.LoadScene(GlobalConstants.MainSceneName);
         Hide();
     }
-    
+
     private void OpenSettings()
     {
         DialogManager.ShowDialog<SettingsDialog>();
@@ -31,6 +35,10 @@ public class MainMenuDialog : Dialog
 
     private void ExitGame()
     {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
         Application.Quit();
+#endif
     }
 }

@@ -1,12 +1,22 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
     private Player _player;
 
     private EventManager _events;
-    private IInput _inputHandler;
+
+    private InputAction _move;
+    private InputAction _shoot;
+    private InputAction _pause;
+    private InputAction _useBonus;
+
+    private IMover _mover;
+    private Vector2 Direction => _move.ReadValue<Vector2>();
 
     private IAttacker _attackHandler;
     private PlayerAttacker _singleCannon;
@@ -22,7 +32,7 @@ public class PlayerController : MonoBehaviour
         _player = EntryPoint.Instance.Player;
         _events = EntryPoint.Instance.Events;
 
-        _inputHandler = new KeyboardInput();
+        _mover = new Mover(transform);
 
         _singleCannon = new PlayerAttacker(_player);
         _multipleCannons = new PlayerAttackerMultiple(_player);
@@ -33,6 +43,17 @@ public class PlayerController : MonoBehaviour
         _events.Stop += OnStop;
         _events.Pause += OnPause;
         _events.Multilaser += EnableMultilaser;
+
+        var playerInput = GetComponent<PlayerInput>();
+
+        _move = playerInput.actions["Move"];
+        _shoot = playerInput.actions["Shoot"];
+        _pause = playerInput.actions["Pause"];
+        _useBonus = playerInput.actions["Bonus"];
+
+        _shoot.performed += OnShoot;
+        _pause.performed += OnPauseInput;
+        _useBonus.performed += OnBonusUse;
     }
 
     private void Start() => _isGameActive = true;
@@ -41,42 +62,39 @@ public class PlayerController : MonoBehaviour
 
     private void OnPause(bool value) => _isPaused = value;
 
+    private void OnShoot(InputAction.CallbackContext context)
+    {
+        if (!_isGameActive || _isPaused) return;
+
+        _attackHandler.Fire();
+    }
+
+    private void OnPauseInput(InputAction.CallbackContext context)
+    {
+        if (!_isPaused)
+            EntryPoint.Instance.GameController.PauseGame(true);
+    }
+
+    private void OnBonusUse(InputAction.CallbackContext context)
+    {
+        if (!_player.IsEquiped || _onCooldown) return;
+
+        UseSpehre();
+        StartCooldown().Forget();
+    }
+
     private void Update()
     {
-        if (_inputHandler.PauseInput() && !_isPaused)
-        {
-            EntryPoint.Instance.GameController.PauseGame(true);
-        }
+        if (!_isGameActive || _isPaused) return;
 
-        if (!_isGameActive || _isPaused)
-            return;
+        Move();
+    }
 
-        Move(_inputHandler.MoveInput(), _player.PlayerData.Speed);
+    private void Move()
+    {
+        _mover.Move(Direction, _player.PlayerData.Speed);
+
         CheckBorders();
-
-        if (_inputHandler.ShootInput())
-        {
-            _attackHandler.Fire();
-        }
-
-        if (_inputHandler.BonusInput() && _player.IsEquiped && !_onCooldown)
-        {
-            UseSpehre();
-            StartCooldown().Forget();
-        }
-    }
-
-    private void OnDisable()
-    {
-        _singleCannon.Reset();
-        _multipleCannons.Reset();
-        _attackHandler = _singleCannon;
-    }
-
-    public void Move(Vector3 direction, float speed)
-    {
-        direction = direction.normalized;
-        _player.transform.Translate(speed * Time.deltaTime * direction);
     }
 
     private void EnableMultilaser(bool isEnabled)
@@ -120,10 +138,21 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(transform.position.x, _player.PlayerData.GameZoneBorders.y, transform.position.z);
     }
 
+    private void OnDisable()
+    {
+        _singleCannon.Reset();
+        _multipleCannons.Reset();
+        _attackHandler = _singleCannon;
+    }
+
     private void OnDestroy()
     {
         _events.Stop -= OnStop;
         _events.Pause -= OnPause;
         _events.Multilaser -= EnableMultilaser;
+
+        _shoot.performed -= OnShoot;
+        _pause.performed -= OnPauseInput;
+        _useBonus.performed -= OnBonusUse;
     }
 }
