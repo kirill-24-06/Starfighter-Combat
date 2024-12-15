@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BossHealthBar : IResetable
+public class BossHealthBar
 {
     private GameObject _bossText;
 
@@ -14,40 +14,27 @@ public class BossHealthBar : IResetable
         _healthBar = bossHealthBar;
         _healthBarGameObject = _healthBar.gameObject;
 
-        EntryPoint.Instance.Events.BossArrival += OnBossArrival;
-        EntryPoint.Instance.Events.BossDamaged += UpdateHealthPrecent;
-        EntryPoint.Instance.Events.BossDefeated += OnBossDefeat;
-        EntryPoint.Instance.Events.Stop += OnGameStop;
-
         _bossText.SetActive(false);
         _healthBarGameObject.SetActive(false);
     }
 
-    private void OnBossArrival()
+    public void OnBossArrival()
     {
         _bossText.SetActive(true);
         _healthBarGameObject.SetActive(true);
     }
 
-    private void UpdateHealthPrecent(float bossHealth) => _healthBar.value = bossHealth;
+    public void UpdateHealthPrecent(float bossHealth) => _healthBar.value = bossHealth;
 
-    private void OnBossDefeat()
+    public void OnBossDefeat()
     {
         _bossText.SetActive(false);
         _healthBarGameObject.SetActive(false);
     }
 
-    private void OnGameStop()
+    public void OnGameStop()
     {
         _bossText.SetActive(false);
         _healthBarGameObject.SetActive(false);
-    }
-
-    public void Reset()
-    {
-        EntryPoint.Instance.Events.BossArrival -= OnBossArrival;
-        EntryPoint.Instance.Events.BossDamaged -= UpdateHealthPrecent;
-        EntryPoint.Instance.Events.BossDefeated -= OnBossDefeat;
-        EntryPoint.Instance.Events.Stop -= OnGameStop;
     }
 }

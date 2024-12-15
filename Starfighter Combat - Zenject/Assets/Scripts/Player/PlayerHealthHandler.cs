@@ -1,42 +1,53 @@
 ﻿using UnityEngine;
+using Zenject;
 
-public class PlayerHealthHandler : IDamageble, IHealable, IResetable
+public class PlayerHealthHandler : IInitializable, IDamageble, IHealable
 {
-    private Player _player;
-    private AudioSource _playerAudio;
-    private PlayerData _playerData;
-
+    private AudioSource _globalSoundFX;
     private EventManager _events;
-    private int _playerHealth;
 
-    public PlayerHealthHandler(Player player)
+    private SpawnController _spawner;
+
+    private GameObject _playerGO;
+    private Transform _playerTransform;
+
+    private int _maxHealth;
+    private int _currentHealth;
+
+    private GameObject _explosion;
+    private AudioClip _explosionSound;
+    private float _soundVolume;
+
+    public PlayerHealthHandler(GameObject player, IDamagebleData data,  EventManager events, AudioSource globalSound)
     {
-        _player = player;
-        _playerData = _player.PlayerData;
-        _playerAudio = EntryPoint.Instance.GlobalSoundFX;
-        _playerHealth = _playerData.Health;
+        _globalSoundFX = globalSound;
+        _playerGO = player;
+        _playerTransform = _playerGO.transform;
+        _events = events;
 
-        _events = EntryPoint.Instance.Events;
-
-        _events.PlayerDamaged += TakeDamage;
-        _events.PlayerHealed += Heal;
+        _currentHealth = data.Health;
+        _maxHealth = data.MaxHealth;
+        _explosion = data.ExplosionPrefab;
+        _explosionSound = data.ExplosionSound;
+        _soundVolume = data.ExplosionSoundVolume;
     }
+
+    public void Initialize() => _events.ChangeHealth?.Invoke(_currentHealth);
 
     public void TakeDamage(int damage)
     {
-        if (_player.IsInvunerable || damage <= 0)
-            return;
+        if (damage <= 0) return;
 
-        _playerHealth -= damage;
+        _currentHealth -= damage;
 
-        if (_playerHealth < 0)
+        if (_currentHealth < 0)
         {
-            _playerHealth = 0;
+            _currentHealth = 0;
         }
 
-        _events.ChangeHealth?.Invoke(_playerHealth);
+        _events.ChangeHealth?.Invoke(_currentHealth);
 
-        if (_playerHealth == 0)
+        if (_currentHealth == 0)
         {
             _events.PlayerDied?.Invoke();
         }
@@ -44,32 +55,26 @@ public class PlayerHealthHandler : IDamageble, IHealable, IResetable
         else
         {
             EntryPoint.Instance.SpawnController.RespawnPlayer();
-            EntryPoint.Instance.Events.PlayerRespawn?.Invoke();
-            _player.gameObject.SetActive(false);
+            _events.PlayerRespawn?.Invoke();
+            _playerGO.SetActive(false);
         }
 
-        ObjectPool.Get(_playerData.Explosion, _player.transform.position,
-            _playerData.Explosion.transform.rotation);
+        ObjectPool.Get(_explosion, _playerTransform.position, _explosion.transform.rotation);
 
-        _playerAudio.PlayOneShot(_playerData.ExplosionSound, _playerData.ExplosionSoundVolume);
+        _globalSoundFX.PlayOneShot(_explosionSound, _soundVolume);
     }
 
     public void Heal(int healthAmount)
     {
-        _playerHealth += healthAmount;
+        _currentHealth += healthAmount;
 
-        if (_playerHealth > _playerData.MaxHealth)
+        if (_currentHealth > _maxHealth)
         {
-            _playerHealth = _playerData.MaxHealth;
+            _currentHealth = _maxHealth;
             _events.AddScore?.Invoke(50);
         }
 
-        _events.ChangeHealth?.Invoke(_playerHealth);
+        _events.ChangeHealth?.Invoke(_currentHealth);
     }
 
-    public void Reset()
-    {
-        _events.PlayerDamaged -= TakeDamage;
-        _events.PlayerHealed -= Heal;
-    }
 }

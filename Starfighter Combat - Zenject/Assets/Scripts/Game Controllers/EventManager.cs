@@ -23,14 +23,13 @@ public class EventManager
     public Action BonusTaken;
     public Action<bool> Multilaser;
     public Action MultilaserEnd;
-    public Action ForceField;
-    public Action ForceFieldEnd;
-    public Action IonSphereUse;
+    public Action<bool> ForceField;
+    public Action<int> NukesAdded;
+    public Action AddDrone;
     public Action DroneDestroyed;
 
     //Enemies
     public Action<EnemyStrenght> EnemyDestroyed;
-    //public Action<GameObject, int> EnemyDamaged;
     public Action<GameObject, Transform> LockTarget;
 
     //Boss

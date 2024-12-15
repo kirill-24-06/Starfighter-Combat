@@ -1,15 +1,15 @@
-using UnityEngine;
+using System;
 
-public class ScoreController : MonoBehaviour
+public class ScoreController : IDisposable
 {
     private EventManager _events;
 
     private int _score;
     public int Score => _score;
 
-    public void Initialise()
+    public ScoreController(EventManager events)
     {
-        _events = EntryPoint.Instance.Events;
+        _events = events;
 
         _events.Start += OnGameStarted;
         _events.AddScore += OnScoreAdded;
@@ -27,7 +27,7 @@ public class ScoreController : MonoBehaviour
         _events.ChangeScore(_score);
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         _events.Start -= OnGameStarted;
         _events.AddScore -= OnScoreAdded;

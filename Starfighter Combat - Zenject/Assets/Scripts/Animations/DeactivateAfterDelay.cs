@@ -14,7 +14,7 @@ public class DeactivateAfterDelay : MonoBehaviour
         _millisecondsDelay = (int)(_destroyTimer * GlobalConstants.MillisecondsConverter);
         _token = EntryPoint.Instance.destroyCancellationToken;
 
-        PoolMap.SetParrentObject(gameObject,GlobalConstants.PoolTypesByTag[ObjectTag.Particles]);
+        PoolRootMap.SetParrentObject(gameObject,GlobalConstants.PoolTypesByTag[ObjectTag.Particles]);
     }
    
     private void OnEnable() => Deactivate().Forget();

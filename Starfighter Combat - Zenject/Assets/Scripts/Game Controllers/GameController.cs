@@ -1,29 +1,26 @@
+using System;
 using Ui.DialogWindows;
 using Ui.DialogWindows.Dialogs;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameController : IDisposable
 {
     private EventManager _events;
+    private ScoreController _scoreController;
 
-    public void Initialise()
+    public GameController(ScoreController scoreController,EventManager events)
     {
-        _events = EntryPoint.Instance.Events;
+        _scoreController = scoreController;
+        _events = events;
 
         _events.PlayerDied += OnPlayerDied;
         _events.LevelCompleted += OnLevelCompleted;
         _events.MainMenuExit += OnMenuExit;
     }
 
-    public void StartGame()
-    {
-        _events.Start?.Invoke();
-    }
+    public void StartGame() => _events.Start?.Invoke();
 
-    public void StopGame()
-    {
-        _events.Stop?.Invoke();
-    }
+    public void StopGame() => _events.Stop?.Invoke();
 
     public void PauseGame(bool value)
     {
@@ -44,14 +41,14 @@ public class GameController : MonoBehaviour
     {
         StopGame();
         GameOverWindow gameOverDialog = DialogManager.ShowDialog<GameOverWindow>();
-        gameOverDialog.Initialise(EntryPoint.Instance.ScoreController.Score);
+        gameOverDialog.Initialise(_scoreController.Score);
     }
 
     private void OnLevelCompleted()
     {
         StopGame();
         YouWinDialog youWinDialog = DialogManager.ShowDialog<YouWinDialog>();
-        youWinDialog.Initialise(EntryPoint.Instance.ScoreController.Score);
+        youWinDialog.Initialise(_scoreController.Score);
     }
 
     private void OnMenuExit()
@@ -63,7 +60,7 @@ public class GameController : MonoBehaviour
         SceneLoader.LoadScene(GlobalConstants.MainMenuSceneName);
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         _events.PlayerDied -= OnPlayerDied;
         _events.LevelCompleted -= OnLevelCompleted;

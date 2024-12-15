@@ -22,7 +22,7 @@ public abstract class Projectile : MonoBehaviour, INukeInteractable
 
         _mover = new Mover(_transform);
 
-        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolRootMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     protected virtual void OnEnable() => _isPooled = false;

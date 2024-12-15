@@ -12,20 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9caf03ee25a245f49bfb2cf484d4dd27, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  _tag: 1
-  _health: 3
-  _maxHealth: 10
+  <Health>k__BackingField: 3
+  <MaxHealth>k__BackingField: 10
   _tempInvunrabilityTimeSeconds: 3
-  _speed: 20
-  _nukePrefab: {fileID: 7415189649973966450, guid: 45738f5a740101f4da84bb876e3e6c40, type: 3}
+  <Speed>k__BackingField: 20
+  <GameBorders>k__BackingField: {x: 19, y: 14}
+  <Projectile>k__BackingField: {fileID: 8661907242895563437, guid: ef352fa18d4281b44a7602165486ee4c, type: 3}
+  <ReloadCountDown>k__BackingField: 0.165
+  <FireSound>k__BackingField: {fileID: 8300000, guid: 9a441e078f569aa45b635ae2a0d8ab5b, type: 3}
+  <FireSoundVolume>k__BackingField: 0.1
+  <NukePrefab>k__BackingField: {fileID: 7415189649973966450, guid: 45738f5a740101f4da84bb876e3e6c40, type: 3}
+  <NukesStartAmount>k__BackingField: 2
   _nukeCd: 3.5
-  _nukesStartAmount: 2
-  _weapon: {fileID: 8661907242895563437, guid: ef352fa18d4281b44a7602165486ee4c, type: 3}
-  _reloadTime: 0.165
-  _bonusLenght: 10
-  _gameBorders: {x: 19, y: 14}
-  _explosionPrefab: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
-  _fireSound: {fileID: 8300000, guid: 9a441e078f569aa45b635ae2a0d8ab5b, type: 3}
-  _fireSoundVolume: 0.1
-  _explosionSound: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
-  _explosionSoundVolume: 0.15
+  <BonusLenght>k__BackingField: 10
+  <ExplosionPrefab>k__BackingField: {fileID: 3301597147175911291, guid: 4d8d7eac54c3a8040b63e6dd70861e13, type: 3}
+  <ExplosionSound>k__BackingField: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
+  <ExplosionSoundVolume>k__BackingField: 0.15

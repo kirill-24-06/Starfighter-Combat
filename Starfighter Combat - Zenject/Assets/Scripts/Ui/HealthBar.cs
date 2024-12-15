@@ -1,44 +1,26 @@
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-
-public class HealthBar : MonoBehaviour
+public class HealthBar : ImageBar
 {
-    [SerializeField] private GameObject _heartsLayout;
-    [SerializeField] private List<Image> _hearts;
-
-    [SerializeField] private GameObject _healtImage;
-    [SerializeField] private TextMeshProUGUI _healthTextDynamic;
-    [SerializeField] private GameObject _healthTextGameObject;
-
-
-    public void Initialise()
-    {
-       EntryPoint.Instance.Events.ChangeHealth += ShowHealth;
-    }
-
-    private void ShowHealth(int newHealth)
+    public HealthBar(ImageBarElements barElements) : base(barElements) { }
+   
+    public override void Show(int newHealth)
     {
         bool useLayout = newHealth <= 5;
         
-        _heartsLayout.SetActive(useLayout);
+        _elementsLayout.SetActive(useLayout);
 
-        _healtImage.SetActive(!useLayout);
-        _healthTextGameObject.SetActive(!useLayout);
+        _textGO.SetActive(!useLayout);
+        _elementsTextGO.SetActive(!useLayout);
 
-        if (_healtImage.activeInHierarchy)
-            _healthTextDynamic.text = newHealth.ToString();
+        if (_textGO.activeInHierarchy)
+            _elementsTextDynamic.text = newHealth.ToString();
        
-        else if (_heartsLayout.activeInHierarchy)
+        else if (_elementsLayout.activeInHierarchy)
         {
-            for (int i = 0; i < _hearts.Count; i++)
+            for (int i = 0; i < _elements.Count; i++)
             {
                 bool isHeartActive = i <= (newHealth - 1);
-                _hearts[i].gameObject.SetActive(isHeartActive);
+                _elements[i].gameObject.SetActive(isHeartActive);
             }
         }
     }
-
-    private void OnDestroy() => EntryPoint.Instance.Events.ChangeHealth -= ShowHealth;
 }

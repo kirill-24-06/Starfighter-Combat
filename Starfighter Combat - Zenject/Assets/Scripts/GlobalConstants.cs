@@ -45,8 +45,10 @@ public class GlobalConstants
 
     //Collision damage
     public static readonly int CollisionDamage = 1;
-
     public static readonly int NukeDamage = 10;
+
+    //Resources
+    public static readonly string LoadingScreenPrefabPath = "Dialogs/LoadingScreen";
 
 
     //Scenes

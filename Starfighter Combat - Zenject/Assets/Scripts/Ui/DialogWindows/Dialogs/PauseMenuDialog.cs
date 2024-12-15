@@ -17,14 +17,14 @@ public class PauseMenuDialog : Dialog
 
     private void Continue()
     {
-        EntryPoint.Instance.GameController.PauseGame(false);
         Hide();
+        EntryPoint.Instance.GameController.PauseGame(false);
     }
 
     private void GoToSettings()
     {
-        DialogManager.ShowDialog<SettingsDialog>();
         Hide();
+        DialogManager.ShowDialog<SettingsDialog>();
     }
 
     private void GoToMainMenu()

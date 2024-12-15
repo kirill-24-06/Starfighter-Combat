@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 namespace Ui.DialogWindows
@@ -8,16 +9,21 @@ namespace Ui.DialogWindows
     {
         [SerializeField] private Button _outsideClickArea;
 
+        [SerializeField] protected GameObject _firstSelected;
+
         protected virtual void Awake()
         {
             if (_outsideClickArea != null)
             {
                 _outsideClickArea.onClick.AddListener(Hide);
             }
+
+            EventSystem.current.SetSelectedGameObject(_firstSelected);
         }
 
         protected void Hide()
         {
+            EventSystem.current.SetSelectedGameObject(null);
             Destroy(gameObject);
         }
 

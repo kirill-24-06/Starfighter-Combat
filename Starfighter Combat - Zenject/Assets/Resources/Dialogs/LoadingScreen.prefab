@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _outsideClickArea: {fileID: 0}
+  _firstSelected: {fileID: 0}
   _loadingImage: {fileID: 219363864515769497}
 --- !u!1 &4735548823955377424
 GameObject:

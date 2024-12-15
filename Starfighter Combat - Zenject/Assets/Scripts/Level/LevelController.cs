@@ -1,36 +1,36 @@
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using Zenject;
 
-public class LevelController : MonoBehaviour
+public class LevelController : IDisposable, ITickable
 {
-    [SerializeField] private LevelData _data;
+    private LevelData _data;
 
     private SpawnController _spawnController;
+    private EventManager _events;
 
-    private List<LevelStage> _stages;
+    private LevelStage[] _stages;
     private int currentStage = 0;
 
     private bool _isGameActive;
     private bool _isBossFight = false;
     private bool _isBossDefeated = false;
 
-
-    public void Initialise()
+    public LevelController(LevelData data, LevelStage[] stages, SpawnController spawnController, EventManager events)
     {
-        _spawnController = EntryPoint.Instance.SpawnController;
+        _data = data;
+        _spawnController = spawnController;
+        _events = events;
 
-        _stages = new List<LevelStage>(_data.Stages.Count);
+        _stages = stages;
 
         for (int i = 0; i < _data.Stages.Count; i++)
-        {
-            _stages.Add(new LevelStage(this, _data.Stages[i]));
             _stages[i].StageStart += OnNewStageStart;
-        }
 
-        EntryPoint.Instance.Events.Start += OnStart;
-        EntryPoint.Instance.Events.Stop += OnStop;
-        EntryPoint.Instance.Events.BossDefeated += OnBossDefeat;
-        EntryPoint.Instance.Events.PrewarmRequired += OnPrewarmRequire;
+
+        _events.Start += OnStart;
+        _events.Stop += OnStop;
+        _events.BossDefeated += OnBossDefeat;
+        _events.PrewarmRequired += OnPrewarmRequire;
     }
 
     private void OnStart()
@@ -41,6 +41,8 @@ public class LevelController : MonoBehaviour
 
     private void OnPrewarmRequire() => _spawnController.Prewarm(_data.Prewarmables);
 
+    public void Tick() => Update();
+   
     private void Update()
     {
         if (!_isGameActive)
@@ -56,7 +58,7 @@ public class LevelController : MonoBehaviour
             if (!_isBossDefeated)
                 return;
 
-            EntryPoint.Instance.Events.LevelCompleted?.Invoke();
+            _events.LevelCompleted?.Invoke();
         }
 
         else if (_stages[currentStage].IsStageCompleted)
@@ -69,7 +71,7 @@ public class LevelController : MonoBehaviour
 
     private void AdvanceToNextStage()
     {
-        if (currentStage + 1 < _stages.Count)
+        if (currentStage + 1 < _stages.Length)
         {
             currentStage++;
             _stages[currentStage].StartStage();
@@ -85,5 +87,13 @@ public class LevelController : MonoBehaviour
     private void OnNewStageStart()
     {
         _spawnController.NewStage(_stages[currentStage].GetData().SpawnerData);
+    }
+
+    public void Dispose()
+    {
+        _events.Start -= OnStart;
+        _events.Stop -= OnStop;
+        _events.BossDefeated -= OnBossDefeat;
+        _events.PrewarmRequired -= OnPrewarmRequire;
     }
 }

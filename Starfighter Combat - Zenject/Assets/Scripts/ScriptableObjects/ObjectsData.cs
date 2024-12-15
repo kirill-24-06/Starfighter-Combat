@@ -4,10 +4,10 @@ public enum BonusTag
 {
     Health,
     Multilaser,
-    LaserBeam,
     ForceField,
-    IonSphere,
+    Nuke,
     DefenceDrone,
+    TempInvunrability,
     None,
 }
 

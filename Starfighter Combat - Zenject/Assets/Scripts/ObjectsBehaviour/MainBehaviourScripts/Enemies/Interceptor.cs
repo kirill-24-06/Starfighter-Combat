@@ -17,13 +17,11 @@ public class Interceptor : Enemy
         base.Awake();
         Initialise();
 
-        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolRootMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()
     {
-        //Initialise();
-
         var collider = GetComponent<Collider2D>();
         EntryPoint.Instance.CollisionMap.Register(collider, this);
         EntryPoint.Instance.CollisionMap.RegisterNukeInteractable(collider, this);

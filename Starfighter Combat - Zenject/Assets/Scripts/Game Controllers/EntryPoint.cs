@@ -1,98 +1,62 @@
 using Ui.DialogWindows;
 using UnityEngine;
+using Zenject;
 
 public class EntryPoint : MonoBehaviour
 {
-    [SerializeField] private AudioSource _globalSoundFX;
-    [SerializeField] private MusicPlayer _musicPlayer;
-    [SerializeField] private GameController _gameController;
-    [SerializeField] private ScoreController _scoreController;
-    [SerializeField] private Player _player;
-    [SerializeField] private BackgroundController _backgroundController;
-    [SerializeField] private SpawnController _spawnController;
-    [SerializeField] private LevelController _levelController;
-    [SerializeField] private UiRoot _root;
-    [SerializeField] private HUDManager _hudManager;
-    [SerializeField] private HealthBar _healthBar;
-    [SerializeField] private BombsBar _bombsBar;
-    [SerializeField] private SpriteRenderer[] _patrolArea;
-
-    private EventManager _events;
-    private PoolMap _poolMap;
-    private Spawner _spawner;
-    private CollisionMap _collisionMap;
-
     public static EntryPoint Instance { get; private set; }
 
-    public EventManager Events => _events;
+    public EventManager Events { get; private set; }
 
-    public Player Player => _player;
+    public Player Player { get; private set; }
 
-    public GameController GameController => _gameController;
+    public GameController GameController { get; private set; }
 
-    public ScoreController ScoreController => _scoreController;
+    public SpawnController SpawnController { get; private set; }
 
-    public SpawnController SpawnController => _spawnController;
-
-    public Spawner Spawner => _spawner;
+    public Spawner Spawner { get; private set; }
 
     public Bounds[] PatrolArea { get; private set; }
 
-    public Transform UiRoot => _root.transform;
+    public Transform UiRoot { get; private set; }
 
-    public HUDManager HudManager => _hudManager;
+    public AudioSource GlobalSoundFX { get; private set; }
 
-    public AudioSource GlobalSoundFX => _globalSoundFX;
+    public CollisionMap CollisionMap { get; private set; }
 
-    public CollisionMap CollisionMap => _collisionMap;
-
-
-    private void Awake()
+    [Inject]
+    public void Construct
+        (EventManager events,
+        GameController gameController,
+        AudioSource globalSoundFX,
+        Player player,
+        Spawner spawner,
+        SpawnController spawnController,
+        CollisionMap collisionMap,
+        Bounds[] patrolArea,
+        Transform uiRoot)
     {
+
         if (Instance == null)
             Instance = this;
 
         else
             Destroy(gameObject);
 
-        Initialize();
+        Events = events;
+        GlobalSoundFX = globalSoundFX;
+        GameController = gameController;
+        Spawner = spawner;
+        SpawnController = spawnController;
+        CollisionMap = collisionMap;
+        UiRoot = uiRoot;
+        Player = player;
+        PatrolArea = patrolArea;
     }
 
     private void Start()
     {
-        _events.PrewarmRequired?.Invoke();
+        Events.PrewarmRequired?.Invoke();
         DialogManager.ShowDialog<WelcomeDialog>();
     }
-
-    private void Initialize()
-    {
-        _events = new EventManager();
-        _spawner = new Spawner();
-        _collisionMap = new CollisionMap();
-        _poolMap = new PoolMap();
-
-
-        PatrolAreaInit();
-        _player.Initialise();
-        _hudManager.Initialise();
-        _healthBar.Initialise();
-        _bombsBar.Initialise();
-        _gameController.Initialise();
-        _scoreController.Initialise();
-        _spawner.Initialise();
-        _spawnController.Initialise();
-        _levelController.Initialise();
-        _musicPlayer.Initialise();
-        _backgroundController.Initialise();
-        _poolMap.Initialise(_spawnController.transform);
-    }
-
-    private void PatrolAreaInit()
-    {
-        PatrolArea = new Bounds[_patrolArea.Length];
-
-        for (int i = 0; i < _patrolArea.Length; i++)
-            PatrolArea[i] = _patrolArea[i].bounds;
-    }
-   
 }

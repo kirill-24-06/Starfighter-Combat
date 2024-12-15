@@ -39,7 +39,7 @@ public abstract class Missile : MonoBehaviour, INukeInteractable
         _forwardMover = new Mover(transform);
         _homingMover = new MissileMover(transform);
 
-        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolRootMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     protected void OnEnable()

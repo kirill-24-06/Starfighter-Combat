@@ -9,12 +9,12 @@ public class LevelStage
 
     public Action StageStart;
 
-    public LevelStage(LevelController levelController, StageData data)
+    public LevelStage(Timer timer, StageData data)
     {
         _data = data;
         IsStageCompleted = false;
 
-        _stageTimer = new Timer(levelController);
+        _stageTimer = timer;
         _stageTimer.SetTimer(data.StageTime);
         _stageTimer.TimeIsOver += () => { IsStageCompleted = true; };
     }

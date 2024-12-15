@@ -2,28 +2,31 @@ using UnityEngine;
 
 public class PlayerAttacker : IAttacker, IResetable
 {
-    protected readonly Player _player;
     private Transform _firePoint;
     protected GameObject _projectile;
-
     protected AudioSource _playerAudio;
+
+    protected AudioClip _fireSound;
+    protected float _fireSoundVolume;
 
     protected readonly Timer _reloadTimer;
     protected float _reloadTime;
 
     protected bool _isShooted = false;
 
-    public PlayerAttacker(Player player)
+    public PlayerAttacker(Transform player,Timer timer ,IShooterData data)
     {
-        _player = player;
-        _firePoint = _player.transform.Find("ProjectilePosition");
-        _projectile = _player.PlayerData.Projectile;
+        _firePoint = player.Find("ProjectilePosition");
+        _projectile = data.Projectile;
 
-        _playerAudio = _player.GetComponentInChildren<AudioSource>();
+        _playerAudio = player.GetComponentInChildren<AudioSource>();
 
-        _reloadTimer = new Timer(_player);
-        _reloadTime = _player.PlayerData.ReloadTime;
+        _reloadTimer = timer;
+        _reloadTime = data.ReloadCountDown;
         _reloadTimer.TimeIsOver += OnReloadTimerExpired;
+
+        _fireSound = data.FireSound;
+        _fireSoundVolume = data.FireSoundVolume;
 
     }
 
@@ -34,14 +37,14 @@ public class PlayerAttacker : IAttacker, IResetable
 
         ObjectPool.Get(_projectile, _firePoint.position, _firePoint.rotation);
 
-        _playerAudio.PlayOneShot(_player.PlayerData.FireSound, _player.PlayerData.FireSoundVolume);
+        _playerAudio.PlayOneShot(_fireSound, _fireSoundVolume);
 
         Reload();
     }
 
     private void Reload()
     {
-        _reloadTimer.SetTimer(_player.PlayerData.ReloadTime);
+        _reloadTimer.SetTimer(_reloadTime);
         _reloadTimer.StartTimer();
     }
 

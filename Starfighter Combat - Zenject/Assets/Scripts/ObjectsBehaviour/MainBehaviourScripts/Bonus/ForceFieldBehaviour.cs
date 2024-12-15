@@ -1,25 +1,28 @@
 using UnityEngine;
+using Zenject;
 
 public class ForceFieldBehaviour : MonoBehaviour
 {
     private EventManager _events;
 
-    public bool ShieldActive {  get; private set; }
+    public bool ShieldActive { get; private set; }
 
-    public void Initialise()
+    [Inject]
+    public void Construct(EventManager events)
     {
-        _events = EntryPoint.Instance.Events;
-
-        _events.ForceField += OnActivated;
-        _events.ForceFieldEnd += OnDeactivated;
-
-        gameObject.SetActive(false);
+        _events = events;
+        _events.ForceField += Handle;
     }
 
-    private void OnDestroy()
+    private void Start() => gameObject.SetActive(false);
+
+    private void Handle(bool value)
     {
-        _events.ForceField -= OnActivated;
-        _events.ForceFieldEnd -= OnDeactivated;
+        if (value)
+            OnActivated();
+
+        else
+            OnDeactivated();
     }
 
     private void OnActivated()
@@ -35,5 +38,10 @@ public class ForceFieldBehaviour : MonoBehaviour
         _events.Invunerable?.Invoke(false);
 
         ShieldActive = false;
+    }
+    
+    private void OnDestroy()
+    {
+        _events.ForceField -= Handle;
     }
 }

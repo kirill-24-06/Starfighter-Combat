@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Zenject;
 
 public class BackgroundController : MonoBehaviour
 {
@@ -9,15 +10,19 @@ public class BackgroundController : MonoBehaviour
     private WaitForSeconds _delay;
     private bool _isGameActive = false;
 
-    public void Initialise()
+    private EventManager _events;
+
+    [Inject]
+    public void Construct(EventManager events)
     {
-        // all tiles must be same size
+        _events = events;
+        _events.Stop += OnStop;
+
         float offset = _layers[0].GetComponentInChildren<SpriteRenderer>().bounds.size.y;
 
         foreach (var layer in _layers)
-            layer.Initialise(offset);
+            layer.Initialise(offset, _speed);
 
-        EntryPoint.Instance.Events.Stop += OnStop;
         _delay = new WaitForSeconds(2.0f);
     }
 
@@ -30,9 +35,7 @@ public class BackgroundController : MonoBehaviour
     private void Move()
     {
         for (int i = 0; i < _layers.Length; i++)
-        {
-            _layers[i].Move(_speed);
-        }
+            _layers[i].Move();
     }
 
     private void Start() => _isGameActive = true;
@@ -45,5 +48,5 @@ public class BackgroundController : MonoBehaviour
         _isGameActive = false;
     }
 
-    private void OnDestroy() => EntryPoint.Instance.Events.Stop -= OnStop;
+    private void OnDestroy() => _events.Stop -= OnStop;
 }

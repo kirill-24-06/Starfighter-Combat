@@ -1,15 +1,18 @@
+using Zenject;
 
 public class TimeBar : Bar
 {
     private Timer _timer;
+    private EventManager _events;
 
-    public void Initialise(Timer timer)
+    [Inject]
+    public void Construct([Inject(Id ="BonusTimer")]Timer timer, EventManager events)
     {
         _timer = timer;
-        gameObject.SetActive(false);
+        _events = events;
 
-        EntryPoint.Instance.Events.Stop += OnGameStop;
-        EntryPoint.Instance.Events.PlayerRespawn += OnPlayerRespawn;
+        _events.Stop += OnGameStop;
+        _events.PlayerRespawn += OnPlayerRespawn;
     }
 
     private void OnEnable()
@@ -38,7 +41,7 @@ public class TimeBar : Bar
 
     private void OnDestroy()
     {
-        EntryPoint.Instance.Events.Stop -= OnGameStop;
-        EntryPoint.Instance.Events.PlayerRespawn -= OnPlayerRespawn;
+        _events.Stop -= OnGameStop;
+        _events.PlayerRespawn -= OnPlayerRespawn;
     }
 }

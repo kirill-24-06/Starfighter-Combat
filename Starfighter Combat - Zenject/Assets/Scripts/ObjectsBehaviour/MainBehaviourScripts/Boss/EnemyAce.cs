@@ -9,7 +9,7 @@ public class EnemyAce : Boss
         base.Awake();
         Initialise();
 
-        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolRootMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void Start()

@@ -1,16 +1,22 @@
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using System.Threading;
 using System.Collections.Generic;
+using System;
 
-public class SpawnController : MonoBehaviour
+using Random = UnityEngine.Random;
+
+public class SpawnController : IDisposable
 {
     private SpawnerData _data;
 
     private Spawner _spawner;
 
-    private CancellationTokenSource _newStageToken;
-    private CancellationToken _sceneExitToken;
+    private EventManager _events;
+
+    private CancellationTokenSource[] _stageTokens;
+    private CancellationTokenSource _sceneExitToken;
+
+    private int _currentStage = 0;
 
     private int _activeEnemies = 0;
     private int _activeEliteEnemies = 0;
@@ -19,16 +25,23 @@ public class SpawnController : MonoBehaviour
 
     private bool _isGameActive;
 
-    public void Initialise()
+    public SpawnController(Spawner spawner, EventManager events, int stagesAmount = 8)
     {
-        _spawner = EntryPoint.Instance.Spawner;
+        _spawner = spawner;
+        _events = events;
 
-        _sceneExitToken = EntryPoint.Instance.destroyCancellationToken;
+        _stageTokens = new CancellationTokenSource[stagesAmount + 1];
+        for (int i = 0; i < _stageTokens.Length; i++)
+        {
+            _stageTokens[i] = new CancellationTokenSource();
+        }
 
-        EntryPoint.Instance.Events.Start += OnStart;
-        EntryPoint.Instance.Events.EnemyDestroyed += OnEnemyDestroyed;
-        EntryPoint.Instance.Events.BonusTaken += OnBonusTaken;
-        EntryPoint.Instance.Events.Stop += OnStop;
+        _sceneExitToken = new CancellationTokenSource();
+
+        _events.Start += OnStart;
+        _events.EnemyDestroyed += OnEnemyDestroyed;
+        _events.BonusTaken += OnBonusTaken;
+        _events.Stop += OnStop;
     }
 
     public SpawnController Prewarm(List<PrewarmableData> prewarmables)
@@ -45,7 +58,8 @@ public class SpawnController : MonoBehaviour
 
     public void NewStage(SpawnerData newData)
     {
-        CancelPreviousStage();
+        if (_currentStage != 0)
+            CancelPreviousStage();
 
         _data = newData;
 
@@ -55,13 +69,15 @@ public class SpawnController : MonoBehaviour
     private void StartSpawnLoop()
     {
         if (_data.Enemies.Count > 0)
-            EnemySpawner(_newStageToken.Token).Forget();
+            EnemySpawner(_stageTokens[_currentStage].Token).Forget();
 
         if (_data.EliteEnemies.Count > 0)
-            EliteEnemySpawner(_newStageToken.Token).Forget();
+            EliteEnemySpawner(_stageTokens[_currentStage].Token).Forget();
 
         if (_data.Bonuses.Count > 0)
-            BonusSpawner(_newStageToken.Token).Forget();
+            BonusSpawner(_stageTokens[_currentStage].Token).Forget();
+
+        _currentStage++;
     }
 
     private async UniTaskVoid EnemySpawner(CancellationToken token)
@@ -131,7 +147,7 @@ public class SpawnController : MonoBehaviour
         _bonusIsActive = true;
     }
 
-    public void RespawnPlayer() => Respawn(_sceneExitToken).Forget();
+    public void RespawnPlayer() => Respawn(_sceneExitToken.Token).Forget();
 
     private async UniTaskVoid Respawn(CancellationToken cancellationToken)
     {
@@ -163,7 +179,7 @@ public class SpawnController : MonoBehaviour
     {
         CancelPreviousStage();
 
-        await UniTask.Delay(delayMilliseconds, cancellationToken:_sceneExitToken);
+        await UniTask.Delay(delayMilliseconds, cancellationToken: _sceneExitToken.Token);
 
         _data = bossWave.SpawnerData;
 
@@ -175,14 +191,24 @@ public class SpawnController : MonoBehaviour
 
     private void CancelPreviousStage()
     {
-        _newStageToken?.Cancel();
-        _newStageToken?.Dispose();
-        _newStageToken = new CancellationTokenSource();
+        _stageTokens[_currentStage - 1].Cancel();
+        _stageTokens[_currentStage - 1].Dispose();
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
-        _newStageToken?.Cancel();
-        _newStageToken?.Dispose();
+        foreach (var token in _stageTokens)
+        {
+            token?.Cancel();
+            token?.Dispose();
+        }
+
+        _sceneExitToken?.Cancel();
+        _sceneExitToken?.Dispose();
+
+        _events.Start -= OnStart;
+        _events.EnemyDestroyed -= OnEnemyDestroyed;
+        _events.BonusTaken -= OnBonusTaken;
+        _events.Stop -= OnStop;
     }
 }

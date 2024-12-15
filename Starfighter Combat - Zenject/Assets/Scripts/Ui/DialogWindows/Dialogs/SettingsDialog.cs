@@ -57,15 +57,15 @@ public class SettingsDialog : Dialog
 
     private void GoBack()
     {
-        if (SceneManager.GetActiveScene().name == "MainScene")
+        if (SceneManager.GetActiveScene().name == GlobalConstants.MainSceneName)
         {
-            DialogManager.ShowDialog<PauseMenuDialog>();
             Hide();
+            DialogManager.ShowDialog<PauseMenuDialog>();
         }
         else
         {
-            DialogManager.ShowDialog<MainMenuDialog>();
             Hide();
+            DialogManager.ShowDialog<MainMenuDialog>();
         }
     }
 

@@ -22,7 +22,7 @@ public class BossDefenceDrone : Enemy
     protected override void Awake()
     {
         base.Awake();
-        PoolMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolRootMap.SetParrentObject(_gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     protected override void Initialise()

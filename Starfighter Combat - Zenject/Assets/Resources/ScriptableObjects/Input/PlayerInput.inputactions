@@ -122,6 +122,17 @@
                 },
                 {
                     "name": "",
+                    "id": "aec547e5-eb66-4c0c-8dda-061e9e5dcc1f",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "da196e9d-0808-42dc-9107-0d0da94e8e9e",
                     "path": "<Keyboard>/f",
                     "interactions": "",
@@ -133,11 +144,33 @@
                 },
                 {
                     "name": "",
+                    "id": "de4d4ee5-a789-41a8-812f-21afef49bd8b",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Bonus",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c4bb438e-28a3-4835-b9e9-26a6f54a3f1c",
                     "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard and Mouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0ec3fca5-bd70-422c-a71d-069bbb273776",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false

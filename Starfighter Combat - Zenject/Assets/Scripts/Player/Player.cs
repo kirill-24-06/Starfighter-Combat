@@ -1,98 +1,63 @@
-using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 public class Player : MonoBehaviour
 {
-    private static GameObject _instanceGO;
-
-    [SerializeField] private PlayerData _playerData;
     [SerializeField] private ForceFieldBehaviour _forceField;
-   
+
+    private static GameObject _playerGO;
+
     private EventManager _events;
-    private PlayerController _controller;
-    private PolygonCollider2D _playerCollider;
-    private SpriteRenderer _spriteRenderer;
+
     private PlayerBonusHandler _bonusHandler;
 
-    private IResetable _healthResetHandler;
-    private Color _tempInvunrabilityColor = new Color(1, 1, 1, 0.2f);
+    private IDamageble _damageHandler;
+    private IHealable _healthHandler;
 
-    private bool _isInvunerable = false;
-
-    public PlayerData PlayerData => _playerData;
-    public bool IsInvunerable => _isInvunerable;
-    public bool IsEquiped => _bonusHandler.IsEquiped;
+    public bool IsInvunerable => _bonusHandler.IsInvunerable;
     public bool IsDroneActive => _bonusHandler.IsDroneActive;
     public ForceFieldBehaviour ForceField => _forceField;
-    public Timer BonusTimer => _bonusHandler.BonusTimer;
 
-    public void Initialise()
+    [Inject]
+    public void Construct(IDamageble damageble, IHealable healable, PlayerBonusHandler bonusHandler, EventManager events)
     {
-        _instanceGO = this.gameObject;
-        _controller = GetComponent<PlayerController>();
-        _playerCollider = GetComponent<PolygonCollider2D>();
-        _spriteRenderer = transform.Find("Texture").GetComponent<SpriteRenderer>();
+        _playerGO = gameObject;
 
-        PlayerHealthHandler playerHealth = new(this);
-        _healthResetHandler = playerHealth;
+        _events = events;
 
-        _bonusHandler = new PlayerBonusHandler(this);
+        _damageHandler = damageble;
+        _healthHandler = healable;
 
-        _events = EntryPoint.Instance.Events;
+        _bonusHandler = bonusHandler;
 
-        _forceField.Initialise();
-
-        _events.Stop += OnStop;
         _events.PlayerDied += OnPlayerDied;
-        _events.Invunerable += OnForceFieldActive;
-
-        _controller.Initialise();
+        _events.BonusCollected += ActivateBonus;
+        _events.PlayerDamaged += OnDamageTake;
+        _events.PlayerHealed += OnHealing;
     }
 
-    private void Start()
+    public void Start() => _bonusHandler.OnStart();
+
+    public void ActivateBonus(BonusTag tag) => _bonusHandler.Handle(tag);
+
+    private void OnDamageTake(int damage)
     {
-        _events.ChangeHealth?.Invoke(PlayerData.Health);
-        _bonusHandler.OnStart();
-    }
-    
-    private void OnStop() => _isInvunerable = true;
+        if (IsInvunerable) return;
 
-    private void OnPlayerDied() => gameObject.SetActive(false);
-
-    public async UniTaskVoid StartTempInvunrability()
-    {
-        _isInvunerable = true;
-        _spriteRenderer.color = _tempInvunrabilityColor;
-
-        await UniTask.Delay(_playerData.TempInvunrabilityTimeMilliseconds, cancellationToken: destroyCancellationToken);
-
-        _spriteRenderer.color = Color.white;
-
-        if (!_forceField.ShieldActive)
-            _isInvunerable = false;
+        _damageHandler.TakeDamage(damage);
     }
 
-    private void OnForceFieldActive(bool value)
-    {
-        _isInvunerable = value;
-        _playerCollider.enabled = !_isInvunerable;
+    private void OnHealing(int healthAmount) => _healthHandler.Heal(healthAmount);
 
-        if (!value)
-            BonusTimer.ResetTimer();
-    }
+    private void OnPlayerDied() => _playerGO.SetActive(false);
 
-    public static bool IsPlayer(GameObject gameObject)
-    {
-        return gameObject == _instanceGO;
-    }
+    public static bool IsPlayer(GameObject gameObject) => gameObject == _playerGO;
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
-        _events.Stop -= OnStop;
         _events.PlayerDied -= OnPlayerDied;
-        _events.Invunerable -= OnForceFieldActive;
-
-        _bonusHandler.Reset();
-        _healthResetHandler.Reset();
+        _events.BonusCollected -= ActivateBonus;
+        _events.PlayerDamaged -= OnDamageTake;
+        _events.PlayerHealed -= OnHealing;
     }
 }

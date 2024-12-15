@@ -5,10 +5,9 @@ public class PlayerAttackerMultiple : PlayerAttacker
 {
     private readonly List<Transform> _firePoints;
 
-    public PlayerAttackerMultiple(Player player) : base(player)
+    public PlayerAttackerMultiple(Transform player, Timer timer, IShooterData data) : base(player, timer, data)
     {
-        _firePoints = new List<Transform>();
-        FindSpawnPoints();
+        _firePoints = FindSpawnPoints(player);
     }
 
     public override void Fire()
@@ -20,7 +19,7 @@ public class PlayerAttackerMultiple : PlayerAttacker
             for (int i = 0; i < _firePoints.Count; i++)
                 ObjectPool.Get(_projectile, _firePoints[i].position, _firePoints[i].rotation);
 
-            _playerAudio.PlayOneShot(_player.PlayerData.FireSound, _player.PlayerData.FireSoundVolume);
+            _playerAudio.PlayOneShot(_fireSound, _fireSoundVolume);
 
             Reload();
         }
@@ -28,18 +27,19 @@ public class PlayerAttackerMultiple : PlayerAttacker
 
     private void Reload()
     {
-        if (!_player.gameObject.activeInHierarchy) return;
-
-        _reloadTimer.SetTimer(_player.PlayerData.ReloadTime);
+        _reloadTimer.SetTimer(_reloadTime);
         _reloadTimer.StartTimer();
     }
 
-    private void FindSpawnPoints()
+    private List<Transform> FindSpawnPoints(Transform parrent)
     {
-        foreach (Transform child in _player.transform)
+        var result = new List<Transform>();
+
+        foreach (Transform child in parrent)
         {
             if (child.name == "ProjectilePosition")
-                _firePoints.Add(child);
+                result.Add(child);
         }
+        return result;
     }
 }

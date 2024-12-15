@@ -3,7 +3,7 @@ using UnityEngine;
 public class Mover : IMover
 {
     private readonly Transform _client;
-    
+
     public Mover(Transform client)
     {
         _client = client;
@@ -13,4 +13,9 @@ public class Mover : IMover
     {
         _client.Translate(speed * Time.deltaTime * direñtion);
     }
+}
+
+public interface IMovementData
+{
+    Vector2 GameBorders { get; set; }
 }

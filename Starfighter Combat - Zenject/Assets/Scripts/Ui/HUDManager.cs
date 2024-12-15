@@ -1,44 +1,75 @@
+using System;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDManager : MonoBehaviour
+public class HUDManager : IDisposable
 {
-    [SerializeField] private TextMeshProUGUI _scoreText;
-    [SerializeField] private Button _pauseButton;
-    [SerializeField] private TimeBar _bonusTimer;
-    [SerializeField] private GameObject _bossHealthBarText;
-    [SerializeField] private Slider _bossHealthBarSlider;
+    private TextMeshProUGUI _scoreText;
+    private Button _pauseButton;
+    private TimeBar _bonusTimer;
 
-    private IResetable _bossHealthBar;
+    private HealthBar _healthBar;
+    private BombsBar _bombsBar;
+    private BossHealthBar _bossHealthBar;
 
-    public void Initialise()
+    private GameController _gameController;
+    private EventManager _events;
+
+    public HUDManager(HUDElements hudElements,GameController gameController ,EventManager events)
     {
-        EntryPoint.Instance.Events.ChangeScore += UpdateScore;
-        EntryPoint.Instance.Events.Pause += OnPause;
+        _gameController = gameController;
+        _events = events;
+        _events.ChangeScore += UpdateScore;
+        _events.Pause += OnPause;
 
+        _scoreText = hudElements.ScoreText;
+
+        _pauseButton = hudElements.PauseButton;
         _pauseButton.onClick.AddListener(Pause);
 
-        _bonusTimer.Initialise(EntryPoint.Instance.Player.BonusTimer);
+        _bonusTimer = hudElements.BonusTimer;
 
-        _bossHealthBar = new BossHealthBar(_bossHealthBarText, _bossHealthBarSlider);
+        _bossHealthBar = hudElements.BossHealthBar;
+        _events.BossArrival += _bossHealthBar.OnBossArrival;
+        _events.BossDamaged += _bossHealthBar.UpdateHealthPrecent;
+        _events.BossDefeated += _bossHealthBar.OnBossDefeat;
+        _events.Stop += OnStop; 
 
-    }
+        _healthBar = hudElements.HealthBar;
+        _events.ChangeHealth += _healthBar.Show;
 
-    private void OnDestroy()
-    {
-        EntryPoint.Instance.Events.ChangeScore -= UpdateScore;
-        EntryPoint.Instance.Events.Pause -= OnPause;
-        _bossHealthBar.Reset();
-
-        _pauseButton.onClick.RemoveAllListeners();
+        _bombsBar = hudElements.BombsBar;
+        _events.BonusAmountUpdate += _bombsBar.Show;
     }
 
     private void UpdateScore(int newScore) => _scoreText.text = newScore.ToString();
 
     public void ActivateBonusTimer() => _bonusTimer.gameObject.SetActive(true); 
 
-    private void Pause() => EntryPoint.Instance.GameController.PauseGame(true);
+    private void Pause() => _gameController.PauseGame(true);
    
-    private void OnPause(bool value) => _pauseButton.gameObject.SetActive(!value);   
+    private void OnPause(bool value) => _pauseButton.gameObject.SetActive(!value);
+
+    private void OnStop()
+    {
+        _pauseButton.gameObject.SetActive(false);
+        _bossHealthBar.OnGameStop();
+    }
+
+    public void Dispose()
+    {
+        _events.ChangeScore -= UpdateScore;
+        _events.Pause -= OnPause;
+
+        _events.BossArrival -= _bossHealthBar.OnBossArrival;
+        _events.BossDamaged -= _bossHealthBar.UpdateHealthPrecent;
+        _events.BossDefeated -= _bossHealthBar.OnBossDefeat;
+        _events.Stop -= OnStop;
+
+        _events.ChangeHealth -= _healthBar.Show;
+
+        _events.BonusAmountUpdate -= _bombsBar.Show;
+
+        _pauseButton.onClick.RemoveAllListeners();
+    }
 }

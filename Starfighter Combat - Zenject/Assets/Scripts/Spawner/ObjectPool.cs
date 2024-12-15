@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPool : IDisposable
 {
     private static Dictionary<string, Stack<GameObject>> _poolMap;
     private static readonly string _delete = "(Clone)";
 
-    private void Awake()
+    public ObjectPool()
     {
         _poolMap = new Dictionary<string, Stack<GameObject>>();
     }
@@ -19,7 +20,7 @@ public class ObjectPool : MonoBehaviour
 
         for (int i = 0; i < prewarmAmount; i++)
         {
-            var obj = Instantiate(objectToPrewarm);
+            var obj = GameObject.Instantiate(objectToPrewarm);
             Release(obj);
         }
 
@@ -33,7 +34,7 @@ public class ObjectPool : MonoBehaviour
 
         pool ??= NewPool(objectToGet);
 
-         var obj = pool.Count > 0 ? pool.Pop() : Instantiate(objectToGet);
+         var obj = pool.Count > 0 ? pool.Pop() : GameObject.Instantiate(objectToGet);
 
         obj.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
         obj.SetActive(true);
@@ -52,5 +53,5 @@ public class ObjectPool : MonoBehaviour
         pool.Push(obj);
     }
 
-    private void OnDestroy() => _poolMap.Clear();
+    public void Dispose() => _poolMap.Clear();
 }

@@ -1,13 +1,14 @@
-using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
-    private Player _player;
-
+    private PlayerBonusHandler _bonusHandler;
+    private GameController _gameController;
     private EventManager _events;
 
     private InputAction _move;
@@ -16,33 +17,31 @@ public class PlayerController : MonoBehaviour
     private InputAction _useBonus;
 
     private IMover _mover;
+    private float _speed;
     private Vector2 Direction => _move.ReadValue<Vector2>();
 
     private IAttacker _attackHandler;
-    private PlayerAttacker _singleCannon;
-    private PlayerAttackerMultiple _multipleCannons;
-
+    private List<IAttacker> _attackers;
+    private List<IResetable> _resetables;
 
     private bool _isGameActive;
     private bool _isPaused;
     private bool _onCooldown;
 
-    public void Initialise()
+    [Inject]
+    public void Construct(List<IAttacker> attackers, List<IResetable> resetables, IMover mover,
+        float speed, PlayerBonusHandler bonusHandler, GameController controller, EventManager events)
     {
-        _player = EntryPoint.Instance.Player;
-        _events = EntryPoint.Instance.Events;
-
-        _mover = new Mover(transform);
-
-        _singleCannon = new PlayerAttacker(_player);
-        _multipleCannons = new PlayerAttackerMultiple(_player);
-        _attackHandler = _singleCannon;
+        _bonusHandler = bonusHandler;
+        _gameController = controller;
+        _events = events;
+        _mover = mover;
+        _speed = speed;
+        _attackers = attackers;
+        _resetables = resetables;
+        _attackHandler = _attackers[0];
 
         _isPaused = false;
-
-        _events.Stop += OnStop;
-        _events.Pause += OnPause;
-        _events.Multilaser += EnableMultilaser;
 
         var playerInput = GetComponent<PlayerInput>();
 
@@ -52,11 +51,18 @@ public class PlayerController : MonoBehaviour
         _useBonus = playerInput.actions["Bonus"];
 
         _shoot.performed += OnShoot;
-        _pause.performed += OnPauseInput;
         _useBonus.performed += OnBonusUse;
+
+        _events.Start += OnStart;
+        _events.Stop += OnStop;
+        _events.Pause += OnPause;
+        _events.Multilaser += EnableMultilaser;
+
     }
 
     private void Start() => _isGameActive = true;
+
+    private void OnStart()=> _pause.performed += OnPauseInput;
 
     private void OnStop() => _isGameActive = false;
 
@@ -72,81 +78,52 @@ public class PlayerController : MonoBehaviour
     private void OnPauseInput(InputAction.CallbackContext context)
     {
         if (!_isPaused)
-            EntryPoint.Instance.GameController.PauseGame(true);
+            _gameController.PauseGame(true);
     }
 
     private void OnBonusUse(InputAction.CallbackContext context)
     {
-        if (!_player.IsEquiped || _onCooldown) return;
+        if (!_bonusHandler.IsEquiped || _onCooldown) return;
 
         UseSpehre();
-        StartCooldown().Forget();
     }
 
-    private void Update()
-    {
-        if (!_isGameActive || _isPaused) return;
-
-        Move();
-    }
+    private void Update() => Move();
 
     private void Move()
     {
-        _mover.Move(Direction, _player.PlayerData.Speed);
-
-        CheckBorders();
+        if (!_isGameActive || _isPaused) return;
+        _mover.Move(Direction, _speed);
     }
 
     private void EnableMultilaser(bool isEnabled)
     {
         if (isEnabled)
         {
-            _singleCannon.Reset();
-            _attackHandler = _multipleCannons;
+            _resetables[0].Reset();
+            _attackHandler = _attackers[1];
         }
 
         else if (!isEnabled)
         {
-            _multipleCannons.Reset();
-            _attackHandler = _singleCannon;
+            _resetables[1].Reset();
+            _attackHandler = _attackers[0];
         }
     }
 
-    private void UseSpehre() => _events.IonSphereUse?.Invoke();
-
-    private async UniTaskVoid StartCooldown()
-    {
-        _onCooldown = true;
-
-        await UniTask.Delay(_player.PlayerData.NukeCooldown, cancellationToken: _player.destroyCancellationToken);
-
-        _onCooldown = false;
-    }
-
-    private void CheckBorders()
-    {
-        if (transform.position.x < -_player.PlayerData.GameZoneBorders.x)
-            transform.position = new Vector3(-_player.PlayerData.GameZoneBorders.x, transform.position.y, transform.position.z);
-
-        if (transform.position.x > _player.PlayerData.GameZoneBorders.x)
-            transform.position = new Vector3(_player.PlayerData.GameZoneBorders.x, transform.position.y, transform.position.z);
-
-        if (transform.position.y < -_player.PlayerData.GameZoneBorders.y)
-            transform.position = new Vector3(transform.position.x, -_player.PlayerData.GameZoneBorders.y, transform.position.z);
-
-        if (transform.position.y > _player.PlayerData.GameZoneBorders.y)
-            transform.position = new Vector3(transform.position.x, _player.PlayerData.GameZoneBorders.y, transform.position.z);
-    }
+    private void UseSpehre() => _bonusHandler.UseNuke();
 
     private void OnDisable()
     {
-        _singleCannon.Reset();
-        _multipleCannons.Reset();
-        _attackHandler = _singleCannon;
+        foreach (var resetable in _resetables)
+            resetable.Reset();
+
+        _attackHandler = _attackers[0];
     }
 
     private void OnDestroy()
     {
+        _events.Start -= OnStart;
         _events.Stop -= OnStop;
         _events.Pause -= OnPause;
         _events.Multilaser -= EnableMultilaser;

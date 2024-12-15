@@ -19,7 +19,7 @@ MonoBehaviour:
   _score: 100
   _disableBorders: {x: 40, y: 40}
   _spawnZones: 000000000100000002000000
-  _bonusTag: 4
+  _bonusTag: 3
   _gameArea: {x: 19, y: 14}
   _liveTime: 30
   _positionChangeTime: 7

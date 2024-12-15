@@ -28,7 +28,7 @@ public class Bonus : BasicObject
 
         Arrival += OnArrival;
 
-        PoolMap.SetParrentObject(gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
+        PoolRootMap.SetParrentObject(gameObject, GlobalConstants.PoolTypesByTag[_data.Tag]);
     }
 
     private void OnEnable()

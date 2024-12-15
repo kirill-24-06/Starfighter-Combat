@@ -1,20 +1,27 @@
+using System;
 using UnityEngine;
+using Zenject;
 
-[RequireComponent(typeof(AudioSource))]
-public class MusicPlayer : MonoBehaviour
+public class MusicPlayer : IInitializable, IDisposable
 {
-    [SerializeField] private AudioClip _bossMusic;
+    private AudioClips _audioClips;
     private AudioSource _musicPlayer;
 
-    public void Initialise()
+    private EventManager _events;
+
+    public MusicPlayer(AudioSource music, AudioClips audioClips, EventManager events)
     {
-        _musicPlayer = GetComponent<AudioSource>();
-        EntryPoint.Instance.Events.Pause += OnPause;
-        EntryPoint.Instance.Events.BossArrival += OnBossArrival;
+        _musicPlayer = music;
+        _audioClips = audioClips;
+
+        _events = events;
+        _events.Pause += OnPause;
+        _events.BossArrival += OnBossArrival;
     }
 
-    private void Start()
+    public void Initialize()
     {
+        _musicPlayer.clip = _audioClips.LevelMusic;
         _musicPlayer.Play();
     }
 
@@ -33,13 +40,13 @@ public class MusicPlayer : MonoBehaviour
 
     private void OnBossArrival()
     {
-        _musicPlayer.clip = _bossMusic;
+        _musicPlayer.clip = _audioClips.BossMusic;
         _musicPlayer.Play();
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
-        EntryPoint.Instance.Events.Pause -= OnPause;
-        EntryPoint.Instance.Events.BossArrival -= OnBossArrival;
+        _events.Pause -= OnPause;
+        _events.BossArrival -= OnBossArrival;
     }
 }

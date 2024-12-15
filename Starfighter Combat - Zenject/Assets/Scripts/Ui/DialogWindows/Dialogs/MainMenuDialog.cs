@@ -29,8 +29,8 @@ public class MainMenuDialog : Dialog
 
     private void OpenSettings()
     {
-        DialogManager.ShowDialog<SettingsDialog>();
         Hide();
+        DialogManager.ShowDialog<SettingsDialog>();
     }
 
     private void ExitGame()

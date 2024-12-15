@@ -1,146 +1,122 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
-public class PlayerBonusHandler : IBonusHandler, IResetable
+public class PlayerBonusHandler : IDisposable
 {
-    private Player _player;
-    private PlayerData _playerData;
-    private EventManager _events;
-    private Timer _bonusTimer;
+    public Dictionary<BonusTag,IBonus> _bonuses;
 
-    private DefenceDroneBehaviour[] _defenceDrones;
+    private PolygonCollider2D _playerCollider;
+    private ForceFieldBehaviour _forceField;
+    private EventManager _events;
+
+    private SpriteRenderer _spriteRenderer;
+    private Color _tempInvunrabilityColor = new Color(1, 1, 1, 0.2f);
 
     private GameObject _nukePrefab;
     private Transform _nukePoint;
     private Collider2D[] _nukeTargets;
-
+    private int _nukeCooldown;
     private int _nukesAmount = 0;
-    private int _dronesAmount = 0;
 
-    private bool _isEquiped;
-    private bool _isDroneActive;
-    private bool _bonusIsActive = false;
+    private int _invunrabilityLenght;
 
-    private CancellationToken _sceneExitToken;
+    private CancellationTokenSource _cts;
+    private CancellationToken _disposeToken;
 
-    public bool IsDroneActive => _isDroneActive;
-    public bool BonusIsActive => _bonusIsActive;
-    public bool IsEquiped => _isEquiped;
+    private DefenceDroneBehaviour[] _defenceDrones;
+    private int _dronesAmount;
 
-    public Timer BonusTimer => _bonusTimer;
+    public bool OnCooldown { get; private set; } = false;
+    public bool IsInvunerable { get; private set; } = false;
+    public bool IsDroneActive { get; private set; } = false;
+    public bool IsEquiped { get; private set; } = false;
+    public float BonusLenght { get; private set; }
 
-    public PlayerBonusHandler(Player player)
+    public PlayerBonusHandler(Player player, DefenceDroneBehaviour[] drones,
+       List<IBonus> bonuses, IBonusHandlerData data, EventManager events)
     {
-        _player = player;
-        _playerData = _player.PlayerData;
-        _bonusTimer = new Timer(_player);
+        _bonuses = new Dictionary<BonusTag, IBonus>(bonuses.Count);
+        for (int i = 0; i < bonuses.Count; i++)
+            _bonuses.Add((BonusTag)i, bonuses[i]);
+       
+        _events = events;
 
-        _defenceDrones = _player.GetComponentsInChildren<DefenceDroneBehaviour>();
+        _playerCollider = player.gameObject.GetComponent<PolygonCollider2D>();
 
-        _nukePrefab = _playerData.NukePrefab;
-        _nukePoint = _player.transform.Find("NukePoint");
+        _nukePrefab = data.NukePrefab;
+        _nukesAmount = data.NukesStartAmount;
+        _nukePoint = player.transform.Find("NukePoint");
         _nukeTargets = new Collider2D[55];
+        _nukeCooldown = data.NukeCooldown;
 
-        _events = EntryPoint.Instance.Events;
+        _forceField = player.ForceField;
+        BonusLenght = data.BonusLenght;
 
-        _sceneExitToken = EntryPoint.Instance.destroyCancellationToken;
+        _defenceDrones = drones;
 
-        _events.BonusCollected += Handle;
-        _events.MultilaserEnd += OnMultilaserEnd;
+        _invunrabilityLenght = data.TempInvunrabilityTime;
+        _spriteRenderer = player.transform.Find("Texture").GetComponent<SpriteRenderer>();
+
+        _cts = new CancellationTokenSource();
+        _disposeToken = _cts.Token;
+
+        _events.Stop += OnStop;
+        _events.NukesAdded += OnNukeAdded;
+        _events.AddDrone += ActivateDrone;
+        _events.Invunerable += OnForceFieldActive;
         _events.DroneDestroyed += OnDroneDestruction;
-        _events.IonSphereUse += OnNukeUse;
     }
 
     public void OnStart()
     {
-        _nukesAmount = _playerData.NukesStartAmount;
-        _isEquiped = _nukesAmount > 0;
+        IsEquiped = _nukesAmount > 0;
         _events.BonusAmountUpdate?.Invoke(_nukesAmount);
     }
 
+    private void OnStop() => IsInvunerable = true;
+
     public void Handle(BonusTag tag)
     {
-        switch (tag)
-        {
-            case BonusTag.Health:
-
-                _events.PlayerHealed?.Invoke(1);
-                break;
-
-            case BonusTag.Multilaser:
-
-                EnableMultilaser();
-                break;
-
-            case BonusTag.ForceField:
-
-                ActivateForceField();
-                break;
-
-            case BonusTag.IonSphere:
-
-                AddNuke();
-                break;
-
-            case BonusTag.DefenceDrone:
-
-                ActivateDrone();
-                break;
-        }
+        if (tag == BonusTag.TempInvunrability)
+            StartTempInvunrability().Forget();
+        else
+            _bonuses[tag].Handle();
     }
 
-    private void EnableMultilaser()
+    private void OnForceFieldActive(bool value)
     {
-        _bonusIsActive = true;
-
-        _events.Multilaser?.Invoke(true);
-
-        _bonusTimer.SetTimer(_playerData.BonusTimeLenght);
-        _bonusTimer.TimeIsOver += _events.MultilaserEnd;
-        _bonusTimer.StartTimer();
-
-        EntryPoint.Instance.HudManager.ActivateBonusTimer();
+        IsInvunerable = value;
+        _playerCollider.enabled = !IsInvunerable;
     }
 
-    private void OnMultilaserEnd()
-    {
-        _bonusIsActive = false;
-        _events.Multilaser?.Invoke(false);
-
-        _bonusTimer.ResetTimer();
-    }
-
-    public void ActivateForceField()
-    {
-        _events.ForceField?.Invoke();
-
-        _bonusTimer.SetTimer(_playerData.BonusTimeLenght);
-        _bonusTimer.TimeIsOver += _events.ForceFieldEnd;
-        _bonusTimer.StartTimer();
-
-        EntryPoint.Instance.HudManager.ActivateBonusTimer();
-    }
-
-    private void AddNuke(int amount = 1)
+    private void OnNukeAdded(int amount)
     {
         _nukesAmount += amount;
-        _isEquiped = _nukesAmount > 0;
-        EntryPoint.Instance.Events.BonusAmountUpdate?.Invoke(_nukesAmount);
+        IsEquiped = _nukesAmount > 0;
+
+        _events.BonusAmountUpdate?.Invoke(_nukesAmount);
     }
 
-    private void OnNukeUse() => UseNuke().Forget();
-
-    private async UniTaskVoid UseNuke()
+    public void UseNuke()
     {
-        _player.StartTempInvunrability().Forget();
+        UseNukeAsync().Forget();
+        StartCooldown().Forget();
+    }
+
+    private async UniTaskVoid UseNukeAsync()
+    {
+        StartTempInvunrability().Forget();
 
         ObjectPool.Get(_nukePrefab, _nukePoint.position,
               _nukePrefab.transform.rotation);
 
         var count = Physics2D.OverlapCircleNonAlloc(_nukePoint.position, 30f, _nukeTargets);
 
-        await UniTask.Delay(300, cancellationToken: _sceneExitToken);
+        await UniTask.Delay(300, cancellationToken: _disposeToken);
 
         for (int i = 0; i < count; i++)
         {
@@ -151,9 +127,29 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         }
 
         _nukesAmount--;
-        _isEquiped = _nukesAmount > 0;
+        IsEquiped = _nukesAmount > 0;
 
         _events.BonusAmountUpdate?.Invoke(_nukesAmount);
+    }
+
+    private async UniTaskVoid StartCooldown()
+    {
+        OnCooldown = true;
+        await UniTask.Delay(_nukeCooldown, cancellationToken: _disposeToken);
+        OnCooldown = false;
+    }
+
+    private async UniTaskVoid StartTempInvunrability()
+    {
+        IsInvunerable = true;
+        _spriteRenderer.color = _tempInvunrabilityColor;
+
+        await UniTask.Delay(_invunrabilityLenght, cancellationToken: _disposeToken);
+
+        _spriteRenderer.color = Color.white;
+
+        if (!_forceField.ShieldActive)
+            IsInvunerable = false;
     }
 
     private void ActivateDrone()
@@ -161,7 +157,7 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         if (_dronesAmount < _defenceDrones.Length)
         {
             _dronesAmount++;
-            _isDroneActive = _dronesAmount > 0;
+            IsDroneActive = _dronesAmount > 0;
 
             foreach (DefenceDroneBehaviour drone in _defenceDrones)
             {
@@ -181,7 +177,7 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
     private void OnDroneDestruction()
     {
         _dronesAmount--;
-        _isDroneActive = _dronesAmount > 0;
+        IsDroneActive = _dronesAmount > 0;
 
         for (int i = _defenceDrones.Length - 1; i >= 0; i--)
         {
@@ -197,11 +193,15 @@ public class PlayerBonusHandler : IBonusHandler, IResetable
         }
     }
 
-    public void Reset()
+    public void Dispose()
     {
-        _events.BonusCollected -= Handle;
-        _events.MultilaserEnd -= OnMultilaserEnd;
+        _cts.Cancel();
+        _cts.Dispose();
+
+        _events.Stop -= OnStop;
+        _events.NukesAdded -= OnNukeAdded;
+        _events.Invunerable -= OnForceFieldActive;
         _events.DroneDestroyed -= OnDroneDestruction;
-        _events.IonSphereUse -= OnNukeUse;
+        _events.AddDrone -= ActivateDrone;
     }
 }

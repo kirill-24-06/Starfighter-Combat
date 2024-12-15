@@ -6,21 +6,14 @@ public class Spawner
     private Player _player;
     private Vector3 _playerStartPosition;
 
-    public void Initialise()
+    public Spawner(SpawnArea[] spawnAreas, Player player)
     {
-        _player = EntryPoint.Instance.Player;
+        _player = player;
         _playerStartPosition = _player.transform.position;
+        _spawnAreas = spawnAreas;
 
-        _spawnAreas = GameObject.FindObjectsOfType<SpawnArea>();
-
-        if (_spawnAreas != null)
-        {
-            for (int i = 0; i < _spawnAreas.Length; i++)
-                _spawnAreas[i].Initialise(_spawnAreas[i].name);
-        }
-
-        else
-            Debug.LogError("Зоны спавна не найденны");
+        for (int i = 0; i < _spawnAreas.Length; i++)
+            _spawnAreas[i].Initialise(_spawnAreas[i].name);
     }
 
     public void Prewarm(PrewarmableData objectToPrewarm)
@@ -49,7 +42,7 @@ public class Spawner
         _player.transform.position = _playerStartPosition;
         _player.gameObject.SetActive(true);
 
-        _player.StartTempInvunrability().Forget();
+        _player.ActivateBonus(BonusTag.TempInvunrability);
     }
 
     private SpawnArea SelectSpawnArea(AreaTag[] spawnZones)
