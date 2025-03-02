@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 044f43966df7e1b459aa1c7cb8550396, type: 3}
+  m_Name: Ace
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: -2471922952189390976, guid: 174a811383954404db8efd1a84fd7ddb, type: 3}
+  <PrewarmAmount>k__BackingField: 1
+  <Tag>k__BackingField: 0
+  <Score>k__BackingField: 2000
+  <SpawnZones>k__BackingField: 000000000100000002000000
+  <UsePrefabRotation>k__BackingField: 0
+  <Stages>k__BackingField:
+  - {fileID: 11400000, guid: 3a52ad004fc25454886a40b5d8e7fbcf, type: 2}
+  - {fileID: 11400000, guid: 59604bc054d5f99449bc00a2ade5e0bf, type: 2}
+  - {fileID: 11400000, guid: f7b503a81d8322d4e9b26aa93f81444e, type: 2}
+  - {fileID: 11400000, guid: adc8a3a934e35f94baf5500533bbdc44, type: 2}
+  - {fileID: 11400000, guid: 585c3c4764f31d148bcc6e07169ce822, type: 2}
+  <NukeResistModifier>k__BackingField: 0.5
+  <Explosion>k__BackingField: {fileID: 3301597147175911291, guid: 0604d157756f61849b394acf7ebfdef9, type: 3}
+  <Health>k__BackingField: 200
+  <ExplosionSound>k__BackingField: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
+  <ExplosionSoundVolume>k__BackingField: 0.158
+  <Direction>k__BackingField: {x: 0, y: 1, z: 0}
+  <Speed>k__BackingField: 15
+  <GameArea>k__BackingField: {x: 16, y: 14, z: 0}
+  <LowerYConstraint>k__BackingField: -1

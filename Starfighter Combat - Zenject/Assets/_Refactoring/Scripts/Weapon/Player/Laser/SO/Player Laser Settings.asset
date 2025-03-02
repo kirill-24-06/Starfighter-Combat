@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3dafdb4e1b127747a9ffb2885fa2d87, type: 3}
+  m_Name: Player Laser Settings
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 5851606271454267160, guid: a7c05f16d77c06b4a8543ee0617bfeb3, type: 3}
+  <PrewarmAmount>k__BackingField: 20
+  <Tag>k__BackingField: 4
+  <Direction>k__BackingField: {x: 0, y: 1, z: 0}
+  <Speed>k__BackingField: 25
+  <ExplosionPrefab>k__BackingField: {fileID: 3301597147175911291, guid: a641a259bde8e2e4d930c181ed007a2b, type: 3}
+  <CollideEffect>k__BackingField: {fileID: 668591103999106783, guid: f30e2b0725944b74aaa93fa65971442d, type: 3}

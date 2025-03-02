@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Ui.DialogWindows.Dialogs;
 using UnityEngine;
+using Legacy;
 
 namespace Ui.DialogWindows
 {
     //√рузит префабы диалоговых окон из папки Resources
     public class DialogManager
     {
-        private const string PrefabsFilePath = "Dialogs/";
+        private const string PrefabsFilePath = "Dialogs/Legacy";
 
         //—сылки на префабы диалоговых окон в папке Assets/Resources/Dialogs/
         private static readonly Dictionary<Type, string> PrefabsDictionary = new Dictionary<Type, string>()

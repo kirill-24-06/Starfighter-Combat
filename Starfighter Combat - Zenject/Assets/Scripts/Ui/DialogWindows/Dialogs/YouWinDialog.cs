@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Ui.DialogWindows;
 
-namespace Ui.DialogWindows.Dialogs
+namespace Legacy
 {
     public class YouWinDialog : Dialog
     {

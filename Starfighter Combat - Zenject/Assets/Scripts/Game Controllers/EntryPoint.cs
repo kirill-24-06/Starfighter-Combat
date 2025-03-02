@@ -1,3 +1,4 @@
+using Legacy;
 using Ui.DialogWindows;
 using UnityEngine;
 using Zenject;

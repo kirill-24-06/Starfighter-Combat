@@ -437,7 +437,7 @@ GameObject:
   - component: {fileID: 7692068608782046554}
   - component: {fileID: 649684877489949832}
   - component: {fileID: 2679316209224765407}
-  - component: {fileID: 2540727103233830458}
+  - component: {fileID: 6886435589851484476}
   m_Layer: 5
   m_Name: MainMenuDialog
   m_TagString: Untagged
@@ -528,7 +528,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2540727103233830458
+--- !u!114 &6886435589851484476
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -537,7 +537,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4715120245801228167}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15d7a129e1044c2499795bd31376a886, type: 3}
+  m_Script: {fileID: 11500000, guid: b9f58c25e8f81fc45b9f085b6ab2e4e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _outsideClickArea: {fileID: 0}

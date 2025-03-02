@@ -34,7 +34,7 @@ public class PlayerInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<DroneBonus>().AsTransient();
 
         Container.BindInterfacesAndSelfTo<PlayerBonusHandler>().FromNew().AsSingle().WithArguments(_player, _defenceDrones);
-        Container.BindInterfacesAndSelfTo<PlayerHealthHandler>().AsCached().WithArguments(_player.gameObject);//.WhenInjectedInto<Player>();
+        Container.BindInterfacesAndSelfTo<PlayerHealthHandler>().AsCached().WithArguments(_player.gameObject);
         Container.Bind<Player>().FromInstance(_player).AsSingle().NonLazy();
 
         //PlayerController

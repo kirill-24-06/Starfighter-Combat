@@ -33,6 +33,7 @@ public class HUDManager : IDisposable
         _events.BossArrival += _bossHealthBar.OnBossArrival;
         _events.BossDamaged += _bossHealthBar.UpdateHealthPrecent;
         _events.BossDefeated += _bossHealthBar.OnBossDefeat;
+        _events.Start += OnStart;
         _events.Stop += OnStop; 
 
         _healthBar = hudElements.HealthBar;
@@ -50,6 +51,8 @@ public class HUDManager : IDisposable
    
     private void OnPause(bool value) => _pauseButton.gameObject.SetActive(!value);
 
+    private void OnStart() => _pauseButton.gameObject.SetActive(true);
+
     private void OnStop()
     {
         _pauseButton.gameObject.SetActive(false);
@@ -65,6 +68,7 @@ public class HUDManager : IDisposable
         _events.BossDamaged -= _bossHealthBar.UpdateHealthPrecent;
         _events.BossDefeated -= _bossHealthBar.OnBossDefeat;
         _events.Stop -= OnStop;
+        _events.Start -= OnStart;
 
         _events.ChangeHealth -= _healthBar.Show;
 

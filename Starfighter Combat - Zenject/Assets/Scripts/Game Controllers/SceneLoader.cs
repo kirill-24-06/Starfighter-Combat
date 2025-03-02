@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Legacy;
 using System.Threading;
 using Ui.DialogWindows;
 using UnityEngine;

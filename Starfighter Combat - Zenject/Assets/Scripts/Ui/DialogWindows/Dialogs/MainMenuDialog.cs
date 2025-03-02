@@ -6,39 +6,42 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-public class MainMenuDialog : Dialog
+namespace Legacy
 {
-    [SerializeField] private Button _newGameButton;
-    [SerializeField] private Button _settingsButton;
-    [SerializeField] private Button _exitGameButton;
-
-    protected override void Awake()
+    public class MainMenuDialog : Dialog
     {
-        base.Awake();
+        [SerializeField] private Button _newGameButton;
+        [SerializeField] private Button _settingsButton;
+        [SerializeField] private Button _exitGameButton;
 
-        _newGameButton.onClick.AddListener(StartNewGame);
-        _settingsButton.onClick.AddListener(OpenSettings);
-        _exitGameButton.onClick.AddListener(ExitGame);
-    }
+        protected override void Awake()
+        {
+            base.Awake();
 
-    private void StartNewGame()
-    {
-        SceneLoader.LoadScene(GlobalConstants.MainSceneName);
-        Hide();
-    }
+            _newGameButton.onClick.AddListener(StartNewGame);
+            _settingsButton.onClick.AddListener(OpenSettings);
+            _exitGameButton.onClick.AddListener(ExitGame);
+        }
 
-    private void OpenSettings()
-    {
-        Hide();
-        DialogManager.ShowDialog<SettingsDialog>();
-    }
+        private void StartNewGame()
+        {
+            SceneLoader.LoadScene(GlobalConstants.MainSceneName);
+            Hide();
+        }
 
-    private void ExitGame()
-    {
+        private void OpenSettings()
+        {
+            Hide();
+            DialogManager.ShowDialog<SettingsDialog>();
+        }
+
+        private void ExitGame()
+        {
 #if UNITY_EDITOR
-        EditorApplication.ExitPlaymode();
+            EditorApplication.ExitPlaymode();
 #else
         Application.Quit();
 #endif
+        }
     }
 }

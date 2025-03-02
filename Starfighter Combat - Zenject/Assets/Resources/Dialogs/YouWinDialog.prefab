@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 4437519048232090043}
   - component: {fileID: 1157588193906797899}
   - component: {fileID: 5936285437479562545}
-  - component: {fileID: 5074889481736201963}
+  - component: {fileID: 5957148748820696238}
   m_Layer: 5
   m_Name: YouWinDialog
   m_TagString: Untagged
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5074889481736201963
+--- !u!114 &5957148748820696238
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4723328913199140093}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43ccaf7d5f4acff4e87d799fcb3c6c10, type: 3}
+  m_Script: {fileID: 11500000, guid: a382beb2e51d9dd4fb7937d4d43d8424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _outsideClickArea: {fileID: 0}

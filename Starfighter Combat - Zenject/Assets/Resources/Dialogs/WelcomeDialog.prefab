@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 7800067432492444463}
   - component: {fileID: 3437815180562615184}
   - component: {fileID: 6307666095628524137}
-  - component: {fileID: 8977291665352087293}
+  - component: {fileID: 4649925214556725901}
   m_Layer: 5
   m_Name: WelcomeDialog
   m_TagString: Untagged
@@ -640,7 +640,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8977291665352087293
+--- !u!114 &4649925214556725901
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -649,7 +649,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3684055741780789810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21d81ead36989b244a794a157381db64, type: 3}
+  m_Script: {fileID: 11500000, guid: ca676b47fe44751449e7dd60c039fbef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _outsideClickArea: {fileID: 0}

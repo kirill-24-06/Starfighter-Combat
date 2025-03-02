@@ -5,7 +5,7 @@ public class EnemyHealthHandler : IDamageble, IResetable
     private int _baseHealth;
     private int _currentHealth;
 
-    public Action Dead;
+    public event Action Dead;
 
     public EnemyHealthHandler(int baseHealth)
     {

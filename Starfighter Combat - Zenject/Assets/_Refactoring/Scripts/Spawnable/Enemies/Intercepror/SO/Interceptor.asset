@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2444fc51849f7ce4b8f703ed5eacb3b2, type: 3}
+  m_Name: Interceptor
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: -8075264499190182394, guid: 7002223106e13cf49999d3a5e94869e5, type: 3}
+  <PrewarmAmount>k__BackingField: 5
+  <Tag>k__BackingField: 0
+  <Score>k__BackingField: 70
+  <SpawnZones>k__BackingField: 000000000100000002000000
+  <Direction>k__BackingField: {x: 0, y: 1, z: 0}
+  <Speed>k__BackingField: 10
+  <Explosion>k__BackingField: {fileID: 3301597147175911291, guid: 0604d157756f61849b394acf7ebfdef9, type: 3}
+  <Health>k__BackingField: 5
+  <ExplosionSound>k__BackingField: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
+  <ExplosionSoundVolume>k__BackingField: 0.15
+  <EnemyStrenght>k__BackingField: 2
+  <ReloadCountDown>k__BackingField: 1
+  <FireSound>k__BackingField: {fileID: 8300000, guid: f402b1c66b2bac64b9afbe1db15ea830, type: 3}
+  <FireSoundVolume>k__BackingField: 0.1
+  <Projectile>k__BackingField: {fileID: 814541193105084480, guid: 536963f2d150db94da7913647ee77fc2, type: 3}
+  <AttacksBeforeReposition>k__BackingField: 3
+  <GameArea>k__BackingField: {x: 19, y: 14, z: 0}
+  <LowerYConstraint>k__BackingField: -2
+  <LifeTime>k__BackingField: 15

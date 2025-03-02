@@ -2,20 +2,23 @@ using Ui.DialogWindows;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WelcomeDialog : Dialog
+namespace Legacy
 {
-    [SerializeField] private Button _startGameButton;
-    private GameController _controller;
-
-    private void Start()
+    public class WelcomeDialog : Dialog
     {
-        _controller = EntryPoint.Instance.GameController;
-        _startGameButton.onClick.AddListener(StartGame);
-    }
+        [SerializeField] private Button _startGameButton;
+        private GameController _controller;
 
-    private void StartGame()
-    {
-        _controller.StartGame();
-        Hide();
+        private void Start()
+        {
+            _controller = EntryPoint.Instance.GameController;
+            _startGameButton.onClick.AddListener(StartGame);
+        }
+
+        private void StartGame()
+        {
+            _controller.StartGame();
+            Hide();
+        }
     }
 }

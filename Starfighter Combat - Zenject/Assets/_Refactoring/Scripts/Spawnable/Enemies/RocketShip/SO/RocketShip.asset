@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f9b363dd7f381468b698026e66d38e, type: 3}
+  m_Name: RocketShip
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: -4097509989827536187, guid: b6dbcb9473f16994e9b75e0a9828342e, type: 3}
+  <PrewarmAmount>k__BackingField: 5
+  <Tag>k__BackingField: 0
+  <Score>k__BackingField: 100
+  <SpawnZones>k__BackingField: 0100000002000000
+  <Direction>k__BackingField: {x: 0, y: 1, z: 0}
+  <Speed>k__BackingField: 6
+  <Explosion>k__BackingField: {fileID: 3301597147175911291, guid: 0604d157756f61849b394acf7ebfdef9, type: 3}
+  <Health>k__BackingField: 10
+  <ExplosionSound>k__BackingField: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
+  <ExplosionSoundVolume>k__BackingField: 0.15
+  <EnemyStrenght>k__BackingField: 2
+  <ReloadCountDown>k__BackingField: 7
+  <FireSound>k__BackingField: {fileID: 8300000, guid: 5b9f5799f67117042987b08d3835bbcc, type: 3}
+  <FireSoundVolume>k__BackingField: 0.2
+  <Projectile>k__BackingField: {fileID: 3025663165139613927, guid: f04274ccdbaac9f4d8cf690525524a95, type: 3}
+  <AttacksBeforeReposition>k__BackingField: 3
+  <GameArea>k__BackingField: {x: 19, y: 14, z: 0}
+  <LowerYConstraint>k__BackingField: 0
+  <LifeTime>k__BackingField: 30

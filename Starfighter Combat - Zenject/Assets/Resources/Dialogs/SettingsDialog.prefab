@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 7925016296900237626}
   - component: {fileID: 1711636652630133197}
   - component: {fileID: 4557741165778122218}
-  - component: {fileID: 3211661770924779939}
+  - component: {fileID: 6728408849059899998}
   m_Layer: 5
   m_Name: SettingsDialog
   m_TagString: Untagged
@@ -458,7 +458,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3211661770924779939
+--- !u!114 &6728408849059899998
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -467,7 +467,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2768034806520567350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27640291963feae45ba1a19a65d90b02, type: 3}
+  m_Script: {fileID: 11500000, guid: adfd08b83e0809d41b67ec5cc037e5eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _outsideClickArea: {fileID: 0}

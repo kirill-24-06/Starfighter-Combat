@@ -800,7 +800,7 @@ GameObject:
   - component: {fileID: 2531106160593825521}
   - component: {fileID: 5161280448524159864}
   - component: {fileID: 5309604018628781979}
-  - component: {fileID: 8597483175314987196}
+  - component: {fileID: 3186428774522977711}
   m_Layer: 0
   m_Name: PauseMenuDialog
   m_TagString: Untagged
@@ -891,7 +891,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8597483175314987196
+--- !u!114 &3186428774522977711
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -900,7 +900,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4965019564906978298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5f5a943d5fd082468856cca2bd5b9d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 88013a996a96fd14ba298b890f5510cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _outsideClickArea: {fileID: 0}

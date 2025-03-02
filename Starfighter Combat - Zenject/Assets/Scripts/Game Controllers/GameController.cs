@@ -1,6 +1,6 @@
 using System;
 using Ui.DialogWindows;
-using Ui.DialogWindows.Dialogs;
+using Legacy;
 using UnityEngine;
 
 public class GameController : IDisposable

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca7cb967ebc18924793df5f39ed156d8, type: 3}
+  m_Name: Player Missile Settings
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: -2233671937592786949, guid: cff05791916014e4aaf59b5fd66760e7, type: 3}
+  <PrewarmAmount>k__BackingField: 2
+  <Tag>k__BackingField: 4
+  <Direction>k__BackingField: {x: 0, y: 1, z: 0}
+  <Speed>k__BackingField: 12
+  <ExplosionPrefab>k__BackingField: {fileID: 3301597147175911291, guid: a641a259bde8e2e4d930c181ed007a2b, type: 3}
+  <CollideEffect>k__BackingField: {fileID: 3301597147175911291, guid: a641a259bde8e2e4d930c181ed007a2b, type: 3}
+  <LaunchTime>k__BackingField: 0.5
+  <HomingTime>k__BackingField: 2
