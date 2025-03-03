@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fe55241a204ebc4bb5bd71e38e08a0d, type: 3}
+  m_Name: PlayerData
+  m_EditorClassIdentifier: 
+  <Health>k__BackingField: 3
+  <MaxHealth>k__BackingField: 10
+  _tempInvunrabilityTimeSeconds: 3
+  <Speed>k__BackingField: 20
+  <GameBorders>k__BackingField: {x: 19, y: 14}
+  <ProjectileSettings>k__BackingField: {fileID: 11400000, guid: 7c4e343fdb8422c4c863eb3c668df9d3, type: 2}
+  <ReloadCountDown>k__BackingField: 0.165
+  <FireSound>k__BackingField: {fileID: 8300000, guid: 9a441e078f569aa45b635ae2a0d8ab5b, type: 3}
+  <FireSoundVolume>k__BackingField: 0.1
+  <NukePrefab>k__BackingField: {fileID: 7415189649973966450, guid: f85be13111b5d3b41abc4c4deab23223, type: 3}
+  <NukesStartAmount>k__BackingField: 2
+  _nukeCd: 3.5
+  <BonusLenght>k__BackingField: 10
+  <Explosion>k__BackingField: {fileID: 3301597147175911291, guid: 0604d157756f61849b394acf7ebfdef9, type: 3}
+  <ExplosionSound>k__BackingField: {fileID: 8300000, guid: 74e3bd7fb4ca4874f9ec1af8347cb904, type: 3}
+  <ExplosionSoundVolume>k__BackingField: 0.15

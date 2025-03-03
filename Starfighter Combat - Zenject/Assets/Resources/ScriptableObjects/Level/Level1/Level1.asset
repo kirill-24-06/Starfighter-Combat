@@ -9,38 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4ffdf5190dca8540ab389e693da2d8c, type: 3}
+  m_Script: {fileID: 11500000, guid: c6c87c2e356099e44849e1d836a23b43, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  _stages:
-  - {fileID: 11400000, guid: ad571a4d7069cd24b8a6968a3e239c88, type: 2}
-  - {fileID: 11400000, guid: c8ea3ff47fd19104a873d81f9a204f90, type: 2}
-  - {fileID: 11400000, guid: b180c1939bf59174f8b0704fcfc374a7, type: 2}
-  - {fileID: 11400000, guid: af4501453ee63b04db0371d37e387d87, type: 2}
-  - {fileID: 11400000, guid: d5ca47513bf21b64082f0a8bbeb9a292, type: 2}
-  - {fileID: 11400000, guid: 3ec98b3adcfe5b845bff3f9ce7c2ed59, type: 2}
-  - {fileID: 11400000, guid: e39aa530e21b2374f9f2ce5500ea2067, type: 2}
-  - {fileID: 11400000, guid: 92e19666a23f85448933663031fb1195, type: 2}
-  _bossWave: {fileID: 11400000, guid: a9dd5620383c28b438c1e980996055ac, type: 2}
-  _bossWaveDelay: 10
-  _prewarmables:
-  - {fileID: 11400000, guid: 24485e39898b1dd4685f62277bd4a8f2, type: 2}
-  - {fileID: 11400000, guid: 8ab373a10e141da498d6e6ca207589f4, type: 2}
-  - {fileID: 11400000, guid: 52ccd775df2e3f54da2f01d07b768324, type: 2}
-  - {fileID: 11400000, guid: 4403f569a959520489bf73243c0d8a2f, type: 2}
-  - {fileID: 11400000, guid: f15c7e2d80b11954d96a7974e7079b8a, type: 2}
-  - {fileID: 11400000, guid: 7cac5bf82c669094d8b34b275e418e69, type: 2}
-  - {fileID: 11400000, guid: e2853c04a1a1036408d229f7c0a3141a, type: 2}
-  - {fileID: 11400000, guid: 5dff61437e7de1749aa2332ef24cea1e, type: 2}
-  - {fileID: 11400000, guid: 022fe42a19251de42a6dd36dd24c551e, type: 2}
-  - {fileID: 11400000, guid: dd7129f867dfef445a129afae6dda29a, type: 2}
-  - {fileID: 11400000, guid: b974c9b1494de8c4e9b1fcf19676e51a, type: 2}
-  - {fileID: 11400000, guid: 94d195ddd98c9d04185b51e332f64484, type: 2}
-  - {fileID: 11400000, guid: b54afe41cddf2b14d9d921efceeea316, type: 2}
-  - {fileID: 11400000, guid: 74bcbadee7cab6c4cb801617a6dedbe1, type: 2}
-  - {fileID: 11400000, guid: 5dac8bebdc387144992b0d4efba1c05e, type: 2}
-  - {fileID: 11400000, guid: b7c92453a92ce1947927c29ac4f4c21d, type: 2}
-  - {fileID: 11400000, guid: b9345ea2eb76deb4a9fdfe0acd56641e, type: 2}
-  - {fileID: 11400000, guid: 1f3f704439f3063478445c470e9eb7a2, type: 2}
-  - {fileID: 11400000, guid: 94c2e1f91aeee4241a5c5d8deab6b0e4, type: 2}
-  - {fileID: 11400000, guid: 714192c6122565b45af2745627b1c425, type: 2}
+  <Stages>k__BackingField:
+  - {fileID: 11400000, guid: 973c223681d379e4196697247c403231, type: 2}
+  - {fileID: 11400000, guid: ca0ccd92689a1db45a94c2fcfe892046, type: 2}
+  - {fileID: 11400000, guid: 32f325ad3d9da5c47845ada2cfb76c5f, type: 2}
+  - {fileID: 11400000, guid: c9c68f83c61f1964b899cc9572ee15ed, type: 2}
+  - {fileID: 11400000, guid: 38bacec7878eb8341a45f69bc73391fc, type: 2}
+  - {fileID: 11400000, guid: ada30645f502c2c43bdbdaa7ec91df64, type: 2}
+  - {fileID: 11400000, guid: e445f3a61dd397b44ac6c6d5cafb8ac1, type: 2}
+  - {fileID: 11400000, guid: fb329317a904c3c4abdb49f34aedb44c, type: 2}
+  <BossWave>k__BackingField: {fileID: 11400000, guid: 0863f7445f2327448ab5513fd8012725, type: 2}
+  <BossWaveDelay>k__BackingField: 10
