@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49f8574f98e01846a004aeaadba3649, type: 3}
+  m_Name: Drone Data
+  m_EditorClassIdentifier: 
+  _missile: {fileID: 11400000, guid: b69babad7d8f98c46a399fe061c00933, type: 2}
+  _reloadCountDown: 3
+  _fireSound: {fileID: 8300000, guid: 5b9f5799f67117042987b08d3835bbcc, type: 3}
+  _fireSoundVolume: 0.2

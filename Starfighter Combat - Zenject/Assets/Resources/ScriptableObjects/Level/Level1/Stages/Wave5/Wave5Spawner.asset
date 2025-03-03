@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b230d7d86d8c6774799b94ed030a9dad, type: 3}
+  m_Name: Wave5Spawner
+  m_EditorClassIdentifier: 
+  <Enemies>k__BackingField:
+  - _value: {fileID: 11400000, guid: 605d35e4f1a30614ba86e670d2fdf814, type: 2}
+  <EliteEnemies>k__BackingField:
+  - _value: {fileID: 11400000, guid: 1bf5395e514c8614e8a7cda41d332690, type: 2}
+  <Bonuses>k__BackingField:
+  - _value: {fileID: 11400000, guid: ecbbcaea19b84f94c92b8781f9ea7e1f, type: 2}
+  - _value: {fileID: 11400000, guid: ce9bf37a76e6cad419c84ac0de659c20, type: 2}
+  - _value: {fileID: 11400000, guid: 00f94a892f0a79d4da4a1ee0c41f776c, type: 2}
+  <SpawnDelay>k__BackingField: 3
+  <SpawnTime>k__BackingField: 2
+  <EliteSpawnTime>k__BackingField: 4
+  <BonusSpawnTime>k__BackingField: 25
+  <MaxEnemies>k__BackingField: 5
+  <MaxHardEnemies>k__BackingField: 2

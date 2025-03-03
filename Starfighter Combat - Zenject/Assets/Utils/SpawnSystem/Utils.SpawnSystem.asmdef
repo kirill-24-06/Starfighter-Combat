@@ -1,0 +1,16 @@
+{
+    "name": "Utils.SpawnSystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:78f7be4ed32fdc840b2c13ccd18faa06"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

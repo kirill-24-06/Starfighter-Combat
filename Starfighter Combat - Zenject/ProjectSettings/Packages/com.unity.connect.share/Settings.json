@@ -1,0 +1,26 @@
+{
+    "m_Dictionary": {
+        "m_DictionaryValues": [
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "firstTime",
+                "value": "{\"m_Value\":false}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "autoPublish",
+                "value": "{\"m_Value\":true}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "createDefaultBuildsFolder",
+                "value": "{\"m_Value\":true}"
+            },
+            {
+                "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "buildOutputDirList",
+                "value": "{\"m_Value\":\"E:/Git/UnityProjects/Starfighter-Combat/Builds/1.0.1/1.0.1release_web;E:/Git/UnityProjects/Starfighter-Combat/Builds/1.0.12;E:/Git/UnityProjects/Starfighter-Combat/Builds/1.0.1;E:/Git/UnityProjects/Starfighter-Combat/Builds/Test/180;E:/Git/UnityProjects/Starfighter-Combat/Builds/Test/60;E:/Git/UnityProjects/Starfighter-Combat/Builds/Test/Test;E:/Git/UnityProjects/Starfighter-Combat/Builds/Release/Webrelease_more_prewarm;E:/Git/UnityProjects/Starfighter-Combat/Builds/Test/TickWithCoroutines;E:/Git/UnityProjects/Starfighter-Combat/Builds/Test/TickWithoutDelay;E:/Git/UnityProjects/Starfighter-Combat/Builds/Test/TickWithDelay\"}"
+            }
+        ]
+    }
+}

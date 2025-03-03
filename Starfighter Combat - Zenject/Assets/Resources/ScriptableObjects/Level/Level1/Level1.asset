@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6c87c2e356099e44849e1d836a23b43, type: 3}
+  m_Name: Level1
+  m_EditorClassIdentifier: 
+  <Stages>k__BackingField:
+  - {fileID: 11400000, guid: 973c223681d379e4196697247c403231, type: 2}
+  - {fileID: 11400000, guid: ca0ccd92689a1db45a94c2fcfe892046, type: 2}
+  - {fileID: 11400000, guid: 32f325ad3d9da5c47845ada2cfb76c5f, type: 2}
+  - {fileID: 11400000, guid: c9c68f83c61f1964b899cc9572ee15ed, type: 2}
+  - {fileID: 11400000, guid: 38bacec7878eb8341a45f69bc73391fc, type: 2}
+  - {fileID: 11400000, guid: ada30645f502c2c43bdbdaa7ec91df64, type: 2}
+  - {fileID: 11400000, guid: e445f3a61dd397b44ac6c6d5cafb8ac1, type: 2}
+  - {fileID: 11400000, guid: fb329317a904c3c4abdb49f34aedb44c, type: 2}
+  <BossWave>k__BackingField: {fileID: 11400000, guid: 0863f7445f2327448ab5513fd8012725, type: 2}
+  <BossWaveDelay>k__BackingField: 10
