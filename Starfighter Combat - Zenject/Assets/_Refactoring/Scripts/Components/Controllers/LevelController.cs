@@ -86,13 +86,13 @@ namespace Refactoring
             else
             {
                 _isBossFight = true;
-                _spawnController.BossArrival(_data.BossWave, _data.BossWaveDelay).Forget();
+                _spawnController.BossArrival(_data.BossWave, _data.BossWaveDelay);
             }
         }
 
         private void OnNewStageStart()
         {
-            _spawnController.NewStage(_stages[currentStage].GetData().SpawnerData);
+            _spawnController.OnNewStage(_stages[currentStage].GetData().SpawnerData);
         }
 
         public void Dispose()

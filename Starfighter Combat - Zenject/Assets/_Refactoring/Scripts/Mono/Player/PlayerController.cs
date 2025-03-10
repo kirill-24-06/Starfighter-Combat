@@ -111,7 +111,7 @@ namespace Refactoring
             }
         }
 
-        private void UseNuke() => _bonusHandler.UseNuke();
+        private void UseNuke() => _bonusHandler.OnNukeUse();
 
         private void OnDisable()
         {

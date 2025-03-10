@@ -94,7 +94,7 @@ namespace Refactoring
         public void Handle(BonusTag tag)
         {
             if (tag == BonusTag.TempInvunrability)
-                StartTempInvunrability().Forget();
+                StartTempInvunrability();
             else
                 _bonuses[tag].Handle();
         }
@@ -113,55 +113,66 @@ namespace Refactoring
             Utils.Events.Channel.Static.Channel<BombsAmountUpdateEvent>.Raise(_bombsAmountUpdateEvent.SetInt(_nukesAmount));
         }
 
-        public void UseNuke()
+        public void OnNukeUse()
         {
-            UseNukeAsync().Forget();
-            StartCooldown().Forget();
+            UseNuke();
+            StartCooldown();
         }
 
-        private async UniTaskVoid UseNukeAsync()
+        private void UseNuke()
         {
-            StartTempInvunrability().Forget();
+            StartTempInvunrability();
 
             var nuke = _nukeFactory.Create();
             nuke.transform.SetLocalPositionAndRotation(_nukePoint.position, nuke.transform.rotation);
 
             var count = Physics2D.OverlapCircleNonAlloc(_nukePoint.position, 30f, _nukeTargets);
 
-            await UniTask.Delay(300, cancellationToken: _disposeToken);
-
-            for (int i = 0; i < count; i++)
-            {
-                if (_collisionMap.NukeInteractables.TryGetValue(_nukeTargets[i], out INukeInteractable interactable))
+            UniTask
+                .Delay(300, cancellationToken: _disposeToken)
+                .ContinueWith(() =>
                 {
-                    interactable.GetDamagedByNuke();
-                }
-            }
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (_collisionMap.NukeInteractables.TryGetValue(_nukeTargets[i], out INukeInteractable interactable))
+                        {
+                            interactable.GetDamagedByNuke();
+                        }
+                    }
 
-            _nukesAmount--;
-            IsEquiped = _nukesAmount > 0;
+                    _nukesAmount--;
+                    IsEquiped = _nukesAmount > 0;
 
-            Utils.Events.Channel.Static.Channel<BombsAmountUpdateEvent>.Raise(_bombsAmountUpdateEvent.SetInt(_nukesAmount));
+                    Utils.Events.Channel.Static.Channel<BombsAmountUpdateEvent>.Raise(_bombsAmountUpdateEvent.SetInt(_nukesAmount));
+                })
+                .Forget();
         }
 
-        private async UniTaskVoid StartCooldown()
+        private void StartCooldown()
         {
             OnCooldown = true;
-            await UniTask.Delay(TimeSpan.FromSeconds(_data.NukeCooldown), cancellationToken: _disposeToken);
-            OnCooldown = false;
+
+            UniTask
+                .Delay(TimeSpan.FromSeconds(_data.NukeCooldown), cancellationToken: _disposeToken)
+                .ContinueWith(() => OnCooldown= false)
+                .Forget();
         }
 
-        private async UniTaskVoid StartTempInvunrability()
+        private void StartTempInvunrability()
         {
             IsInvunerable = true;
             _spriteRenderer.color = _tempInvunrabilityColor;
 
-            await UniTask.Delay(TimeSpan.FromSeconds(_data.TempInvunrabilityTime), cancellationToken: _disposeToken);
+            UniTask
+                .Delay(TimeSpan.FromSeconds(_data.TempInvunrabilityTime), cancellationToken: _disposeToken)
+                .ContinueWith(() =>
+                {
+                    _spriteRenderer.color = Color.white;
 
-            _spriteRenderer.color = Color.white;
-
-            if (!_forceField.ShieldActive)
-                IsInvunerable = false;
+                    if (!_forceField.ShieldActive)
+                        IsInvunerable = false;
+                })
+                .Forget();
         }
 
         private void ActivateDrone(DroneAddedEvent @event)

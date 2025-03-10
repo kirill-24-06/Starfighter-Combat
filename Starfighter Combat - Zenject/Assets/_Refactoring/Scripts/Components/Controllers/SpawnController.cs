@@ -50,66 +50,42 @@ namespace Refactoring
 
         private void OnStop(StopEvent @event) => _isGameActive = false;
 
-        public void NewStage(SpawnerData newData)
+        public void OnNewStage(SpawnerData newData)
         {
             if (_currentStage != 0)
                 CancelPreviousStage();
 
             _data = newData;
 
-            StartSpawnLoop();
+            UniTask
+                .Delay(TimeSpan.FromSeconds(_data.SpawnDelay), cancellationToken: _sceneExitToken.Token)
+                .ContinueWith(StartSpawnLoop)
+                .Forget();
         }
 
         private void StartSpawnLoop()
         {
             if (_data.Enemies.Count > 0)
-                EnemySpawner(_stageTokens[_currentStage].Token).Forget();
+                SpawnLoop(SpawnEnemy, _data.SpawnTime, _stageTokens[_currentStage].Token).Forget();
 
             if (_data.EliteEnemies.Count > 0)
-                EliteEnemySpawner(_stageTokens[_currentStage].Token).Forget();
+                SpawnLoop(SpawnEliteEnemy, _data.EliteSpawnTime, _stageTokens[_currentStage].Token).Forget();
 
             if (_data.Bonuses.Count > 0)
-                BonusSpawner(_stageTokens[_currentStage].Token).Forget();
+                SpawnLoop(SpawnBonus, _data.BonusSpawnTime, _stageTokens[_currentStage].Token).Forget();
 
             _currentStage++;
         }
 
-        private async UniTaskVoid EnemySpawner(CancellationToken token)
+        private async UniTaskVoid SpawnLoop(Action onSpawn, float spawnTime, CancellationToken cancellationToken)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(_data.SpawnDelay), cancellationToken: token);
+            onSpawn.Invoke();
 
             while (_isGameActive)
             {
-                SpawnEnemy();
-
-                await UniTask.Delay(TimeSpan.FromSeconds(_data.SpawnTime), cancellationToken: token);
-            }
-        }
-
-        private async UniTaskVoid EliteEnemySpawner(CancellationToken token)
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(_data.SpawnDelay), cancellationToken: token);
-
-            while (_isGameActive)
-            {
-                SpawnEliteEnemy();
-
-                await UniTask.Delay(TimeSpan.FromSeconds(_data.EliteSpawnTime), cancellationToken: token);
-            }
-        }
-
-        private async UniTaskVoid BonusSpawner(CancellationToken token)
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(_data.SpawnDelay), cancellationToken: token);
-
-            while (_isGameActive)
-            {
-                if (!_bonusIsActive)
-                {
-                    SpawnBonus();
-                    _bonusIsActive = true;
-                }
-                await UniTask.Delay(TimeSpan.FromSeconds(_data.BonusSpawnTime), cancellationToken: token);
+                await UniTask
+                    .Delay(TimeSpan.FromSeconds(spawnTime), cancellationToken: cancellationToken)
+                    .ContinueWith(onSpawn);
             }
         }
 
@@ -141,12 +117,12 @@ namespace Refactoring
             _bonusIsActive = true;
         }
 
-        public void RespawnPlayer(PlayerRespawnEvent @event) => Respawn(_sceneExitToken.Token).Forget();
-
-        private async UniTaskVoid Respawn(CancellationToken cancellationToken)
+        public void RespawnPlayer(PlayerRespawnEvent @event)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(2f), cancellationToken: cancellationToken);
-            _spawner.SpawnPlayer();
+            UniTask
+                .Delay(TimeSpan.FromSeconds(2f), cancellationToken: _sceneExitToken.Token)
+                .ContinueWith(() => _spawner.SpawnPlayer())
+                .Forget();
         }
 
         private void OnEnemyDestroyed(EnemyDestroyedEvent @event)
@@ -169,18 +145,22 @@ namespace Refactoring
 
         private void OnBonusTaken(BonusTakenEvent @event) => _bonusIsActive = false;
 
-        public async UniTaskVoid BossArrival(BossWave bossWave, float delaySeconds)
+        public void BossArrival(BossWave bossWave, float delaySeconds)
         {
             CancelPreviousStage();
 
-            await UniTask.Delay(TimeSpan.FromSeconds(delaySeconds), cancellationToken: _sceneExitToken.Token);
+            UniTask
+                .Delay(TimeSpan.FromSeconds(delaySeconds), cancellationToken: _sceneExitToken.Token)
+                .ContinueWith(() =>
+                {
+                    _data = bossWave.SpawnerData;
 
-            _data = bossWave.SpawnerData;
+                    foreach (var boss in bossWave.Bosses)
+                        _spawner.SpawnUnit(boss.Value);
 
-            foreach (var boss in bossWave.Bosses)
-                _spawner.SpawnUnit(boss.Value);
-
-            StartSpawnLoop();
+                    StartSpawnLoop();
+                })
+                .Forget();
         }
 
         private void CancelPreviousStage()
@@ -191,6 +171,12 @@ namespace Refactoring
 
         public void Dispose()
         {
+            for (int i = _currentStage; i < _stageTokens.Length; i++)
+            {
+                _stageTokens[i]?.Cancel();
+                _stageTokens[i]?.Dispose();
+            }
+
             _sceneExitToken?.Cancel();
             _sceneExitToken?.Dispose();
 

@@ -112,12 +112,14 @@ namespace Refactoring
 
         public virtual void Interact() => _damageHandler.TakeDamage(GlobalConstants.CollisionDamage);
 
-        public virtual void GetDamagedByNuke() => GetDamagedByNukeAsync().Forget();
-
-        private async UniTaskVoid GetDamagedByNukeAsync()
+        public virtual void GetDamagedByNuke()
         {
-            await UniTask.Delay(Random.Range(175, 355), cancellationToken: _sceneExitToken);
-            _damageHandler.TakeDamage(GlobalConstants.NukeDamage);
+            var delay = Random.Range(175, 355);
+
+            UniTask
+                .Delay(delay, cancellationToken: _sceneExitToken)
+                .ContinueWith(() => _damageHandler.TakeDamage(GlobalConstants.NukeDamage))
+                .Forget();
         }
 
         protected void CreateExplosion()

@@ -11,7 +11,7 @@ namespace Refactoring
 
         private CancellationToken _token;
 
-        public void Construct(AnimationEffectSettings settings,CancellationToken token)
+        public void Construct(AnimationEffectSettings settings, CancellationToken token)
         {
             _settings = settings;
             _token = token;
@@ -20,18 +20,14 @@ namespace Refactoring
             IsConstructed = true;
         }
 
-       public AnimationEffect Deactivate()
+        public AnimationEffect Deactivate()
         {
-            DeactivateAsync().Forget();
+            UniTask
+                .Delay(TimeSpan.FromSeconds(_settings.DestroyTime), cancellationToken: _token)
+                .ContinueWith(Release)
+                .Forget();
 
             return this;
-        }
-    
-        private async UniTaskVoid DeactivateAsync()
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(_settings.DestroyTime), cancellationToken: _token);
-
-            Release();
         }
     }
 }
